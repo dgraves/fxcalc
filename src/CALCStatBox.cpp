@@ -39,8 +39,8 @@ FXDEFMAP(CALCStatBox) CALCStatBoxMap[]={
 
 FXIMPLEMENT(CALCStatBox,FXDialogBox,CALCStatBoxMap,ARRAYNUMBER(CALCStatBoxMap))
 
-CALCStatBox::CALCStatBox(FXApp* app)
-: FXDialogBox(app,"Statistics Box",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU|DECOR_RESIZE,0,0,0,0, 0,0,0,0),
+CALCStatBox::CALCStatBox(CALCWindow* owner)
+: FXDialogBox(owner,"Statistics Box",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU|DECOR_RESIZE,0,0,0,0, 0,0,0,0),
   clarify(FALSE)
 {
   FXVerticalFrame* contents=new FXVerticalFrame(this,LAYOUT_FILL_X|LAYOUT_FILL_Y);
@@ -213,15 +213,15 @@ long CALCStatBox::onDNDDrop(FXObject*,FXSelector,void* ptr)
     FXString current;
     FXString label((FXchar*)data,len);
     CALCdouble value=0.0;
-    getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_GETLCDTEXT,SEL_COMMAND),(void*)&current);
-    getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_PASTELCDTEXT,SEL_COMMAND),(void*)&label);
-    getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_GETLCDTEXT,SEL_COMMAND),(void*)&label);
-    getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_GETLCDVALUE,SEL_COMMAND),(void*)&value);
-    getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_SETLCDTEXT,SEL_COMMAND),(void*)&current);
+    getOwner()->handle(this,MKUINT(CALCWindow::ID_GETLCDTEXT,SEL_COMMAND),(void*)&current);
+    getOwner()->handle(this,MKUINT(CALCWindow::ID_PASTELCDTEXT,SEL_COMMAND),(void*)&label);
+    getOwner()->handle(this,MKUINT(CALCWindow::ID_GETLCDTEXT,SEL_COMMAND),(void*)&label);
+    getOwner()->handle(this,MKUINT(CALCWindow::ID_GETLCDVALUE,SEL_COMMAND),(void*)&value);
+    getOwner()->handle(this,MKUINT(CALCWindow::ID_SETLCDTEXT,SEL_COMMAND),(void*)&current);
 
-    pos=values->getInsertPosition();
+    pos=values->getInsertPosition(this,event->win_x,event->win_y);
     addData(label,value,pos);
- 
+
     if(action==DRAG_MOVE&&pos>=0)
       values->selectItem(pos);
 
@@ -261,7 +261,7 @@ long CALCStatBox::onDNDRequest(FXObject* sender,FXSelector sel,void* ptr)
 
 long CALCStatBox::onCmdForward(FXObject*,FXSelector,void*)
 {
-  getApp()->getMainWindow()->raise();
+  getOwner()->raise();
   return 1;
 }
 
@@ -269,7 +269,7 @@ long CALCStatBox::onCmdLoad(FXObject*,FXSelector,void*)
 {
   FXint target=getSelectedItem();
   if(target>=0)
-    getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_SETLCDVALUE,SEL_COMMAND),values->getItemData(target));
+    getOwner()->handle(this,MKUINT(CALCWindow::ID_SETLCDVALUE,SEL_COMMAND),values->getItemData(target));
   else
     getApp()->beep();
   return 1;
@@ -315,7 +315,7 @@ long CALCStatBox::onPopupMenu(FXObject* sender,FXSelector sel,void* ptr)
   FXString str="";
 
   //Attemp to get tip text
-  if(SELID(sel)==ID_VALUES)
+  if(FXSELID(sel)==ID_VALUES)
     str=STATVALUES_HELP;
   else
   {
