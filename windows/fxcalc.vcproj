@@ -136,6 +136,9 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
+				RelativePath="..\src\CALCButton.cpp">
+			</File>
+			<File
 				RelativePath="..\src\CALCDigitBox.cpp">
 			</File>
 			<File
@@ -163,6 +166,9 @@
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="..\include\CALCButton.h">
+			</File>
 			<File
 				RelativePath="..\include\CALCDigitBox.h">
 			</File>
