@@ -1,14 +1,29 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(include/CALCWindow.h)
-AM_INIT_AUTOMAKE(fxcalc,1.0.10)
+AM_INIT_AUTOMAKE(fxcalc,1.0.11)
+
+FXCALC_MAJOR_VERSION=1
+FXCALC_MINOR_VERSION=0
+FXCALC_PATCH_LEVEL=11
+AC_DEFINE(FXCALC_MAJOR_VERSION,1,[fxcalc major version no])
+AC_DEFINE(FXCALC_MINOR_VERSION,0,[fxcalc minor version no])
+AC_DEFINE(FXCALC_PATCH_LEVEL,11,[fxcalc patch level])
+
+dnl Prevents setting flags.
+CXXFLAGS=""
 
 dnl Checks for programs.
+AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_RANLIB
+AC_CHECK_PROG(ccache_enabled,ccache,yes)
+if test "$ccache_enabled" = "yes"; then
+  CXX="ccache $CXX"
+fi
 
 dnl Checks for the FOX reswrap utility
 AC_CHECK_PROG(RESWRAP,reswrap,reswrap)
@@ -16,21 +31,21 @@ if test -z "$RESWRAP"; then
   AC_MSG_ERROR("FOX reswrap utility not found")
 fi
 
-dnl Byte order
-AC_C_BIGENDIAN
-if test "$ac_cv_c_bigendian" = "yes"; then
- AC_DEFINE(FOX_BIGENDIAN)
-fi
+dnl Checks for header files.
+AC_HEADER_STDC
 
-dnl Checks for libraries.
-dnl AC_CHECK_LIB(m,main)
-dnl AC_HAVE_LIBRARY(m)
-dnl Fix this one of these days
-LIBS="${LIBS} -lm"
+dnl Check for the Math library
+AC_CHECK_LIBM
+
+dnl Export FOX libraries (-lFOX).
+AC_CHECK_LIB(FOX,fxfindfox,,AC_MSG_ERROR(libFOX not found))
+AC_CHECK_HEADERS(fox/fx.h,,AC_MSG_ERROR(FOX headers not found))
+FOX_LIBS="-lFOX"
+AC_SUBST(FOX_LIBS)
 
 dnl Check for doubledouble
 AC_ARG_ENABLE(doubledouble,
-[  --disable-doubledouble  compile wothout doubledouble support],
+[  --disable-doubledouble  compile without doubledouble support],
 [AC_MSG_RESULT(disabeling doubledouble)],
 [AC_DEFINE(HAVE_DOUBLEDOUBLE)
  AC_DEFINE(DD_INLINE)
@@ -41,15 +56,6 @@ AC_ARG_ENABLE(doubledouble,
  fi
  CPPFLAGS="${CPPFLAGS} -I../doubledouble"
  LIBS="-L../doubledouble ${LIBS} -ldoubledouble"])
-
-dnl Check for FOX
-dnl AC_CHECK_LIB(FOX,fxfindfox,,AC_MSG_ERROR("libFOX not found"))
-LIBS="${LIBS} -lFOX"
-
-dnl Checks for header files.
-AC_HEADER_STDC
-
-AC_CHECK_HEADERS(fox/fx.h,,AC_MSG_ERROR("fox/fx.h not found"))
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -97,13 +103,66 @@ else
   fi
 fi
 
+dnl Manipulate environment if under Win32
+if test "x$CYGWIN" = "xyes" -o "x$MINGW32" = "xyes" ; then
+
+  dnl If compiling for Cygwin or Mingw, must be on Win32 X86
+  dnl Set the byte order flag for X86
+  FOX_BYTEORDER=0
+  AC_SUBST(FOX_BYTEORDER)
+
+  dnl Clear out the X11 flags for the case where we're cross-compiling
+  dnl for i586-mingw32 targets under Unix.
+  X_LIBS=""
+
+  dnl Set compiler flags for Win32 Cygwin/Mingw
+  AC_DEFINE(WIN32,1,[Enable Win32 support])
+  LIBS="${LIBS} -lcomctl32 -lws2_32 -lwsock32 -lwinspool -lmpr"
+  LDFLAGS="${LDFLAGS} -mwindows -e _mainCRTStartup"
+  if test "x$with_mingw32" != "x" ; then
+    CPPFLAGS="${CPPFLAGS} -I$with_mingw32/include"
+    LIBS="${LIBS} -L$with_mingw32/lib"
+  fi
+  X_BASE_LIBS=""
+else
+  X_BASE_LIBS=""
+  dnl LIBS="${LIBS} ${LIBM} ${DLL_LIBS} ${THREAD_LIBS}"
+
+  dnl Set the byte order flag
+  AC_C_BIGENDIAN([FOX_BYTEORDER=1],[FOX_BYTEORDER=0])
+  AC_SUBST(FOX_BYTEORDER)
+fi
+
+if test $FOX_BYTEORDER = 0; then
+  AC_DEFINE(FOX_BYTEORDER,0,[Platform bigendian flag])
+else
+  AC_DEFINE(FOX_BYTEORDER,1,[Platform bigendian flag])
+fi
+AC_SUBST(X_BASE_LIBS)
+AC_EXEEXT
+AC_OBJEXT
+
+dnl Checks for the Sun WorkShop Compiler
+AC_MSG_CHECKING(for Sun WorkShop C++)
+if $CXX -V 2>&1 | egrep 'WorkShop Compilers 4.2' > /dev/null; then
+  AC_MSG_RESULT(4.2)
+  CXXFLAGS="${CXXFLAGS} -instances=global -features=anachronisms"
+elif $CXX -V 2>&1 | egrep 'WorkShop Compilers 5.0' > /dev/null; then
+  AC_MSG_RESULT(5.0)
+  CXXFLAGS="${CXXFLAGS} -instances=global -features=anachronisms,no%conststrings"
+elif $CXX -V 2>&1 | egrep 'Sun WorkShop 6' > /dev/null; then
+  AC_MSG_RESULT(Forte6)
+  CXXFLAGS="${CXXFLAGS} -instances=global -features=anachronisms,no%conststrings"
+else
+  AC_MSG_RESULT(no)
+fi
+
 dnl See about RTTI
 AC_ARG_ENABLE(rtti,
 [  --disable-rtti          compile without rtti support],
 [AC_MSG_RESULT(disabeling rtti)],
 [AC_DEFINE(HAVE_RTTI)])
 
-dnl Checks for library functions.
 dnl Only check for hyperbolic trig functions when not using doubledouble
 if test "x$DOUBLEDOUBLE" != "xHAVE_DOUBLEDOUBLE" ; then
   AC_MSG_CHECKING(for asinh)
