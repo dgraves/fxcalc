@@ -342,7 +342,7 @@ public:
   FXFont* getDisplayFont() const;
 
   void setButtonFont(FXFont* font);
-  FXFont* getButtonFont() const;
+  FXFont* getButtonFont() const {return digitBtns[0]->getFont();}
 
   void setMode(FXuint m);
   FXuint getMode() const;
