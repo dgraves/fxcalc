@@ -522,8 +522,8 @@ void CALCWindow::create()
   const FXchar* fontspec;
 
   //Dimensions
-  FXint x=getApp()->reg().readIntEntry("SETTINGS","x",10);
-  FXint y=getApp()->reg().readIntEntry("SETTINGS","y",10);
+  FXint x=getApp()->reg().readIntEntry("SETTINGS","x",20);
+  FXint y=getApp()->reg().readIntEntry("SETTINGS","y",20);
   FXint w1=getApp()->reg().readIntEntry("SETTINGS","standardwidth",0);
   FXint h1=getApp()->reg().readIntEntry("SETTINGS","standardheight",0);
   FXint w2=getApp()->reg().readIntEntry("SETTINGS","scientificwidth",0);
@@ -589,10 +589,14 @@ void CALCWindow::create()
 
   setMode(m);
 
-  width[CALC_STANDARD-1]=w1;
-  height[CALC_STANDARD-1]=h1;
-  width[CALC_SCIENTIFIC-1]=w2;
-  height[CALC_SCIENTIFIC-1]=h2;
+  FXint rw=getApp()->getRoot()->getWidth();
+  FXint rh=getApp()->getRoot()->getHeight();
+  width[CALC_STANDARD-1]=(w1>0&&w1<=rw)?w1:0;
+  height[CALC_STANDARD-1]=(h1>0&&h1<=rh)?h1:0;
+  width[CALC_SCIENTIFIC-1]=(w2>0&&w2<=rw)?w2:0;
+  height[CALC_SCIENTIFIC-1]=(h2>0&&h2<=rh)?h2:0;
+  x=(x>0&&x<rw-50)?x:20;
+  y=(y>0&&y<rh-50)?x:20;
   position(x,y,width[m-1],height[m-1]);
 
   setDisplayColor(displayclr);
@@ -1010,12 +1014,22 @@ long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
   height[mode-1]=getHeight();
 
   //Dimensions
-  getApp()->reg().writeIntEntry("SETTINGS","x",getX());
-  getApp()->reg().writeIntEntry("SETTINGS","y",getY());
-  getApp()->reg().writeIntEntry("SETTINGS","standardwidth",width[CALC_STANDARD-1]);
-  getApp()->reg().writeIntEntry("SETTINGS","standardheight",height[CALC_STANDARD-1]);
-  getApp()->reg().writeIntEntry("SETTINGS","scientificwidth",width[CALC_SCIENTIFIC-1]);
-  getApp()->reg().writeIntEntry("SETTINGS","scientificheight",height[CALC_SCIENTIFIC-1]);
+  FXint x=getX();
+  FXint y=getY();
+  FXint rw=getApp()->getRoot()->getWidth();
+  FXint rh=getApp()->getRoot()->getHeight();
+
+  //Check for valid x, y, width, and height
+  if(x>0&&x<rw-50) getApp()->reg().writeIntEntry("SETTINGS","x",x);
+  if(y>0&&y<rh-50) getApp()->reg().writeIntEntry("SETTINGS","y",y);
+  if(width[CALC_STANDARD-1]>0&&width[CALC_STANDARD-1]<=rw)
+    getApp()->reg().writeIntEntry("SETTINGS","standardwidth",width[CALC_STANDARD-1]);
+  if(height[CALC_STANDARD-1]>0&&height[CALC_STANDARD-1]<=rh)
+    getApp()->reg().writeIntEntry("SETTINGS","standardheight",height[CALC_STANDARD-1]);
+  if(width[CALC_STANDARD-1]>0&&width[CALC_SCIENTIFIC-1]<=rw)
+    getApp()->reg().writeIntEntry("SETTINGS","scientificwidth",width[CALC_SCIENTIFIC-1]);
+  if(height[CALC_STANDARD-1]>0&&height[CALC_SCIENTIFIC-1]<=rh)
+    getApp()->reg().writeIntEntry("SETTINGS","scientificheight",height[CALC_SCIENTIFIC-1]);
 
   //Fonts and colors
   getDisplayFont()->getFontDesc(fontdesc);

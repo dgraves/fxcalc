@@ -19,7 +19,6 @@
 #include "fox/fx.h"
 #include "CALCButton.h"
 
-
 FXIMPLEMENT(CALCButton,FXButton,NULL,0)
 
 CALCButton::CALCButton(FXComposite* p,const FXString& text,FXIcon* ic=NULL,FXObject* tgt=NULL,FXSelector sel=0,FXuint opts=BUTTON_NORMAL,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=DEFAULT_PAD,FXint pr=DEFAULT_PAD,FXint pt=DEFAULT_PAD,FXint pb=DEFAULT_PAD)
