@@ -1,5 +1,5 @@
 /* CALCWindow.cpp
- * Copyright (C) 2000,2001 Dustin Graves <dgraves@computer.org>
+ * Copyright (C) 2000,2001,2002 Dustin Graves <dgraves@computer.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,14 +21,18 @@
 #include <windows.h>
 #include <winuser.h>
 #endif
+#include "fox/fx.h"
 #include "fox/fxkeys.h"
+#include "fox/FXElement.h"
+#include "fox/FXArray.h"
 
 #include "icons.h"
-#include "CALCWindow.h"
+#include "CALCdefs.h"
+#include "CALCHelp.h"
 #include "CALCLabel.h"
 #include "CALCStatBox.h"
-#include "CALCDigitBox.h"
-#include "CALCHelp.h"
+#include "CALCPrefsBox.h"
+#include "CALCWindow.h"
 
 #define BUTTONWIDTH 40
 #define BUTTONHEIGHT 30
@@ -45,7 +49,7 @@ FXDEFMAP(CALCWindow) CALCWindowMap[]={
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_COPY,CALCWindow::onCmdCopy),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_PASTE,CALCWindow::onCmdPaste),
   FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_PASTE,CALCWindow::onUpdPaste),
-  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_NUMDIGITS,CALCWindow::onCmdNumDigits),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_PREFERENCES,CALCWindow::onCmdPreferences),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DIGITGROUPING,CALCWindow::onCmdDigitGrouping),
   FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_DIGITGROUPING,CALCWindow::onUpdDigitGrouping),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_USETOOLTIPS,CALCWindow::onCmdUseTooltips),
@@ -128,6 +132,15 @@ FXDEFMAP(CALCWindow) CALCWindowMap[]={
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_PI,CALCWindow::onCmdPI),
   FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_PI,CALCWindow::onUpdPI),
 
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DISPLAYFONT,CALCWindow::onCmdDisplayFont),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_BUTTONFONT,CALCWindow::onCmdButtonFont),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_NUMDIGITS,CALCWindow::onCmdNumDigits),
+  FXMAPFUNCS(SEL_COMMAND,CALCWindow::ID_COLOR_DISPLAY,CALCWindow::ID_COLOR_CLEARALL,CALCWindow::onCmdBackColor),
+  FXMAPFUNCS(SEL_COMMAND,CALCWindow::ID_TEXTCOLOR_DISPLAY,CALCWindow::ID_TEXTCOLOR_CLEARALL,CALCWindow::onCmdTextColor),
+  FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_NUMDIGITS,CALCWindow::onUpdNumDigits),
+  FXMAPFUNCS(SEL_UPDATE,CALCWindow::ID_COLOR_DISPLAY,CALCWindow::ID_COLOR_CLEARALL,CALCWindow::onUpdBackColor),
+  FXMAPFUNCS(SEL_UPDATE,CALCWindow::ID_TEXTCOLOR_DISPLAY,CALCWindow::ID_TEXTCOLOR_CLEARALL,CALCWindow::onUpdTextColor),
+
   //The popup dialog
   FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_LCD,CALCWindow::onPopupMenu),
   FXMAPFUNCS(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_BINARY,CALCWindow::ID_PI,CALCWindow::onPopupMenu),
@@ -154,7 +167,9 @@ CALCWindow::CALCWindow(FXApp* app)
   word(NUM_DLWORD),
   notation(NOTATION_NONE),
   ndigits(CALCDBL_DIG),
-  clarify(FALSE)
+  clarify(FALSE),
+  lcdfont(NULL),
+  btnfont(NULL)
 {
   statBox=new CALCStatBox(app);
 
@@ -175,7 +190,7 @@ CALCWindow::CALCWindow(FXApp* app)
   new FXMenuCommand(editmenu,"&Copy\tCtrl+C",NULL,this,ID_COPY);
   new FXMenuCommand(editmenu,"&Paste\tCtrl+V",NULL,this,ID_PASTE);
   new FXMenuSeparator(editmenu);
-  new FXMenuCommand(editmenu,"&Display Settings...\tCtrl+E",NULL,this,ID_NUMDIGITS);
+  new FXMenuCommand(editmenu,"&Display Settings...\tCtrl+E",NULL,this,ID_PREFERENCES);
   viewmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&View",NULL,viewmenu);
   new FXMenuCommand(viewmenu,"&Standard",NULL,this,ID_STANDARD);
@@ -203,20 +218,20 @@ CALCWindow::CALCWindow(FXApp* app)
 
   modesFrame=new FXHorizontalFrame(this,LAYOUT_FILL_X,0,0,0,0, 4,4,2,2, 2,2);
   FXHorizontalFrame* baseFrame=new FXHorizontalFrame(modesFrame,PACK_UNIFORM_WIDTH|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-  modeBtns[MODE_HEX]=new FXRadioButton(baseFrame,"Hex\t"HEXADECIMAL_HELP,this,ID_HEXADECIMAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_DEC]=new FXRadioButton(baseFrame,"Dec\t"DECIMAL_HELP,this,ID_DECIMAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_OCT]=new FXRadioButton(baseFrame,"Oct\t"OCTAL_HELP,this,ID_OCTAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_BIN]=new FXRadioButton(baseFrame,"Bin\t"BINARY_HELP,this,ID_BINARY,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_HEX]=new FXRadioButton(baseFrame,"Hex\t"HEXADECIMAL_HELP,this,ID_HEXADECIMAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_DEC]=new FXRadioButton(baseFrame,"Dec\t"DECIMAL_HELP,this,ID_DECIMAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_OCT]=new FXRadioButton(baseFrame,"Oct\t"OCTAL_HELP,this,ID_OCTAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_BIN]=new FXRadioButton(baseFrame,"Bin\t"BINARY_HELP,this,ID_BINARY,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   modeSwitch=new FXSwitcher(modesFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 0,0,0,0);
   FXHorizontalFrame* repFrame=new FXHorizontalFrame(modeSwitch,PACK_UNIFORM_WIDTH|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-  modeBtns[MODE_DEGREES]=new FXRadioButton(repFrame,"Degrees\t"DEGREES_HELP,this,ID_DEGREES,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_RADIANS]=new FXRadioButton(repFrame,"Radians\t"RADIANS_HELP,this,ID_RADIANS,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_GRADIENTS]=new FXRadioButton(repFrame,"Gradients\t"GRADIENTS_HELP,this,ID_GRADIENTS,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_DEGREES]=new FXRadioButton(repFrame,"Degrees\t"DEGREES_HELP,this,ID_DEGREES,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_RADIANS]=new FXRadioButton(repFrame,"Radians\t"RADIANS_HELP,this,ID_RADIANS,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_GRADIENTS]=new FXRadioButton(repFrame,"Gradients\t"GRADIENTS_HELP,this,ID_GRADIENTS,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   FXHorizontalFrame* wordFrame=new FXHorizontalFrame(modeSwitch,PACK_UNIFORM_WIDTH|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-  modeBtns[MODE_DLWORD]=new FXRadioButton(wordFrame,"dlword\t"DLWORD_HELP,this,ID_DLWORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_LWORD]=new FXRadioButton(wordFrame,"lword\t"LWORD_HELP,this,ID_LWORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_WORD]=new FXRadioButton(wordFrame,"word\t"WORD_HELP,this,ID_WORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  modeBtns[MODE_BYTE]=new FXRadioButton(wordFrame,"byte\t"BYTE_HELP,this,ID_BYTE,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_DLWORD]=new FXRadioButton(wordFrame,"dlword\t"DLWORD_HELP,this,ID_DLWORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_LWORD]=new FXRadioButton(wordFrame,"lword\t"LWORD_HELP,this,ID_LWORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_WORD]=new FXRadioButton(wordFrame,"word\t"WORD_HELP,this,ID_WORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_BYTE]=new FXRadioButton(wordFrame,"byte\t"BYTE_HELP,this,ID_BYTE,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
   FXHorizontalFrame* numpad=new FXHorizontalFrame(this,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 4,4,2,2, 0,0);
 
@@ -486,30 +501,30 @@ CALCWindow::CALCWindow(FXApp* app)
   new FXFrame(hexMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,DEFAULT_SPACING,DEFAULT_SPACING);
   new FXFrame(hexMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,BUTTONWIDTH,DEFAULT_SPACING);
 
-  hexdigitBtns[DIGIT_A]=new FXButton(hexMatrix,"A\t"A_HELP,NULL,this,ID_A,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  hexdigitBtns[HEXDIGIT_A]=new FXButton(hexMatrix,"A\t"A_HELP,NULL,this,ID_A,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
   new FXFrame(hexMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,DEFAULT_SPACING,BUTTONHEIGHT);
-  hexdigitBtns[DIGIT_B]=new FXButton(hexMatrix,"B\t"B_HELP,NULL,this,ID_B,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  hexdigitBtns[HEXDIGIT_B]=new FXButton(hexMatrix,"B\t"B_HELP,NULL,this,ID_B,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
   new FXFrame(hexMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,DEFAULT_SPACING,BUTTONHEIGHT);
-  hexdigitBtns[DIGIT_C]=new FXButton(hexMatrix,"C\t"C_HELP,NULL,this,ID_C,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  hexdigitBtns[HEXDIGIT_C]=new FXButton(hexMatrix,"C\t"C_HELP,NULL,this,ID_C,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
   new FXFrame(hexMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,DEFAULT_SPACING,BUTTONHEIGHT);
-  hexdigitBtns[DIGIT_D]=new FXButton(hexMatrix,"D\t"D_HELP,NULL,this,ID_D,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  hexdigitBtns[HEXDIGIT_D]=new FXButton(hexMatrix,"D\t"D_HELP,NULL,this,ID_D,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
   new FXFrame(hexMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,DEFAULT_SPACING,BUTTONHEIGHT);
-  hexdigitBtns[DIGIT_E]=new FXButton(hexMatrix,"E\t"E_HELP,NULL,this,ID_E,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  hexdigitBtns[HEXDIGIT_E]=new FXButton(hexMatrix,"E\t"E_HELP,NULL,this,ID_E,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
   new FXFrame(hexMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,DEFAULT_SPACING,BUTTONHEIGHT);
-  hexdigitBtns[DIGIT_F]=new FXButton(hexMatrix,"F\t"F_HELP,NULL,this,ID_F,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  hexdigitBtns[HEXDIGIT_F]=new FXButton(hexMatrix,"F\t"F_HELP,NULL,this,ID_F,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
 
   //Hot keys
-  modeBtns[MODE_HEX]->addHotKey(KEY_F5);
-  modeBtns[MODE_DEC]->addHotKey(KEY_F6);
-  modeBtns[MODE_OCT]->addHotKey(KEY_F7);
-  modeBtns[MODE_BIN]->addHotKey(KEY_F8);
-  modeBtns[MODE_DEGREES]->addHotKey(KEY_F2);
-  modeBtns[MODE_RADIANS]->addHotKey(KEY_F3);
-  modeBtns[MODE_GRADIENTS]->addHotKey(KEY_F4);
-  modeBtns[MODE_DLWORD]->addHotKey(KEY_F12);
-  modeBtns[MODE_LWORD]->addHotKey(KEY_F2);
-  modeBtns[MODE_WORD]->addHotKey(KEY_F3);
-  modeBtns[MODE_BYTE]->addHotKey(KEY_F4);
+  baseBtns[BASE_HEX]->addHotKey(KEY_F5);
+  baseBtns[BASE_DEC]->addHotKey(KEY_F6);
+  baseBtns[BASE_OCT]->addHotKey(KEY_F7);
+  baseBtns[BASE_BIN]->addHotKey(KEY_F8);
+  repBtns[REP_DEGREES]->addHotKey(KEY_F2);
+  repBtns[REP_RADIANS]->addHotKey(KEY_F3);
+  repBtns[REP_GRADIENTS]->addHotKey(KEY_F4);
+  repBtns[REP_DLWORD]->addHotKey(KEY_F12);
+  repBtns[REP_LWORD]->addHotKey(KEY_F2);
+  repBtns[REP_WORD]->addHotKey(KEY_F3);
+  repBtns[REP_BYTE]->addHotKey(KEY_F4);
   modeBtns[MODE_INV]->addHotKey(KEY_i);
   modeBtns[MODE_INV]->addHotKey(KEY_I);
   modeBtns[MODE_HYP]->addHotKey(KEY_h);
@@ -666,24 +681,35 @@ CALCWindow::CALCWindow(FXApp* app)
   operatorBtns[OPERATOR_SIMPLE_EQUAL]->addHotKey(KEY_Return);
   operatorBtns[OPERATOR_SIMPLE_EQUAL]->addHotKey(KEY_KP_Enter);
   operatorBtns[OPERATOR_SIMPLE_EQUAL]->setTextColor(OPERATOR);
-  hexdigitBtns[DIGIT_A]->addHotKey(KEY_a);
-  hexdigitBtns[DIGIT_A]->addHotKey(KEY_A);
-  hexdigitBtns[DIGIT_A]->setTextColor(FUNCTION);
-  hexdigitBtns[DIGIT_B]->addHotKey(KEY_b);
-  hexdigitBtns[DIGIT_B]->addHotKey(KEY_B);
-  hexdigitBtns[DIGIT_B]->setTextColor(FUNCTION);
-  hexdigitBtns[DIGIT_C]->addHotKey(KEY_c);
-  hexdigitBtns[DIGIT_C]->addHotKey(KEY_C);
-  hexdigitBtns[DIGIT_C]->setTextColor(FUNCTION);
-  hexdigitBtns[DIGIT_D]->addHotKey(KEY_d);
-  hexdigitBtns[DIGIT_D]->addHotKey(KEY_D);
-  hexdigitBtns[DIGIT_D]->setTextColor(FUNCTION);
-  hexdigitBtns[DIGIT_E]->addHotKey(KEY_e);
-  hexdigitBtns[DIGIT_E]->addHotKey(KEY_E);
-  hexdigitBtns[DIGIT_E]->setTextColor(FUNCTION);
-  hexdigitBtns[DIGIT_F]->addHotKey(KEY_f);
-  hexdigitBtns[DIGIT_F]->addHotKey(KEY_F);
-  hexdigitBtns[DIGIT_F]->setTextColor(FUNCTION);
+  hexdigitBtns[HEXDIGIT_A]->addHotKey(KEY_a);
+  hexdigitBtns[HEXDIGIT_A]->addHotKey(KEY_A);
+  hexdigitBtns[HEXDIGIT_A]->setTextColor(FUNCTION);
+  hexdigitBtns[HEXDIGIT_B]->addHotKey(KEY_b);
+  hexdigitBtns[HEXDIGIT_B]->addHotKey(KEY_B);
+  hexdigitBtns[HEXDIGIT_B]->setTextColor(FUNCTION);
+  hexdigitBtns[HEXDIGIT_C]->addHotKey(KEY_c);
+  hexdigitBtns[HEXDIGIT_C]->addHotKey(KEY_C);
+  hexdigitBtns[HEXDIGIT_C]->setTextColor(FUNCTION);
+  hexdigitBtns[HEXDIGIT_D]->addHotKey(KEY_d);
+  hexdigitBtns[HEXDIGIT_D]->addHotKey(KEY_D);
+  hexdigitBtns[HEXDIGIT_D]->setTextColor(FUNCTION);
+  hexdigitBtns[HEXDIGIT_E]->addHotKey(KEY_e);
+  hexdigitBtns[HEXDIGIT_E]->addHotKey(KEY_E);
+  hexdigitBtns[HEXDIGIT_E]->setTextColor(FUNCTION);
+  hexdigitBtns[HEXDIGIT_F]->addHotKey(KEY_f);
+  hexdigitBtns[HEXDIGIT_F]->addHotKey(KEY_F);
+  hexdigitBtns[HEXDIGIT_F]->setTextColor(FUNCTION);
+
+  baseBtns[BASE_LAST]=NULL;
+  repBtns[REP_LAST]=NULL;
+  modeBtns[MODE_LAST]=NULL;
+  digitBtns[DIGIT_LAST]=NULL;
+  hexdigitBtns[HEXDIGIT_LAST]=NULL;
+  operatorBtns[OPERATOR_LAST]=NULL;
+  funcBtns[FUNC_LAST]=NULL;
+  memoryBtns[MEMORY_LAST]=NULL;
+  statBtns[STAT_LAST]=NULL;
+  clearBtns[CLEAR_LAST]=NULL;
 }
 
 CALCWindow::~CALCWindow()
@@ -695,6 +721,8 @@ CALCWindow::~CALCWindow()
   delete bigcalc;
   delete smallcalc;
   delete statBox;
+  delete lcdfont;
+  delete btnfont;
 }
 
 void CALCWindow::create()
@@ -719,6 +747,98 @@ void CALCWindow::create()
   position(x,y,w,h);
 
   FXMainWindow::create();
+}
+
+void CALCWindow::setFont(FXLabel* targets[],FXFont* font)
+{
+  FXint i=0;
+  while(targets[i]!=NULL)
+    targets[i++]->setFont(font);
+}
+
+void CALCWindow::setBackColor(FXLabel* target,FXColor color)
+{
+  target->setBackColor(color);
+  target->setHiliteColor(makeHiliteColor(color));
+  target->setShadowColor(makeShadowColor(color));
+}
+
+void CALCWindow::setBackColor(FXLabel* targets[],FXColor color)
+{
+  FXint i=0;
+  FXColor h=makeHiliteColor(color);
+  FXColor s=makeShadowColor(color);
+  while(targets[i]!=NULL)
+  {
+    targets[i]->setBackColor(color);
+    targets[i]->setHiliteColor(h);
+    targets[i++]->setShadowColor(s);
+  }
+}
+
+void CALCWindow::setTextColor(FXLabel* targets[],FXColor color)
+{
+  FXint i=0;
+  while(targets[i]!=NULL)
+    targets[i++]->setTextColor(color);
+}
+
+void CALCWindow::setBaseColor(FXColor color)
+{
+  FXint i=0;
+  while(baseBtns[i]!=NULL)
+    ((FXRadioButton*)baseBtns[i++])->setRadioColor(color);
+}
+
+void CALCWindow::setDisplayColor(FXColor color)
+{
+  setBackColor(lcd,color);
+}
+
+void CALCWindow::setRepColor(FXColor color)
+{
+  FXint i=0;
+  while(repBtns[i]!=NULL)
+    ((FXRadioButton*)repBtns[i++])->setRadioColor(color);
+}
+
+void CALCWindow::setDisplayTextColor(FXColor color)
+{
+  lcd->setTextColor(color);
+}
+
+FXColor CALCWindow::getDisplayColor() const
+{
+  return lcd->getBackColor();
+}
+
+FXColor CALCWindow::getDisplayTextColor() const
+{
+  return lcd->getTextColor();
+}
+
+void CALCWindow::setDisplayFont(FXFont* font)
+{
+  lcd->setFont(font);
+}
+
+FXFont* CALCWindow::getDisplayFont() const
+{
+  return lcd->getFont();
+}
+
+void CALCWindow::setButtonFont(FXFont* font)
+{
+  setFont(baseBtns,font);
+  setFont(repBtns,font);
+  setFont(modeBtns,font);
+  setFont(digitBtns,font);
+  setFont(hexdigitBtns,font);
+  setFont(operatorBtns,font);
+  setFont(funcBtns,font);
+  setFont(memoryBtns,font);
+  setFont(statBtns,font);
+  setFont(clearBtns,font);
 }
 
 void CALCWindow::setMode(FXuint m)
@@ -1160,16 +1280,10 @@ long CALCWindow::onUpdPaste(FXObject* sender,FXSelector,void*)
   return 1;
 }
 
-long CALCWindow::onCmdNumDigits(FXObject*,FXSelector,void*)
+long CALCWindow::onCmdPreferences(FXObject*,FXSelector,void*)
 {
-  CALCDigitBox dialog(this,"Display Settings");
-  dialog.setNumDigits(ndigits);
-  if(dialog.execute())
-  {
-    ndigits=dialog.getNumDigits();
-    //Refresh display
-    setLabelText(getLabelText());
-  }
+  CALCPrefsBox dialog(this);
+  dialog.execute();
   return 1;
 }
 
@@ -1224,22 +1338,31 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
 
   msg.format("Scientific Calculator (IEEE 754 %s-bit floating point)\nVersion "PROG_VERSION"\n\nCopyright (C) 2000-2002 Dustin Graves (dgraves@computer.org)\n\n"\
 "This software uses the FOX Platform Independent GUI Toolkit Library.\n"\
-"The FOX Library is Copyright (C) 1997,2000,2001 Jeroen van der Zijp and is\n"\
+"The FOX Library is Copyright (C) 1997,2000-2002 Jeroen van der Zijp and is\n"\
 "available freely under the GNU Lesser Public License at the following site:\n"\
 "http://www.fox-toolkit.org",bits.text());
 
 #ifdef HAVE_DOUBLEDOUBLE
   msg.append("\n\n"\
-"This software contains code from version 2.2 of the `doubledouble' software\n"\
-"package which implements doubled-double (approximately 30 decimal place) floating\n"\
-"point arithmetic on IEEE 754 floating-point hardware. \n"\
+"This software contains code from version 2.2 of the `doubledouble' library.\n"\
 "The doubledouble library is Copyright (C) 1997 Keith Martin Briggs and is\n"\
 "available freely under the GNU General Public License at the following site:\n"\
 "http://www.btexact.com/people/briggsk2/doubledouble.html");
 #endif
 
-  FXMessageBox about(this,"About fxcalc",msg,bigcalc,MBOX_OK|DECOR_TITLE|DECOR_BORDER);
+  FXDialogBox about(this,"About Box",DECOR_TITLE|DECOR_BORDER);
+  FXHorizontalFrame* buttons=new FXHorizontalFrame(&about,LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X);
+  new FXButton(buttons,"&Close",NULL,&about,FXDialogBox::ID_ACCEPT,BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_RIGHT|FRAME_RAISED|FRAME_THICK,0,0,0,0, 20,20);
+  new FXHorizontalSeparator(&about,SEPARATOR_RIDGE|LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X);
+  FXVerticalFrame* aboutframe=new FXVerticalFrame(&about,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  new FXLabel(aboutframe,"About fxcalc");
+  new FXHorizontalSeparator(aboutframe,SEPARATOR_LINE|LAYOUT_FILL_X);
+  FXHorizontalFrame* aboutlabels=new FXHorizontalFrame(aboutframe,LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  new FXLabel(aboutlabels,NULL,bigcalc,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 20,20,20,20);
+  new FXLabel(aboutlabels,msg,NULL,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 0,20,20,20);
+
   about.execute();  
+
   return 1;
 }
 
@@ -1489,7 +1612,7 @@ long CALCWindow::onCmdShowStatBox(FXObject*,FXSelector,void*)
   if(statBox->shown())
     statBox->raise();
   else
-    statBox->show();
+    statBox->show(PLACEMENT_CURSOR);
   return 1;
 }
 
@@ -2612,5 +2735,154 @@ long CALCWindow::onPopupMenu(FXObject* sender,FXSelector sel,void* ptr)
 long CALCWindow::onCmdClarify(FXObject*,FXSelector,void*)
 {
   clarify=TRUE;
+  return 1;
+}
+
+long CALCWindow::onCmdDisplayFont(FXObject*,FXSelector,void*)
+{
+  FXFontDialog dialog(this,"Change Display Font",DECOR_BORDER|DECOR_TITLE);
+  FXFontDesc fontdesc;
+
+  lcd->getFont()->getFontDesc(fontdesc);
+  dialog.setFontSelection(fontdesc);
+  if(dialog.execute())
+  {
+    FXFont *oldfont=lcdfont;
+    dialog.getFontSelection(fontdesc);
+    lcdfont=new FXFont(getApp(),fontdesc);
+    lcdfont->create();
+    setDisplayFont(lcdfont);
+    if(oldfont) delete oldfont;
+  }
+  return 1;
+}
+
+long CALCWindow::onCmdButtonFont(FXObject*,FXSelector,void*)
+{
+  FXFontDialog dialog(this,"Change Display Font",DECOR_BORDER|DECOR_TITLE);
+  FXFontDesc fontdesc;
+
+  baseBtns[0]->getFont()->getFontDesc(fontdesc);
+  dialog.setFontSelection(fontdesc);
+  if(dialog.execute())
+  {
+    FXFont *oldfont=btnfont;
+    dialog.getFontSelection(fontdesc);
+    btnfont=new FXFont(getApp(),fontdesc);
+    btnfont->create();
+    setButtonFont(btnfont);
+    if(oldfont) delete oldfont;
+  }
+  return 1;
+}
+
+long CALCWindow::onCmdNumDigits(FXObject* sender,FXSelector,void*)
+{
+  FXint digits=CALCDBL_DIG;
+  sender->handle(this,MKUINT(ID_GETINTVALUE,SEL_COMMAND),(void*)&digits);
+  ndigits=digits;
+
+  //Refresh display
+  setLabelText(getLabelText());
+  return 1;
+}
+
+long CALCWindow::onCmdBackColor(FXObject*,FXSelector sel,void* ptr)
+{
+  FXColor color=(FXColor)(long)ptr;
+  switch(SELID(sel))
+  {
+    case ID_COLOR_DISPLAY: setDisplayColor(color); break;
+    case ID_COLOR_DIGITS: setDigitColor(color); break;
+    case ID_COLOR_HEXDIGITS: setHexDigitColor(color); break;
+    case ID_COLOR_OPERATORS: setOperatorColor(color); break;
+    case ID_COLOR_FUNCTIONS: setFunctionColor(color); break;
+    case ID_COLOR_MEMORY: setMemoryColor(color); break;
+    case ID_COLOR_STATISTICS: setStatColor(color); break;
+    case ID_COLOR_BASE: setBaseColor(color); break;
+    case ID_COLOR_REPRESENTATION: setRepColor(color); break;
+    case ID_COLOR_INV: setInvColor(color); break;
+    case ID_COLOR_HYP: setHypColor(color); break;
+    case ID_COLOR_BACKSPACE: setBackspaceColor(color); break;
+    case ID_COLOR_CLEARENTRY: setClearEntryColor(color); break;
+    case ID_COLOR_CLEARALL: setClearAllColor(color); break;
+  }
+  return 1;
+}
+
+long CALCWindow::onCmdTextColor(FXObject*,FXSelector sel,void* ptr)
+{
+  FXColor color=(FXColor)(long)ptr;
+  switch(SELID(sel))
+  {
+    case ID_TEXTCOLOR_DISPLAY: setDisplayTextColor(color); break;
+    case ID_TEXTCOLOR_DIGITS: setDigitTextColor(color); break;
+    case ID_TEXTCOLOR_HEXDIGITS: setHexDigitTextColor(color); break;
+    case ID_TEXTCOLOR_OPERATORS: setOperatorTextColor(color); break;
+    case ID_TEXTCOLOR_FUNCTIONS: setFunctionTextColor(color); break;
+    case ID_TEXTCOLOR_MEMORY: setMemoryTextColor(color); break;
+    case ID_TEXTCOLOR_STATISTICS: setStatTextColor(color); break;
+    case ID_TEXTCOLOR_BASE: setBaseTextColor(color); break;
+    case ID_TEXTCOLOR_REPRESENTATION: setRepTextColor(color); break;
+    case ID_TEXTCOLOR_INV: setInvTextColor(color); break;
+    case ID_TEXTCOLOR_HYP: setHypTextColor(color); break;
+    case ID_TEXTCOLOR_BACKSPACE: setBackspaceTextColor(color); break;
+    case ID_TEXTCOLOR_CLEARENTRY: setClearEntryTextColor(color); break;
+    case ID_TEXTCOLOR_CLEARALL: setClearAllTextColor(color); break;
+  }
+  return 1;
+}
+
+long CALCWindow::onUpdNumDigits(FXObject* sender,FXSelector,void*)
+{
+  sender->handle(this,MKUINT(ID_SETINTVALUE,SEL_COMMAND),(void*)&ndigits);
+  return 1;
+}
+
+long CALCWindow::onUpdBackColor(FXObject* sender,FXSelector sel,void*)
+{
+  FXColor color;
+  switch(SELID(sel))
+  {
+    case ID_COLOR_DISPLAY: color=getDisplayColor(); break;
+    case ID_COLOR_DIGITS: color=getDigitColor(); break;
+    case ID_COLOR_HEXDIGITS: color=getHexDigitColor(); break;
+    case ID_COLOR_OPERATORS: color=getOperatorColor(); break;
+    case ID_COLOR_FUNCTIONS: color=getFunctionColor(); break;
+    case ID_COLOR_MEMORY: color=getMemoryColor(); break;
+    case ID_COLOR_STATISTICS: color=getStatColor(); break;
+    case ID_COLOR_BASE: color=getBaseColor(); break;
+    case ID_COLOR_REPRESENTATION: color=getRepColor(); break;
+    case ID_COLOR_INV: color=getInvColor(); break;
+    case ID_COLOR_HYP: color=getHypColor(); break;
+    case ID_COLOR_BACKSPACE: color=getBackspaceColor(); break;
+    case ID_COLOR_CLEARENTRY: color=getClearEntryColor(); break;
+    case ID_COLOR_CLEARALL: color=getClearAllColor(); break;
+  }
+  sender->handle(this,MKUINT(ID_SETINTVALUE,SEL_COMMAND),(void*)&color);
+  return 1;
+}
+
+long CALCWindow::onUpdTextColor(FXObject* sender,FXSelector sel,void*)
+{
+  FXColor color;
+  switch(SELID(sel))
+  {
+    case ID_TEXTCOLOR_DISPLAY: color=getDisplayTextColor(); break;
+    case ID_TEXTCOLOR_DIGITS: color=getDigitTextColor(); break;
+    case ID_TEXTCOLOR_HEXDIGITS: color=getHexDigitTextColor(); break;
+    case ID_TEXTCOLOR_OPERATORS: color=getOperatorTextColor(); break;
+    case ID_TEXTCOLOR_FUNCTIONS: color=getFunctionTextColor(); break;
+    case ID_TEXTCOLOR_MEMORY: color=getMemoryTextColor(); break;
+    case ID_TEXTCOLOR_STATISTICS: color=getStatTextColor(); break;
+    case ID_TEXTCOLOR_BASE: color=getBaseTextColor(); break;
+    case ID_TEXTCOLOR_REPRESENTATION: color=getRepTextColor(); break;
+    case ID_TEXTCOLOR_INV: color=getInvTextColor(); break;
+    case ID_TEXTCOLOR_HYP: color=getHypTextColor(); break;
+    case ID_TEXTCOLOR_BACKSPACE: color=getBackspaceTextColor(); break;
+    case ID_TEXTCOLOR_CLEARENTRY: color=getClearEntryTextColor(); break;
+    case ID_TEXTCOLOR_CLEARALL: color=getClearAllTextColor(); break;
+  }
+  sender->handle(this,MKUINT(ID_SETINTVALUE,SEL_COMMAND),(void*)&color);
   return 1;
 }

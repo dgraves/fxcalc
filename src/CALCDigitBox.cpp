@@ -16,8 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "CALCDigitBox.h"
+#include "fox/fx.h"
+#include "CALCdefs.h"
 #include "CALCHelp.h"
+#include "CALCDigitBox.h"
 
 FXDEFMAP(CALCDigitBox) CALCDigitBoxMap[]={
   FXMAPFUNC(SEL_COMMAND,CALCDigitBox::ID_DEFAULTDIGITS,CALCDigitBox::onCmdDefaultDigits),

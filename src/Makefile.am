@@ -12,6 +12,7 @@ fxcalc_SOURCES = \
                 $(top_srcdir)/include/icons.h \
 		icons.cpp        \
 		CALCDigitBox.cpp \
+                CALCPrefsBox.cpp \
 		CALCList.cpp     \
 		CALCWindow.cpp   \
 		CALCLabel.cpp    \

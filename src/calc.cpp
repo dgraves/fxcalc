@@ -16,6 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include "fox/fx.h"
+#include "fox/FXElement.h"
+#include "fox/FXArray.h"
+#include "CALCdefs.h"
 #include "CALCWindow.h"
 
 int main(int argc, char** argv)

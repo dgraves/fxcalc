@@ -1,5 +1,5 @@
 /* CALCStatBox.cpp
- * Copyright (C) 2001 Dustin Graves <dgraves@computer.org>
+ * Copyright (C) 2001,2002 Dustin Graves <dgraves@computer.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,10 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "CALCStatBox.h"
+#include "fox/fx.h"
+#include "fox/FXElement.h"
+#include "fox/FXArray.h"
+#include "CALCdefs.h"
+#include "CALCHelp.h"
 #include "CALCList.h"
 #include "CALCWindow.h"
-#include "CALCHelp.h"
+#include "CALCStatBox.h"
 
 FXDEFMAP(CALCStatBox) CALCStatBoxMap[]={
   FXMAPFUNC(SEL_DND_DROP,CALCStatBox::ID_VALUES,CALCStatBox::onDNDDrop),
