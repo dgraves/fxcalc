@@ -35,7 +35,7 @@ typedef unsigned __int64 CALCuint64;
 #ifdef HAVE_INT64_T
 typedef int64_t CALCint64;
 #else
-typedef long long int64_t;  //long long should be tested for in configure
+typedef long long CALCint64;  //long long should be tested for in configure
 #endif
 #ifdef HAVE_UINT64_T
 typedef uint64_t CALCuint64;
@@ -43,7 +43,7 @@ typedef uint64_t CALCuint64;
 #ifdef HAVE_U_INT64_T
 typedef u_int64_t CALCuint64;
 #else
-typedef unsigned long long uint64_t;
+typedef unsigned long long CALCuint64;
 #endif //HAVE_UINT64_T
 #endif //HAVE_U_INT64_T
 #endif //WIN32
