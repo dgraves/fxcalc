@@ -1,6 +1,7 @@
 Sat Nov 23 2002 Dustin Graves <dgraves@computer.org>
- * Added new default colors for buttons.  
- * Added new preferences tab.  
+ * Added new default colors for buttons.
+ * Added new preferences tab.
+ * Removed vendor string from registry key
 
 Tue Aug 27 2002 Dustin Graves <dgraves@computer.org>
  * Created CALCButton to return the width and height values specified in
