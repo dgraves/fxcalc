@@ -1,0 +1,22 @@
+The version of the doubledouble library, which this program uses for 128-bit
+floating point math, that is being distributed with this program is
+slightly different from the official doubledouble distribution.  I 
+have made som modifications to the source in order to make it compile 
+with current versions of gcc, MIPSpro CC, and Visual C++ 6.0.  
+
+fxcalc is distributed under the terms of the GNU General Public License
+
+This software uses the FOX Platform Independent GUI Toolkit Library.
+The FOX Library is Copyright (C) 1997,2000,2001 Jeroen van der Zijp and is
+available freely under the GNU Lesser Public License at the following site:
+http://www.cfdrc.com/FOX/fox.html
+
+This software uses version 2.2 of the`doubledouble' software package which
+implements doubled-double (approximately 30 decimal place) floating point
+arithmetic on IEEE 754 floating-point hardware.
+The doubledouble library is Copyright (C) 1997 Keith Martin Briggs and is
+available freely under the GNU General Public License at the following site
+http://www-epidem.plantsci.cam.ac.uk/~kbriggs/doubledouble.html
+
+See INSTALL for installation instructions
+

@@ -1,0 +1,59 @@
+Sat Apr 7 2001 Dustin Graves <dgraves@computer.org>
+ * Added context sensitive help to CALCStatBox and CALCDigitBox
+ * Fixed clipboard code
+ * Improved icons
+ * Added fxcalc.ico for Windows
+ * Fixed CALCStatBox to compile with MipsPRO
+ * Fixed doubledouble makefile to compile with MipsPRO
+ * Improved configure scripts
+
+Mon Mar 5 2001 Dustin Graves <dgraves@computer.org>
+ * Added pop-menu to display help on demand
+ * Replaced floor calls with a truncate to deal with negative values properly
+ * Bit operations were being done with an int rather than a 64-bit value
+ * Added default button to digit box
+
+Sun Mar 4 2001 Dustin Graves <dgraves@computer.org>
+  * Added help text for stat box and digit box.
+  * Modified check for input of 90 and 270 to tan again
+    - Now takes an angle < 0 or > 360 and fixes it to be
+	- within the 0-360 range.  This will catch all entries
+	- of 90 and 270 for degrees or 100 and 300 for gradients.
+	- It does not always work with radians because here we are
+	- not testing for whole numbers.  So, if an angle fails the 
+	- first test, it is put into to the cos function and
+	- the result checked to be 0.  This also tends to fail 
+	- in some situations, since most cos implementations
+	- return a very small non-zero value for 90 (which is why tan(90)
+	- produces a valid result on most systems).  I should probably
+	- apply a threshold to the results of trig functions to attempt
+	- to remove these small imprecisions.  
+  * Added info for doubledouble to the about box.  
+  * Added GNU GPL info to each file
+
+Sat Mar 3 2001 Dustin Graves <dgraves@computer.org>
+  * Added forgotten check for divide by zero with '%' operation
+  * Fixed error checking for atanh
+  * Modified check for input of 90 and 270 to tan
+  * Fixed bug in doubledouble to int64 conversion
+  * Fixed bug with 'int' button only truncating numbers that were entered directly and not results of other ops (eg cos)
+  * Added dialog box to allow user to select the number of decimal digits to work with
+  * Added 2PI.  Displayed wit inv+pi button combination
+  * Added right shift.  Executed with the inv+lsh button combination
+  * Added help text for calculator widgets
+  * Added tooltip option to display help text for calculator widgets
+
+Fri Mar 2 2001 Dustin Graves <dgraves@computer.org>
+  * Added more error checking - new checks for input to log,ln,acos,asin
+  * Work around for the problematic doubledouble pow function:
+    - pow takes x^y and computes as y*log(x) such that x may not be <= 0.  So -4^2 generates an error with doubledouble
+  * Added compilation option to limit mantissa length, because of precision issues mostly noticeable with trig functions
+
+Thu Mar 1 2001 Dustin Graves <dgraves@computer.org>
+  * Added support for doubledouble 128 bit floating point library
+  * Added routines to convert 64 bit ints to doubledouble
+
+Tue Feb 20 2001 Dustin Graves <dgraves@computer.org>
+  * Mostly functional scientific calculator - v0.9.6
+  * Implemented stat box functions
+  * Added DND between calculator, stat box, and other DND supporting applications

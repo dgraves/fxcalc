@@ -1,0 +1,21 @@
+Windows:
+Use the fxcalc project files (fxcalc.dsw) found in the win32 subdirectory to 
+build fxcalc.  This will build both doubledouble and fxcalc.
+
+UNIX and UNIX-like platforms:
+Prior to building fxcalc you will need to build doubledouble.  At some
+point the configure scripts will be modified to include doubledouble,
+but for now you must manually edit the Makefile that comes with doubledouble
+and build the library.  The doubledouble library can be found in the
+doubledouble subdirectory. 
+
+After building doubledouble:
+
+To build and install fxcalc:
+  ./configure
+  make
+  make install
+
+Top build without doubledouble, use the configure option:
+  --disable-doubledouble
+
