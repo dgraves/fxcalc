@@ -1,4 +1,7 @@
-Sat Apr 6 2002 Dustin Graves <dgraves@computer.org>
+Sun Jun 02 2002 Dustin Graves <dgraves@computer.org>
+ * added prefs box for setting custom colors and fonts
+
+Sat Apr 06 2002 Dustin Graves <dgraves@computer.org>
  * added macro DD_ISINF for "isinf" functionality needed by doubledouble.  
  * replaced doubledouble WIN32 _isnan code with DD_ISINF.  
  * added configure tests for finite and isinf to be used for DD_ISINF.  
