@@ -30,7 +30,7 @@ protected:
 public:
   CALCList(FXComposite *p,FXint nvis,FXObject* tgt=NULL,FXSelector sel=0,FXuint opts=0,FXint x=0,FXint y=0,FXint w=0,FXint h=0);
   virtual void create();
-  FXint getInsertPosition() const;
+  FXint getInsertPosition(FXWindow* ow,FXint ox,FXint oy) const;
   long onLeftBtnPress(FXObject*,FXSelector,void*);
   long onMiddleBtnPress(FXObject*,FXSelector,void*);
   long onLeftBtnRelease(FXObject*,FXSelector,void*);
