@@ -42,10 +42,12 @@ public:
 
   void setPrefTab(FXuint tab);
   long CALCPrefsBox::onCmdDefaults(FXObject*,FXSelector,void*);
+  long CALCPrefsBox::onUpdEasterEggs(FXObject*,FXSelector,void*);
 
   enum
   {
     ID_DEFAULTS=FXDialogBox::ID_LAST,
+    ID_EASTEREGGS,
     ID_LAST
   };
 };

@@ -216,6 +216,8 @@ protected:
   FXbool mantissa;
   FXbool exponent;
   FXbool clarify;
+  FXbool easteregg1;    // Hithchiker's Guide error message
+  FXbool easteregg2;    // I Ching Calculator error message
   FXString clipping;
 
   CALCdouble value;
@@ -468,6 +470,9 @@ public:
   long onCmdPI(FXObject*,FXSelector,void*);
   long onUpdPI(FXObject*,FXSelector,void*);
 
+  long onPopupMenu(FXObject*,FXSelector,void*);
+  long onCmdClarify(FXObject*,FXSelector,void*);
+
   long onCmdDisplayFont(FXObject*,FXSelector,void*);
   long onCmdButtonFont(FXObject*,FXSelector,void*);
   long onCmdCalcWidth(FXObject*,FXSelector,void*);
@@ -490,8 +495,8 @@ public:
   long onCmdDefaultColors(FXObject*,FXSelector,void*);
   long onCmdDefaultTextColors(FXObject*,FXSelector,void*);
 
-  long onPopupMenu(FXObject*,FXSelector,void*);
-  long onCmdClarify(FXObject*,FXSelector,void*);
+  long onCmdEasterEggs(FXObject*,FXSelector,void*);
+  long onUpdEasterEggs(FXObject*,FXSelector,void*);
 
   enum
   {
@@ -517,7 +522,7 @@ public:
     ID_OCTAL,
     ID_DECIMAL,
     ID_HEXADECIMAL,
-   
+
     ID_DEGREES,
     ID_RADIANS,
     ID_GRADIENTS,
@@ -645,6 +650,10 @@ public:
     ID_DEFAULTNUMDIGITS,
     ID_DEFAULTCOLORS,
     ID_DEFAULTTEXTCOLORS,
+
+    ID_EASTEREGG1,
+    ID_EASTEREGG2,
+    ID_DEFAULTEASTEREGGS,
 
     ID_CLARIFY,
     ID_LAST
