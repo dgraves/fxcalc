@@ -1334,9 +1334,9 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   else if(CALCDBL_MANT_DIG==24)
     bits="32";
 
-  msg.format("Scientific Calculator (IEEE 754 %s-bit floating point)\nVersion "PROG_VERSION"\n\nCopyright (C) 2000-2003 Dustin Graves (dgraves@computer.org)\n\n"\
+  msg.format("Scientific Calculator (IEEE 754 %s-bit floating point)\nVersion "PROG_VERSION"\n\nCopyright (C) 2000-2004 Dustin Graves (dgraves@computer.org)\n\n"\
 "This software uses the FOX Platform Independent GUI Toolkit Library.\n"\
-"The FOX Library is Copyright (C) 1997,2000-2003 Jeroen van der Zijp and is\n"\
+"The FOX Library is Copyright (C) 1997,2000-2004 Jeroen van der Zijp and is\n"\
 "available freely under the GNU Lesser Public License at the following site:\n"\
 "http://www.fox-toolkit.org",bits.text());
 
