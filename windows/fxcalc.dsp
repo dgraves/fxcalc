@@ -96,6 +96,10 @@ SOURCE=..\src\calc.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\CALCButton.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\CALCDigitBox.cpp
 # End Source File
 # Begin Source File
@@ -129,6 +133,10 @@ SOURCE=..\src\icons.cpp
 # Begin Source File
 
 SOURCE=..\include\CALCdefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\include\CALCButton.h
 # End Source File
 # Begin Source File
 
