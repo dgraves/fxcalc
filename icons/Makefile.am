@@ -14,5 +14,5 @@ all: ../icons.h ../icons.cpp
 
 CLEANFILES = ../icons.h ../icons.cpp
 
-EXTRA_DIST= $(ICONS)
+EXTRA_DIST = $(ICONS)
 
