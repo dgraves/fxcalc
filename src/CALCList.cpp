@@ -55,12 +55,12 @@ void CALCList::create()
   dropEnable();
 }
 
-FXint CALCList::getInsertPosition() const
+FXint CALCList::getInsertPosition(FXWindow* ow,FXint ox,FXint oy) const
 {
   FXint item,i,p=0;
-  FXint x,y; FXuint buttons;
+  FXint x,y;
 
-  getCursorPosition(x,y,buttons);
+  translateCoordinatesFrom(x,y,ow,ox,oy);
   item=getItemAt(x,y);
 
   //Is there an item?
