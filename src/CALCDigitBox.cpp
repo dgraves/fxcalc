@@ -75,7 +75,7 @@ long CALCDigitBox::onPopupMenu(FXObject*,FXSelector sel,void* ptr)
   FXString str="";
 
   //Attemp to get tip text
-  switch(SELID(sel))
+  switch(FXSELID(sel))
   {
   case FXSpinner::ID_INCREMENT:
   case FXSpinner::ID_DECREMENT:
