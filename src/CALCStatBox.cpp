@@ -117,10 +117,14 @@ CALCdouble CALCStatBox::getSum() const
 
 CALCdouble CALCStatBox::getSquaresSum() const
 {
-  CALCdouble sum=0.0;
+  CALCdouble num,sum=0.0;
   FXint n,total=values->getNumItems();
   for(n=0;n<total;n++)
-    sum+=pow(*((CALCdouble*)values->getItemData(n)),(CALCdouble)2.0);
+  {
+    num=*((CALCdouble*)values->getItemData(n));
+    sum+=num*num;
+//    sum+=pow(*((CALCdouble*)values->getItemData(n)),(CALCdouble)2.0);
+  }
   return sum;
 }
 
@@ -130,8 +134,7 @@ CALCdouble CALCStatBox::getSquaresSum() const
 //than the actual population mean, we compensate by dividing by n-1 rather than n
 CALCdouble CALCStatBox::getStandardDevN1() const
 {
-  CALCdouble dev=0.0;
-  CALCdouble mean=0.0;
+  CALCdouble num,dev=0.0,mean=0.0;
   FXint n,total=values->getNumItems();
 
   try
@@ -146,7 +149,11 @@ CALCdouble CALCStatBox::getStandardDevN1() const
   if(total>1)
   {
     for(n=0;n<total;n++)
-      dev+=pow((*((CALCdouble*)values->getItemData(n)))-mean,(CALCdouble)2.0);  //Tyoecast to CALCdouble is for doubledouble's pow
+    {
+      num=(*((CALCdouble*)values->getItemData(n)))-mean;
+      dev+=num*num;
+//      dev+=pow((*((CALCdouble*)values->getItemData(n)))-mean,(CALCdouble)2.0);  //Typecast to CALCdouble is for doubledouble's pow
+    }
     dev/=(CALCdouble)(total-1);
     dev=sqrt(dev);
   }
@@ -157,8 +164,7 @@ CALCdouble CALCStatBox::getStandardDevN1() const
 //Sum square of difference of each value from mean, divides by population, and takes square root
 CALCdouble CALCStatBox::getStandardDevN() const
 {
-  CALCdouble dev=0.0;
-  CALCdouble mean=0.0;
+  CALCdouble num,dev=0.0,mean=0.0;
   FXint n,total=values->getNumItems();
 
   try
@@ -173,7 +179,11 @@ CALCdouble CALCStatBox::getStandardDevN() const
   if(total>0)
   {
     for(n=0;n<total;n++)
-      dev+=pow((*((CALCdouble*)values->getItemData(n)))-mean,(CALCdouble)2.0);
+    {
+      num=(*((CALCdouble*)values->getItemData(n)))-mean;
+      dev+=num*num;
+//      dev+=pow((*((CALCdouble*)values->getItemData(n)))-mean,(CALCdouble)2.0);
+    }
     dev/=(CALCdouble)total;
     dev=sqrt(dev);
   }

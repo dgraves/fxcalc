@@ -286,14 +286,12 @@ CALCWindow::CALCWindow(FXApp* app)
   //Right scientific button segment
   FXVerticalFrame* rightSci=new FXVerticalFrame(scientificFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
 
-  FXMatrix* parenMatrix=new FXMatrix(rightSci,2,MATRIX_BY_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
-  FXLabel* parenLabel=new FXLabel(parenMatrix," ",NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  FXHorizontalFrame* parenFrame=new FXHorizontalFrame(rightSci,LAYOUT_SIDE_RIGHT|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
+  FXLabel* parenLabel=new FXLabel(parenFrame," \t"PARENLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   parenLabel->setTarget(this);
   parenLabel->setSelector(ID_PARENLABEL);
-  parenLabel->setTipText(PARENLABEL_HELP);
   parenLabel->enable(); //So it gets the mouse clicks
-  new FXFrame(parenMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,FRAMEGAP,0);
-  new FXFrame(parenMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,BUTTONWIDTH,0);
+  new FXFrame(parenFrame,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT,0,0,FRAMEGAP,0);
 
   //Gap
   new FXFrame(rightSci,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,0,8);
@@ -324,14 +322,12 @@ CALCWindow::CALCWindow(FXApp* app)
 
   //Group with memory and PI
   FXVerticalFrame* leftStan=new FXVerticalFrame(standardFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
-  FXMatrix* disMatrix=new FXMatrix(leftStan,2,MATRIX_BY_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
-  FXLabel* memLabel=new FXLabel(disMatrix," ",NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN);
+  FXHorizontalFrame* disFrame=new FXHorizontalFrame(leftStan,LAYOUT_SIDE_RIGHT|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
+  FXLabel* memLabel=new FXLabel(disFrame," \t"MEMORYLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   memLabel->setTarget(this);
   memLabel->setSelector(ID_MEMORYLABEL);
-  memLabel->setTipText(MEMORYLABEL_HELP);
   memLabel->enable(); //So it gets the mouse clicks
-  new FXFrame(disMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,FRAMEGAP,0);
-  new FXFrame(disMatrix,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,BUTTONWIDTH,0);
+  new FXFrame(disFrame,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT,0,0,FRAMEGAP,0);
 
   //Gap
   new FXFrame(leftStan,LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_ROW|LAYOUT_FILL_COLUMN,0,0,0,8);
@@ -1766,7 +1762,7 @@ CALCdouble CALCWindow::processOp(FXuint op,CALCdouble val)
 
 //doubledouble has some major pow issues regarding negative numbers
 //pow(-4,2) raises an error, because the doubledouble pow implemntation is
-//simply y*log(x) and x can not be <= 0
+//simply exp(y*log(x)) and x can not be <= 0
 CALCdouble CALCWindow::powY(const CALCdouble& x,const CALCdouble& y)
 {
   //Corrections for the pow problem
