@@ -22,7 +22,7 @@ include files, lib files, and the FOX reswrap utility like so:
 
   RESWRAP=/home/username/software/bin/reswrap \
   CPPFLAGS=-I/home/username/software/include \
-  LIBS=-L/home/username/software/lib \
+  LDFLAGS=-L/home/username/software/lib \
   ./configure
 
 This tells configure to look for
@@ -32,7 +32,7 @@ and reswrap in /home/username/software/bin/reswrap
 
 Use RESWRAP variable to specify the location of reswrap.      
 Use CPPFLAGS to specify the -I include directive.
-Use LIBS to specify the -L library directive.
+Use LDFLAGS to specify the -L library directive.
 
 If you would like to test the doubledouble library, enter the doubledouble 
 subdirectory and build trydd.cpp with Makefile.kmb like so:

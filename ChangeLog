@@ -1,3 +1,8 @@
+Tue Aug 27 2002 Dustin Graves <dgraves@computer.org>
+ * Created CALCButton to return the width and height values specified in 
+   constructor as the default width and height - for resizeable buttons
+   with an initial fixed size.  
+
 Sun Jun 02 2002 Dustin Graves <dgraves@computer.org>
  * added prefs box for setting custom colors and fonts
 
