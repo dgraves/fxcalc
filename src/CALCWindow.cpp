@@ -2367,7 +2367,12 @@ long CALCWindow::onCmdPow2(FXObject*,FXSelector,void*)
 {
   CALCdouble val=getLabelText();
   if(inv)
-    setLabelText(sqrt(val));
+  {
+    if(val>=((CALCdouble)0.0))
+      setLabelText(sqrt(val));
+    else
+      lcd->setText("Invalid value for operation.");
+  }
   else
     setLabelText(val*val);
   started=FALSE;
