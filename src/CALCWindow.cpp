@@ -218,7 +218,7 @@ CALCWindow::CALCWindow(FXApp* app)
   lcdfont(NULL),
   btnfont(NULL)
 {
-  statBox=new CALCStatBox(app);
+  statBox=new CALCStatBox(this);
 
   bigcalc=new FXBMPIcon(getApp(),big_calc,0,IMAGE_ALPHAGUESS);
   smallcalc=new FXBMPIcon(getApp(),small_calc,0,IMAGE_ALPHAGUESS);
@@ -228,7 +228,7 @@ CALCWindow::CALCWindow(FXApp* app)
   storePair.op=ID_ADD;
   storePair.value=0.0;
 
-  FXMenubar* menu=new FXMenubar(this);
+  FXMenuBar* menu=new FXMenuBar(this);
   filemenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&File",NULL,filemenu);
   new FXMenuCommand(filemenu,"&Quit\tCtl-Q",NULL,this,ID_QUIT);
@@ -625,14 +625,14 @@ void CALCWindow::create()
 
   setMode(m);
 
-  FXint rw=getApp()->getRoot()->getWidth();
-  FXint rh=getApp()->getRoot()->getHeight();
+  FXint rw=getApp()->getRootWindow()->getWidth();
+  FXint rh=getApp()->getRootWindow()->getHeight();
   width[CALC_STANDARD-1]=(w1>0&&w1<=rw)?w1:0;
   height[CALC_STANDARD-1]=(h1>0&&h1<=rh)?h1:0;
   width[CALC_SCIENTIFIC-1]=(w2>0&&w2<=rw)?w2:0;
   height[CALC_SCIENTIFIC-1]=(h2>0&&h2<=rh)?h2:0;
   x=(x>0&&x<rw-50)?x:20;
-  y=(y>0&&y<rh-50)?x:20;
+  y=(y>0&&y<rh-50)?y:20;
   position(x,y,width[m-1],height[m-1]);
 
   setDisplayColor(displayclr);
@@ -996,9 +996,9 @@ void CALCWindow::setLabelText(CALCdouble val)
 #endif
 
       //If there's no '.' add it
-      if(str.findb('.')==-1)
+      if(str.rfind('.')==-1)
       {
-        FXint epos=str.findb('e');
+        FXint epos=str.rfind('e');
         if(epos!=-1)
           str.insert(epos,'.');
         else
@@ -1016,7 +1016,7 @@ void CALCWindow::setLabelText(CALCdouble val)
 
       //remove zeros from sci mode
       len=str.length();
-      epos=str.findb('e');
+      epos=str.rfind('e');
 
       pos=epos+2;
       while((pos<len-1)&&(str[pos]=='0'))
@@ -1030,7 +1030,7 @@ void CALCWindow::setLabelText(CALCdouble val)
     if(digitgrouping)
     {
       FXint fin=(str[0]=='-')?1:0;
-      count=str.findb('.')-3;
+      count=str.rfind('.')-3;
       while(count>fin)
       {
         str.insert(count,',');
@@ -1054,8 +1054,8 @@ long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
   //Dimensions
   FXint x=getX();
   FXint y=getY();
-  FXint rw=getApp()->getRoot()->getWidth();
-  FXint rh=getApp()->getRoot()->getHeight();
+  FXint rw=getApp()->getRootWindow()->getWidth();
+  FXint rh=getApp()->getRootWindow()->getHeight();
 
   //Check for valid x, y, width, and height
   if(x>0&&x<rw-50) getApp()->reg().writeIntEntry("SETTINGS","x",x);
@@ -1296,7 +1296,7 @@ long CALCWindow::onCmdUseTooltips(FXObject*,FXSelector,void*)
 {
   if(tooltip==NULL)
   {
-    tooltip=new FXTooltip(getApp(),TOOLTIP_PERMANENT);
+    tooltip=new FXToolTip(getApp(),TOOLTIP_PERMANENT);
     tooltip->create();
   }
   else
@@ -1328,9 +1328,9 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   else if(CALCDBL_MANT_DIG==24)
     bits="32";
 
-  msg.format("Scientific Calculator (IEEE 754 %s-bit floating point)\nVersion "PROG_VERSION"\n\nCopyright (C) 2000-2002 Dustin Graves (dgraves@computer.org)\n\n"\
+  msg.format("Scientific Calculator (IEEE 754 %s-bit floating point)\nVersion "PROG_VERSION"\n\nCopyright (C) 2000-2003 Dustin Graves (dgraves@computer.org)\n\n"\
 "This software uses the FOX Platform Independent GUI Toolkit Library.\n"\
-"The FOX Library is Copyright (C) 1997,2000-2002 Jeroen van der Zijp and is\n"\
+"The FOX Library is Copyright (C) 1997,2000-2003 Jeroen van der Zijp and is\n"\
 "available freely under the GNU Lesser Public License at the following site:\n"\
 "http://www.fox-toolkit.org",bits.text());
 
@@ -1338,8 +1338,7 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   msg.append("\n\n"\
 "This software contains code from version 2.2 of the `doubledouble' library.\n"\
 "The doubledouble library is Copyright (C) 1997 Keith Martin Briggs and is\n"\
-"available freely under the GNU General Public License at the following site:\n"\
-"http://www.btexact.com/people/briggsk2/doubledouble.html");
+"available freely under the GNU General Public License.  ");
 #endif
 
   FXDialogBox about(this,"About Box",DECOR_TITLE|DECOR_BORDER);
@@ -1396,26 +1395,26 @@ long CALCWindow::onCmdSetLCDValue(FXObject* sender,FXSelector sel,void* ptr)
 
 long CALCWindow::onCmdMode(FXObject*,FXSelector sel,void*)
 {
-  setMode(CALC_STANDARD+(SELID(sel)-ID_STANDARD));
+  setMode(CALC_STANDARD+(FXSELID(sel)-ID_STANDARD));
   return 1;
 }
 
 long CALCWindow::onUpdMode(FXObject* sender,FXSelector sel,void*)
 {
-  FXuint msg=(mode==((FXuint)(CALC_STANDARD+(SELID(sel)-ID_STANDARD))))?ID_CHECK:ID_UNCHECK;
+  FXuint msg=(mode==((FXuint)(CALC_STANDARD+(FXSELID(sel)-ID_STANDARD))))?ID_CHECK:ID_UNCHECK;
   sender->handle(this,MKUINT(msg,SEL_COMMAND),NULL);
   return 1;
 }
 
 long CALCWindow::onCmdBase(FXObject*,FXSelector sel,void*)
 {
-  setBase(0x01<<(SELID(sel)-ID_BINARY));
+  setBase(0x01<<(FXSELID(sel)-ID_BINARY));
   return 1;
 }
 
 long CALCWindow::onUpdBase(FXObject* sender,FXSelector sel,void*)
 {
-  FXuint msg=(base==((FXuint)(0x01<<(SELID(sel)-ID_BINARY))))?ID_CHECK:ID_UNCHECK;
+  FXuint msg=(base==((FXuint)(0x01<<(FXSELID(sel)-ID_BINARY))))?ID_CHECK:ID_UNCHECK;
   sender->handle(this,MKUINT(msg,SEL_COMMAND),NULL);
   return 1;
 }
@@ -1423,26 +1422,26 @@ long CALCWindow::onUpdBase(FXObject* sender,FXSelector sel,void*)
 
 long CALCWindow::onCmdRep(FXObject*,FXSelector sel,void*)
 {
-  setRepresentation(0x01<<(SELID(sel)-ID_DEGREES));
+  setRepresentation(0x01<<(FXSELID(sel)-ID_DEGREES));
   return 1;
 }
 
 long CALCWindow::onUpdRep(FXObject* sender,FXSelector sel,void*)
 {
-  FXuint msg=(rep==((FXuint)(0x01<<(SELID(sel)-ID_DEGREES))))?ID_CHECK:ID_UNCHECK;
+  FXuint msg=(rep==((FXuint)(0x01<<(FXSELID(sel)-ID_DEGREES))))?ID_CHECK:ID_UNCHECK;
   sender->handle(this,MKUINT(msg,SEL_COMMAND),NULL);
   return 1;
 }
 
 long CALCWindow::onCmdWordType(FXObject*,FXSelector sel,void*)
 {
-  setWordType(0x01<<(SELID(sel)-ID_BYTE));
+  setWordType(0x01<<(FXSELID(sel)-ID_BYTE));
   return 1;
 }
 
 long CALCWindow::onUpdWordType(FXObject* sender,FXSelector sel,void*)
 {
-  FXuint msg=(word==((FXuint)(0x01<<(SELID(sel)-ID_BYTE))))?ID_CHECK:ID_UNCHECK;
+  FXuint msg=(word==((FXuint)(0x01<<(FXSELID(sel)-ID_BYTE))))?ID_CHECK:ID_UNCHECK;
   sender->handle(this,MKUINT(msg,SEL_COMMAND),NULL);
   return 1;
 }
@@ -1697,7 +1696,7 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
   FXString val=lcd->getText();
   FXint pos=val.length()-1;
   FXint max=(val[0]=='-')?33:32;
-  FXchar dig='0'+(SELID(sel)-ID_0);
+  FXchar dig='0'+(FXSELID(sel)-ID_0);
 
   if(!started)
   {
@@ -1731,7 +1730,7 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
   if(exponent)
   {
     //Allow 4 exp digits for now - this is too many for 64-bit floats
-    if((pos-(val.findb('e')+1))==4)
+    if((pos-(val.rfind('e')+1))==4)
       getApp()->beep();
     else
     {
@@ -1924,7 +1923,7 @@ long CALCWindow::onCmdOperator(FXObject*,FXSelector sel,void*)
       CALCdouble powy=powY(storePair.value,val);
       value=processOp(storePair.op,powy);
     }
-    else if(op==ID_EQUAL&&SELID(sel)==ID_EQUAL)  //repeat the powy
+    else if(op==ID_EQUAL&&FXSELID(sel)==ID_EQUAL)  //repeat the powy
     {
       if(storePair.op==ID_POWY)
       {
@@ -1940,12 +1939,12 @@ long CALCWindow::onCmdOperator(FXObject*,FXSelector sel,void*)
 
     started=FALSE;
     //OP to execute when equal is pressed multiple times in a row
-    if(op!=ID_EQUAL&&SELID(sel)==ID_EQUAL)
+    if(op!=ID_EQUAL&&FXSELID(sel)==ID_EQUAL)
     {
       storePair.op=op;
       storePair.value=val;
     }
-    op=SELID(sel);
+    op=FXSELID(sel);
 
     setLabelText(value);
   }
@@ -2027,7 +2026,7 @@ long CALCWindow::onCmdUnaryMinus(FXObject*,FXSelector,void*)
   if(exponent)
   {
     FXString str=lcd->getText();
-    FXint pos=str.findb('e')+1;
+    FXint pos=str.rfind('e')+1;
     str[pos]=(str[pos]=='+')?'-':'+';
     lcd->setText(str);
   }
@@ -2064,7 +2063,7 @@ long CALCWindow::onCmdHexDigit(FXObject*,FXSelector sel,void*)
   FXString val=lcd->getText();
   FXint pos=val.length();
   FXint max=word*2;
-  FXchar dig='A'+(SELID(sel)-ID_A);
+  FXchar dig='A'+(FXSELID(sel)-ID_A);
 
   if(!started)
   {
@@ -2619,7 +2618,7 @@ long CALCWindow::onCmdInvert(FXObject*,FXSelector,void*)
   {
     setLabelText(1.0/val);
   }
-  
+
   started=FALSE;
   return 1;
 }
@@ -2806,7 +2805,7 @@ long CALCWindow::onCmdNumDigits(FXObject* sender,FXSelector,void*)
 long CALCWindow::onCmdBackColor(FXObject*,FXSelector sel,void* ptr)
 {
   FXColor color=(FXColor)(long)ptr;
-  switch(SELID(sel))
+  switch(FXSELID(sel))
   {
     case ID_COLOR_DISPLAY: setDisplayColor(color); break;
     case ID_COLOR_DIGITS: setDigitColor(color); break;
@@ -2829,7 +2828,7 @@ long CALCWindow::onCmdBackColor(FXObject*,FXSelector sel,void* ptr)
 long CALCWindow::onCmdTextColor(FXObject*,FXSelector sel,void* ptr)
 {
   FXColor color=(FXColor)(long)ptr;
-  switch(SELID(sel))
+  switch(FXSELID(sel))
   {
     case ID_TEXTCOLOR_DISPLAY: setDisplayTextColor(color); break;
     case ID_TEXTCOLOR_DIGITS: setDigitTextColor(color); break;
@@ -2872,7 +2871,7 @@ long CALCWindow::onUpdNumDigits(FXObject* sender,FXSelector,void*)
 long CALCWindow::onUpdBackColor(FXObject* sender,FXSelector sel,void*)
 {
   FXColor color;
-  switch(SELID(sel))
+  switch(FXSELID(sel))
   {
     case ID_COLOR_DISPLAY: color=getDisplayColor(); break;
     case ID_COLOR_DIGITS: color=getDigitColor(); break;
@@ -2896,7 +2895,7 @@ long CALCWindow::onUpdBackColor(FXObject* sender,FXSelector sel,void*)
 long CALCWindow::onUpdTextColor(FXObject* sender,FXSelector sel,void*)
 {
   FXColor color;
-  switch(SELID(sel))
+  switch(FXSELID(sel))
   {
     case ID_TEXTCOLOR_DISPLAY: color=getDisplayTextColor(); break;
     case ID_TEXTCOLOR_DIGITS: color=getDigitTextColor(); break;
@@ -2995,7 +2994,7 @@ long CALCWindow::onCmdDefaultTextColors(FXObject*,FXSelector,void*)
 
 long CALCWindow::onCmdEasterEggs(FXObject*,FXSelector sel,void*)
 {
-  switch(SELID(sel))
+  switch(FXSELID(sel))
   {
   case ID_EASTEREGG1:
     easteregg1=!easteregg1;
@@ -3014,7 +3013,7 @@ long CALCWindow::onCmdEasterEggs(FXObject*,FXSelector sel,void*)
 long CALCWindow::onUpdEasterEggs(FXObject* sender,FXSelector sel,void*)
 {
   FXuint msg=ID_UNCHECK;
-  switch(SELID(sel))
+  switch(FXSELID(sel))
   {
   case ID_EASTEREGG1:
     if(easteregg1) msg=ID_CHECK;
