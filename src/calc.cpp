@@ -25,7 +25,7 @@
 
 int main(int argc, char** argv)
 {
-  FXApp app("fxcalc", "FoxAccessories");
+  FXApp app("fxcalc",FXString::null);
   app.init(argc,argv);
 
   CALCWindow* win=new CALCWindow(&app);

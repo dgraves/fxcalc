@@ -25,7 +25,8 @@
 #include "CALCPrefsBox.h"
 
 FXDEFMAP(CALCPrefsBox) CALCPrefsBoxMap[]={
-  FXMAPFUNC(SEL_COMMAND,CALCPrefsBox::ID_DEFAULTS,CALCPrefsBox::onCmdDefaults)
+  FXMAPFUNC(SEL_COMMAND,CALCPrefsBox::ID_DEFAULTS,CALCPrefsBox::onCmdDefaults),
+  FXMAPFUNC(SEL_UPDATE,CALCPrefsBox::ID_EASTEREGGS,CALCPrefsBox::onUpdEasterEggs)
 };
 
 FXIMPLEMENT(CALCPrefsBox,FXDialogBox,CALCPrefsBoxMap,ARRAYNUMBER(CALCPrefsBoxMap))
@@ -147,6 +148,20 @@ CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
   new FXColorWell(matrix32,FXRGB(0,0,0),owner,CALCWindow::ID_TEXTCOLOR_BACKSPACE,COLORWELL_OPAQUEONLY|FRAME_SUNKEN|FRAME_THICK|LAYOUT_RIGHT|LAYOUT_CENTER_Y|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW,0,0,40,24);
   new FXColorWell(matrix32,FXRGB(0,0,0),owner,CALCWindow::ID_TEXTCOLOR_CLEARENTRY,COLORWELL_OPAQUEONLY|FRAME_SUNKEN|FRAME_THICK|LAYOUT_RIGHT|LAYOUT_CENTER_Y|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW,0,0,40,24);
   new FXColorWell(matrix32,FXRGB(0,0,0),owner,CALCWindow::ID_TEXTCOLOR_CLEARALL,COLORWELL_OPAQUEONLY|FRAME_SUNKEN|FRAME_THICK|LAYOUT_RIGHT|LAYOUT_CENTER_Y|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW,0,0,40,24);
+
+  //Easter egg tab
+  FXTabItem* tab4=new FXTabItem(tabbook,"&Answer",NULL);
+  FXVerticalFrame* eastereggframe=new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  new FXLabel(eastereggframe,"to the Ultimate Question of Life, the Universe and Everything");
+  new FXHorizontalSeparator(eastereggframe,SEPARATOR_LINE|LAYOUT_FILL_X);
+
+  FXVerticalFrame *frame3=new FXVerticalFrame(eastereggframe,PACK_UNIFORM_WIDTH|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  new FXCheckButton(frame3,"Hitchicker's Guide\tDon't Panic",owner,CALCWindow::ID_EASTEREGG1,ICON_BEFORE_TEXT|JUSTIFY_LEFT);
+  new FXCheckButton(frame3,"I Ching Calculator\tA Suffusion of Yellow",owner,CALCWindow::ID_EASTEREGG2,ICON_BEFORE_TEXT|JUSTIFY_LEFT);
+
+  tab4->hide();
+  tab4->setTarget(this);
+  tab4->setSelector(ID_EASTEREGGS);
 }
 
 CALCPrefsBox::~CALCPrefsBox()
@@ -176,6 +191,19 @@ long CALCPrefsBox::onCmdDefaults(FXObject*,FXSelector,void*)
     case 2:
       getOwner()->handle(this,MKUINT(CALCWindow::ID_DEFAULTTEXTCOLORS,SEL_COMMAND),NULL);
       break;
+    case 3:
+      getOwner()->handle(this,MKUINT(CALCWindow::ID_DEFAULTEASTEREGGS,SEL_COMMAND),NULL);
+      break;
   }
+  return 1;
+}
+
+long CALCPrefsBox::onUpdEasterEggs(FXObject* sender,FXSelector,void*)
+{
+  CALCdouble value=0.0;
+  getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_GETLCDVALUE,SEL_COMMAND),(void*)&value);
+  
+  FXuint msg=(value==(CALCdouble)42.0) ? ID_SHOW : ID_HIDE;
+  sender->handle(this,MKUINT(msg,SEL_COMMAND),NULL);
   return 1;
 }

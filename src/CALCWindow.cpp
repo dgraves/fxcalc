@@ -39,9 +39,34 @@
 #define BUTTONHEIGHT 30
 #define FRAMEGAP 12
 
-#define FUNCTION  FXRGB(100,40,10)
-#define VALUE     FXRGB(64,0,96)
-#define OPERATOR  FXRGB(160,0,0)
+// Background colors
+#define DIGITBG     FXRGB(212,150,57)
+#define HEXDIGITBG  FXRGB(100,212,122)
+#define OPERATORBG  FXRGB(130,170,212)
+#define FUNCTIONBG  FXRGB(212,148,136)
+#define MEMORYBG    FXRGB(135,148,212)
+#define STATBG      FXRGB(212,142,162)
+#define BACKSPACEBG FXRGB(178,212,145)
+#define CLEARENTBG  FXRGB(212,191,97)
+#define CLEARALLBG  FXRGB(211,201,47)
+
+// Foreground colors
+#define FUNCTIONFG  FXRGB(100,40,10)
+#define VALUEFG     FXRGB(64,0,96)
+#define OPERATORFG  FXRGB(160,0,0)
+
+// Error text
+#define INVALERRTXT   "Invalid value for operation."
+#define UNDEFERRTXT   "Undefined - result of divide by zero error."
+#define ZERODIVERRTXT "Divide by zero error."
+
+#define INVALERREGG   "Don't Panic."
+#define UNDEFERREGG   "A Suffusion of Yellow."
+#define ZERODIVERREGG "A Suffusion of Yellow."
+
+#define INVALERR(x)   (x ? INVALERREGG   : INVALERRTXT)
+#define UNDEFERR(x)   (x ? UNDEFERREGG   : UNDEFERRTXT)
+#define ZERODIVERR(x) (x ? ZERODIVERREGG : ZERODIVERRTXT)
 
 FXDEFMAP(CALCWindow) CALCWindowMap[]={
   FXMAPFUNC(SEL_CLIPBOARD_REQUEST,0,CALCWindow::onClipboardRequest),
@@ -134,6 +159,12 @@ FXDEFMAP(CALCWindow) CALCWindowMap[]={
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_PI,CALCWindow::onCmdPI),
   FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_PI,CALCWindow::onUpdPI),
 
+  //The popup dialog
+  FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_LCD,CALCWindow::onPopupMenu),
+  FXMAPFUNCS(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_BINARY,CALCWindow::ID_PI,CALCWindow::onPopupMenu),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_CLARIFY,CALCWindow::onCmdClarify),
+
+  //The default settings  
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DISPLAYFONT,CALCWindow::onCmdDisplayFont),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_BUTTONFONT,CALCWindow::onCmdButtonFont),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_CALCWIDTH,CALCWindow::onCmdCalcWidth),
@@ -156,10 +187,9 @@ FXDEFMAP(CALCWindow) CALCWindowMap[]={
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTCOLORS,CALCWindow::onCmdDefaultColors),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTTEXTCOLORS,CALCWindow::onCmdDefaultTextColors),
 
-  //The popup dialog
-  FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_LCD,CALCWindow::onPopupMenu),
-  FXMAPFUNCS(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_BINARY,CALCWindow::ID_PI,CALCWindow::onPopupMenu),
-  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_CLARIFY,CALCWindow::onCmdClarify)
+  //The easter eggs
+  FXMAPFUNCS(SEL_COMMAND,CALCWindow::ID_EASTEREGG1,CALCWindow::ID_DEFAULTEASTEREGGS,CALCWindow::onCmdEasterEggs),
+  FXMAPFUNCS(SEL_UPDATE,CALCWindow::ID_EASTEREGG1,CALCWindow::ID_EASTEREGG2,CALCWindow::onUpdEasterEggs)
 };
 
 FXIMPLEMENT(CALCWindow,FXMainWindow,CALCWindowMap,ARRAYNUMBER(CALCWindowMap))
@@ -546,34 +576,34 @@ void CALCWindow::create()
   }
 
   FXColor displayclr=getApp()->reg().readColorEntry("SETTINGS","displaycolor",getApp()->getBackColor());
-  FXColor digitclr=getApp()->reg().readColorEntry("SETTINGS","digitcolor",getApp()->getBaseColor());
-  FXColor hexdigitclr=getApp()->reg().readColorEntry("SETTINGS","hexdigitcolor",getApp()->getBaseColor());
-  FXColor operatorclr=getApp()->reg().readColorEntry("SETTINGS","operatorcolor",getApp()->getBaseColor());
-  FXColor functionclr=getApp()->reg().readColorEntry("SETTINGS","functioncolor",getApp()->getBaseColor());
-  FXColor memoryclr=getApp()->reg().readColorEntry("SETTINGS","memorycolor",getApp()->getBaseColor());
-  FXColor statclr=getApp()->reg().readColorEntry("SETTINGS","statcolor",getApp()->getBaseColor());
+  FXColor digitclr=getApp()->reg().readColorEntry("SETTINGS","digitcolor",DIGITBG);
+  FXColor hexdigitclr=getApp()->reg().readColorEntry("SETTINGS","hexdigitcolor",HEXDIGITBG);
+  FXColor operatorclr=getApp()->reg().readColorEntry("SETTINGS","operatorcolor",OPERATORBG);
+  FXColor functionclr=getApp()->reg().readColorEntry("SETTINGS","functioncolor",FUNCTIONBG);
+  FXColor memoryclr=getApp()->reg().readColorEntry("SETTINGS","memorycolor",MEMORYBG);
+  FXColor statclr=getApp()->reg().readColorEntry("SETTINGS","statcolor",STATBG);
   FXColor baseclr=getApp()->reg().readColorEntry("SETTINGS","numbasecolor",getApp()->getBackColor());
   FXColor repclr=getApp()->reg().readColorEntry("SETTINGS","repcolor",getApp()->getBackColor());
   FXColor invclr=getApp()->reg().readColorEntry("SETTINGS","invcolor",getApp()->getBackColor());
   FXColor hypclr=getApp()->reg().readColorEntry("SETTINGS","hypcolor",getApp()->getBackColor());
-  FXColor backspaceclr=getApp()->reg().readColorEntry("SETTINGS","backspacecolor",getApp()->getBaseColor());
-  FXColor clearentryclr=getApp()->reg().readColorEntry("SETTINGS","clearentrycolor",getApp()->getBaseColor());
-  FXColor clearallclr=getApp()->reg().readColorEntry("SETTINGS","clearallcolor",getApp()->getBaseColor());
+  FXColor backspaceclr=getApp()->reg().readColorEntry("SETTINGS","backspacecolor",BACKSPACEBG);
+  FXColor clearentryclr=getApp()->reg().readColorEntry("SETTINGS","clearentrycolor",CLEARENTBG);
+  FXColor clearallclr=getApp()->reg().readColorEntry("SETTINGS","clearallcolor",CLEARALLBG);
 
   FXColor displaytxtclr=getApp()->reg().readColorEntry("SETTINGS","displaytextcolor",FXRGB(0,0,0));
-  FXColor digittxtclr=getApp()->reg().readColorEntry("SETTINGS","digittextcolor",VALUE);
-  FXColor hexdigittxtclr=getApp()->reg().readColorEntry("SETTINGS","hexdigittextcolor",FUNCTION);
-  FXColor operatortxtclr=getApp()->reg().readColorEntry("SETTINGS","operatortextcolor",OPERATOR);
-  FXColor functiontxtclr=getApp()->reg().readColorEntry("SETTINGS","functiontextcolor",FUNCTION);
-  FXColor memorytxtclr=getApp()->reg().readColorEntry("SETTINGS","memorytextcolor",OPERATOR);
-  FXColor stattxtclr=getApp()->reg().readColorEntry("SETTINGS","stattextcolor",FUNCTION);
+  FXColor digittxtclr=getApp()->reg().readColorEntry("SETTINGS","digittextcolor",VALUEFG);
+  FXColor hexdigittxtclr=getApp()->reg().readColorEntry("SETTINGS","hexdigittextcolor",FUNCTIONFG);
+  FXColor operatortxtclr=getApp()->reg().readColorEntry("SETTINGS","operatortextcolor",OPERATORFG);
+  FXColor functiontxtclr=getApp()->reg().readColorEntry("SETTINGS","functiontextcolor",FUNCTIONFG);
+  FXColor memorytxtclr=getApp()->reg().readColorEntry("SETTINGS","memorytextcolor",OPERATORFG);
+  FXColor stattxtclr=getApp()->reg().readColorEntry("SETTINGS","stattextcolor",FUNCTIONFG);
   FXColor basetxtclr=getApp()->reg().readColorEntry("SETTINGS","numbasetextcolor",FXRGB(0,0,0));
   FXColor reptxtclr=getApp()->reg().readColorEntry("SETTINGS","reptextcolor",FXRGB(0,0,0));
   FXColor invtxtclr=getApp()->reg().readColorEntry("SETTINGS","invtextcolor",FXRGB(0,0,0));
   FXColor hyptxtclr=getApp()->reg().readColorEntry("SETTINGS","hyptextcolor",FXRGB(0,0,0));
-  FXColor backspacetxtclr=getApp()->reg().readColorEntry("SETTINGS","backspacetextcolor",OPERATOR);
-  FXColor clearentrytxtclr=getApp()->reg().readColorEntry("SETTINGS","clearentrytextcolor",OPERATOR);
-  FXColor clearalltxtclr=getApp()->reg().readColorEntry("SETTINGS","clearalltextcolor",OPERATOR);
+  FXColor backspacetxtclr=getApp()->reg().readColorEntry("SETTINGS","backspacetextcolor",OPERATORFG);
+  FXColor clearentrytxtclr=getApp()->reg().readColorEntry("SETTINGS","clearentrytextcolor",OPERATORFG);
+  FXColor clearalltxtclr=getApp()->reg().readColorEntry("SETTINGS","clearalltextcolor",OPERATORFG);
 
   //Settings
   FXuint m=getApp()->reg().readUnsignedEntry("SETTINGS","mode",CALC_SCIENTIFIC);
@@ -1792,7 +1822,7 @@ CALCdouble CALCWindow::processOp(FXuint op,CALCdouble val)
     break;
   case ID_DIVIDE:
     if(val==((CALCdouble)0.0))
-      throw FXErrorException("Divide by zero error.");
+      throw FXErrorException(ZERODIVERR(easteregg2));
     result/=val;
     break;
   case ID_ADD:
@@ -1803,7 +1833,7 @@ CALCdouble CALCWindow::processOp(FXuint op,CALCdouble val)
     break;
   case ID_MODULUS:
     if(val==((CALCdouble)0.0))
-      throw FXErrorException("Divide by zero error.");
+      throw FXErrorException(ZERODIVERR(easteregg2));
 //Doing conversions to i64 and back again may be better than floors, in cases of precision errors with mantissas of -0.3e-16 or the like, etc
 //    result-=calcddtoi64(truncate(result)/val)*val;
     result-=truncate(truncate(result)/val)*val;
@@ -1851,7 +1881,7 @@ CALCdouble CALCWindow::powY(const CALCdouble& x,const CALCdouble& y)
     if((calcddtoi64(y)%2)==0)
     {
       if(inv)
-        throw FXErrorException("Invalid value for operation.");
+        throw FXErrorException(INVALERR(easteregg1));
       reneg=FALSE;  //even exponent always makes even result
     }
     else
@@ -1865,7 +1895,7 @@ CALCdouble CALCWindow::powY(const CALCdouble& x,const CALCdouble& y)
   if(inv)
   {
     if((x<((CALCdouble)0.0))&&(calcddtoi64(y)%2==0))
-      throw FXErrorException("Invalid value for operation.");
+      throw FXErrorException(INVALERR(easteregg1));
     return pow(x,1.0/y);
   }
   else
@@ -1928,7 +1958,7 @@ long CALCWindow::onCmdSqrt(FXObject*,FXSelector,void*)
   }
   else
   {
-    lcd->setText("Invalid value for operation.");
+    lcd->setText(INVALERR(easteregg1));
   }
   started=FALSE;
   return 1;
@@ -2152,7 +2182,7 @@ long CALCWindow::onCmdSin(FXObject*,FXSelector,void*)
   {
     if((val>((CALCdouble)1.0))||(val<((CALCdouble)-1.0)))
     {
-      lcd->setText("Invalid value for operation.");
+      lcd->setText(INVALERR(easteregg1));
       started=FALSE;
       return 1;
     }
@@ -2187,7 +2217,7 @@ long CALCWindow::onCmdCos(FXObject*,FXSelector,void*)
   {
     if(val==((CALCdouble)0.0))
     {
-      lcd->setText("Invalid value for operation.");
+      lcd->setText(INVALERR(easteregg1));
       started=FALSE;
       return 1;
     }
@@ -2199,7 +2229,7 @@ long CALCWindow::onCmdCos(FXObject*,FXSelector,void*)
   {
     if((val>((CALCdouble)1.0))||(val<((CALCdouble)-1.0)))
     {
-      lcd->setText("Invalid value for operation.");
+      lcd->setText(INVALERR(easteregg1));
       started=FALSE;
       return 1;
     }
@@ -2237,9 +2267,9 @@ long CALCWindow::onCmdTan(FXObject*,FXSelector,void*)
       if((val>=((CALCdouble)1.0))||(val<=((CALCdouble)-1.0)))
       {
         if(val==((CALCdouble)1.0))
-          throw FXErrorException("Undefined - result of divide by zero error.");
+          throw FXErrorException(UNDEFERR(easteregg2));
         else
-          throw FXErrorException("Invalid value for operation.");
+          throw FXErrorException(INVALERR(easteregg1));
       }
       val=atanh(val);
     }
@@ -2263,14 +2293,14 @@ long CALCWindow::onCmdTan(FXObject*,FXSelector,void*)
       {
         tester=(val<((CALCdouble)0.0))?360.0+(-fmod(-val,360)):fmod(val,360);
         if(tester==((CALCdouble)90.0)||tester==((CALCdouble)270.0))
-          throw FXErrorException("Invalid value for operation.");
+          throw FXErrorException(INVALERR(easteregg1));
         val*=DEG2RAD;
       }
       else if(rep==GRADIENTS)
       {
         tester=(val<((CALCdouble)0.0))?400.0+(-fmod(-val,400)):fmod(val,400);
         if(tester==((CALCdouble)100.0)||tester==((CALCdouble)300.0))
-          throw FXErrorException("Invalid value for operation.");
+          throw FXErrorException(INVALERR(easteregg1));
         val*=GRAD2RAD;
       }
       else //RADIANS
@@ -2278,14 +2308,14 @@ long CALCWindow::onCmdTan(FXObject*,FXSelector,void*)
         tester=(val<((CALCdouble)0.0))?CALC_2PI+(val-truncate(truncate(val)/CALC_2PI)*CALC_2PI):(val-truncate(truncate(val)/CALC_2PI)*CALC_2PI);
         //Maybe I should drop the last digit from tester and do a strncmp??
         if(tester==(CALC_PI/2.0)||tester==(CALC_PI+(CALC_PI/2.0)))
-          throw FXErrorException("Invalid value for operation.");
+          throw FXErrorException(INVALERR(easteregg1));
       }
 
       //This helps with some of the radian input that sneaks through the above test.
       //Results of this test will depend on mantissa length and cos implementation.
       //Some return very small values for cos(90)
       if(cos(val)==((CALCdouble)0.0))
-        throw FXErrorException("Invalid value for operation.");
+        throw FXErrorException(INVALERR(easteregg1));
 
       val=tan(val);
     }
@@ -2441,7 +2471,7 @@ long CALCWindow::onCmdPow2(FXObject*,FXSelector,void*)
     if(val>=((CALCdouble)0.0))
       setLabelText(sqrt(val));
     else
-      lcd->setText("Invalid value for operation.");
+      lcd->setText(INVALERR(easteregg1));
   }
   else
     setLabelText(val*val);
@@ -2520,7 +2550,7 @@ long CALCWindow::onCmdLn(FXObject*,FXSelector,void*)
   {
     //val must be >= 0
     if(val<=((CALCdouble)0.0))
-      lcd->setText("Invalid value for operation.");
+      lcd->setText(INVALERR(easteregg1));
     else
       setLabelText(log(val));
   }
@@ -2537,7 +2567,7 @@ long CALCWindow::onCmdLog(FXObject*,FXSelector,void*)
   {
     //val must be >= 0
     if(val<=((CALCdouble)0.0))
-      lcd->setText("Invalid value for operation.");
+      lcd->setText(INVALERR(easteregg1));
     else
     setLabelText(log10(val));
   }
@@ -2560,7 +2590,7 @@ long CALCWindow::onCmdFactorial(FXObject*,FXSelector,void*)
   }
   else
   {
-    lcd->setText("Invalid value for operation.");
+    lcd->setText(INVALERR(easteregg1));
   }
 
   started=FALSE;
@@ -2907,19 +2937,19 @@ long CALCWindow::onCmdDefaultNumDigits(FXObject*,FXSelector,void*)
 long CALCWindow::onCmdDefaultColors(FXObject*,FXSelector,void*)
 {
   setDisplayColor(getApp()->getBackColor());
-  setDigitColor(getApp()->getBaseColor());
-  setHexDigitColor(getApp()->getBaseColor());
-  setOperatorColor(getApp()->getBaseColor());
-  setFunctionColor(getApp()->getBaseColor());
-  setMemoryColor(getApp()->getBaseColor());
-  setStatColor(getApp()->getBaseColor());
+  setDigitColor(DIGITBG);
+  setHexDigitColor(HEXDIGITBG);
+  setOperatorColor(OPERATORBG);
+  setFunctionColor(FUNCTIONBG);
+  setMemoryColor(MEMORYBG);
+  setStatColor(STATBG);
   setBaseColor(getApp()->getBackColor());
   setRepColor(getApp()->getBackColor());
   setInvColor(getApp()->getBackColor());
   setHypColor(getApp()->getBackColor());
-  setBackspaceColor(getApp()->getBaseColor());
-  setClearEntryColor(getApp()->getBaseColor());
-  setClearAllColor(getApp()->getBaseColor());
+  setBackspaceColor(BACKSPACEBG);
+  setClearEntryColor(CLEARENTBG);
+  setClearAllColor(CLEARALLBG);
 
   return 1;
 }
@@ -2927,19 +2957,53 @@ long CALCWindow::onCmdDefaultColors(FXObject*,FXSelector,void*)
 long CALCWindow::onCmdDefaultTextColors(FXObject*,FXSelector,void*)
 {
   setDisplayTextColor(FXRGB(0,0,0));
-  setDigitTextColor(VALUE);
-  setHexDigitTextColor(FUNCTION);
-  setOperatorTextColor(OPERATOR);
-  setFunctionTextColor(FUNCTION);
-  setMemoryTextColor(OPERATOR);
-  setStatTextColor(FUNCTION);
+  setDigitTextColor(VALUEFG);
+  setHexDigitTextColor(FUNCTIONFG);
+  setOperatorTextColor(OPERATORFG);
+  setFunctionTextColor(FUNCTIONFG);
+  setMemoryTextColor(OPERATORFG);
+  setStatTextColor(FUNCTIONFG);
   setBaseTextColor(FXRGB(0,0,0));
   setRepTextColor(FXRGB(0,0,0));
   setInvTextColor(FXRGB(0,0,0));
   setHypTextColor(FXRGB(0,0,0));
-  setBackspaceTextColor(OPERATOR);
-  setClearEntryTextColor(OPERATOR);
-  setClearAllTextColor(OPERATOR);
+  setBackspaceTextColor(OPERATORFG);
+  setClearEntryTextColor(OPERATORFG);
+  setClearAllTextColor(OPERATORFG);
 
+  return 1;
+}
+
+long CALCWindow::onCmdEasterEggs(FXObject*,FXSelector sel,void*)
+{
+  switch(SELID(sel))
+  {
+  case ID_EASTEREGG1:
+    easteregg1=!easteregg1;
+    break;
+  case ID_EASTEREGG2:
+    easteregg2=!easteregg2;
+    break;
+  case ID_DEFAULTEASTEREGGS:
+    easteregg1=TRUE;
+    easteregg2=TRUE;
+    break;
+  }
+  return 1;
+}
+
+long CALCWindow::onUpdEasterEggs(FXObject* sender,FXSelector sel,void*)
+{
+  FXuint msg=ID_UNCHECK;
+  switch(SELID(sel))
+  {
+  case ID_EASTEREGG1:
+    if(easteregg1) msg=ID_CHECK;
+    break;
+  case ID_EASTEREGG2:
+    if(easteregg2) msg=ID_CHECK;
+    break;
+  }
+  sender->handle(this,MKUINT(msg,SEL_COMMAND),NULL);
   return 1;
 }
