@@ -1043,7 +1043,7 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
 "arithmetic on IEEE 754 floating-point hardware. \n"\
 "The doubledouble library is Copyright (C) 1997 Keith Martin Briggs and is\n"\
 "available freely under the GNU General Public License at the following site:\n"\
-"http://www-epidem.plantsci.cam.ac.uk/~kbriggs/doubledouble.html");
+"http://www.btexact.com/people/briggsk2/doubledouble.html");
 #endif
 
   FXMessageBox about(this,"About fxcalc",msg,bigcalc,MBOX_OK|DECOR_TITLE|DECOR_BORDER);
