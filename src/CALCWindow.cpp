@@ -1062,9 +1062,9 @@ long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
     getApp()->reg().writeIntEntry("SETTINGS","standardwidth",width[CALC_STANDARD-1]);
   if(height[CALC_STANDARD-1]>0&&height[CALC_STANDARD-1]<=rh)
     getApp()->reg().writeIntEntry("SETTINGS","standardheight",height[CALC_STANDARD-1]);
-  if(width[CALC_STANDARD-1]>0&&width[CALC_SCIENTIFIC-1]<=rw)
+  if(width[CALC_SCIENTIFIC-1]>0&&width[CALC_SCIENTIFIC-1]<=rw)
     getApp()->reg().writeIntEntry("SETTINGS","scientificwidth",width[CALC_SCIENTIFIC-1]);
-  if(height[CALC_STANDARD-1]>0&&height[CALC_SCIENTIFIC-1]<=rh)
+  if(height[CALC_SCIENTIFIC-1]>0&&height[CALC_SCIENTIFIC-1]<=rh)
     getApp()->reg().writeIntEntry("SETTINGS","scientificheight",height[CALC_SCIENTIFIC-1]);
 
   //Fonts and colors
