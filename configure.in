@@ -136,4 +136,4 @@ else
   AC_MSG_RESULT(no)
 fi
 
-AC_OUTPUT(Makefile doubledouble/Makefile icons/Makefile include/Makefile src/Makefile include/CALCdefs.h)
+AC_OUTPUT(Makefile doubledouble/Makefile include/Makefile src/Makefile include/CALCdefs.h)
