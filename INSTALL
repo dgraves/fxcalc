@@ -8,14 +8,6 @@ build fxcalc.  This will build both doubledouble and fxcalc.
 UNIX and UNIX-like platforms
 ============================
 
-Prior to building fxcalc you will need to build doubledouble.  At some
-point the configure scripts will be modified to include doubledouble,
-but for now you must manually edit the Makefile that comes with doubledouble
-and build the library.  The doubledouble library can be found in the
-doubledouble subdirectory. 
-
-After building doubledouble:
-
 To build and install fxcalc:
   ./configure
   make
@@ -42,6 +34,13 @@ and reswrap in /home/username/software/bin/reswrap
 Use RESWRAP variable to specify the location of reswrap.      
 Use CPPFLAGS to specify the -I include directive.
 Use LIBS to specify the -L library directive.
+
+If you would like to test the doubledouble library, enter the doubledouble 
+subdirectory and build trydd.cpp with Makefile.kmb like so:
+  make -f Makefile.kmb
+This will build doubledouble (if necessary), build the trydd test program, 
+and execute the trydd test program.  You may need to edit Makefile.kmb first, 
+in order to set the proper compilation flags for your compiler and host os.  
 
 
 Basic Installation

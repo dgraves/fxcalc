@@ -2,6 +2,7 @@ Wun Mar 31 2002 Dustin Graves <dgraves@computer.org>
  * Window is now resizeable.  
  * Fixed doubledouble pow related bugs in calc x^2 function.  
  * Fixed doubledouble pow related bugs in statistics box.  
+ * doubledouble package was integrated with configure.  
  * Updated URL for FOX website.  
 
 Tue Mar 29 2002 Dustin Graves <dgraves@computer.org>
