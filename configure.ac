@@ -29,7 +29,7 @@ dnl Checks for header files.
 AC_HEADER_STDC
 
 dnl Export FOX libraries (-lFOX).
-AC_CHECK_LIB(FOX-1.1,fxfindfox,,AC_MSG_ERROR(libFOX not found))
+AC_CHECK_LIB(FOX-1.2,fxfindfox,,AC_MSG_ERROR(libFOX not found))
 AC_CHECK_HEADERS(fox/fx.h,,AC_MSG_ERROR(FOX headers not found))
 
 dnl Checks for typedefs, structures, and compiler characteristics.
