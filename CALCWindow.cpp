@@ -794,8 +794,9 @@ void CALCWindow::setLabelText(CALCdouble val)
 
     if(digitgrouping)
     {
+      FXint fin=(str[0]=='-')?1:0;
       count=str.findb('.')-3;
-      while(count>0)
+      while(count>fin)
       {
         str.insert(count,',');
         count-=3;
@@ -1474,6 +1475,7 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
         {
           FXint count;
           FXint gap;
+	  FXint fin=(val[0]=='-')?1:0;
 
           switch(base)
           {
@@ -1491,7 +1493,7 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
             count=pos-1;
           }
 
-          while(count>0)
+          while(count>fin)
           {
             val.insert(count,grp);
             count-=gap;

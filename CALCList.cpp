@@ -56,6 +56,7 @@ void CALCList::create()
 
 FXint CALCList::getInsertPosition(FXEvent* event) const
 {
+  FXint itemHeight=getItemHeight(0); // All heights should be equal.  
   FXint curx,cury; FXuint buttons;
   getCursorPosition(curx,cury,buttons);
 

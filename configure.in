@@ -108,7 +108,7 @@ fi
 AC_MSG_CHECKING(for acosh)
 AC_CACHE_VAL(ac_cv_acosh,
  [AC_TRY_COMPILE([#include<math.h>],
-                  [asinh(0.0);],
+                  [acosh(0.0);],
                   [ac_cv_acosh=true],
                   [ac_cv_acosh=false])])
 if test "$ac_cv_acosh" = true ; then

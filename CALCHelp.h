@@ -253,7 +253,7 @@
 "Clears all values and pending operations.  \n\n"\
 "Keyboard accelerator: Escape"
 
-#define SEVEN_HELP "Se7en\n\n"\
+#define SEVEN_HELP "Seven\n\n"\
 "Adds the number seven to the display.  \n\n"\
 "Keyboard accelerator: 7"
 
