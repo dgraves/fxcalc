@@ -1,5 +1,5 @@
 /* CALCdefs.h
- * Copyright (C) 2000,2001 Dustin Graves <dgraves@computer.org>
+ * Copyright (C) 2000,2001,2004 Dustin Graves <dgraves@computer.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 #include <float.h>
 
 //Version number - for windows
-#define PROG_VERSION "1.0.11"
+#define PROG_VERSION "1.0.12"
 #define PROG_PACKAGE "fxcalc"
 
 //64 bit int
