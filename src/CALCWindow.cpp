@@ -46,6 +46,7 @@
 FXDEFMAP(CALCWindow) CALCWindowMap[]={
   FXMAPFUNC(SEL_CLIPBOARD_REQUEST,0,CALCWindow::onClipboardRequest),
   FXMAPFUNC(SEL_CLOSE,0,CALCWindow::onCmdQuit),
+  FXMAPFUNC(SEL_SIGNAL,CALCWindow::ID_QUIT,CALCWindow::onCmdQuit),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_QUIT,CALCWindow::onCmdQuit),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_COPY,CALCWindow::onCmdCopy),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_PASTE,CALCWindow::onCmdPaste),
@@ -198,13 +199,13 @@ CALCWindow::CALCWindow(FXApp* app)
   FXMenubar* menu=new FXMenubar(this);
   filemenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&File",NULL,filemenu);
-  new FXMenuCommand(filemenu,"&Quit\tCtrl+Q",NULL,this,ID_QUIT);
+  new FXMenuCommand(filemenu,"&Quit\tCtl-Q",NULL,this,ID_QUIT);
   editmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&Edit",NULL,editmenu);
-  new FXMenuCommand(editmenu,"&Copy\tCtrl+C",NULL,this,ID_COPY);
-  new FXMenuCommand(editmenu,"&Paste\tCtrl+V",NULL,this,ID_PASTE);
+  new FXMenuCommand(editmenu,"&Copy\tCtl-C",NULL,this,ID_COPY);
+  new FXMenuCommand(editmenu,"&Paste\tCtl-V",NULL,this,ID_PASTE);
   new FXMenuSeparator(editmenu);
-  new FXMenuCommand(editmenu,"Pr&eferences...\tCtrl+E",NULL,this,ID_PREFERENCES);
+  new FXMenuCommand(editmenu,"Pr&eferences...\tCtl-E",NULL,this,ID_PREFERENCES);
   viewmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&View",NULL,viewmenu);
   new FXMenuCommand(viewmenu,"&Standard",NULL,this,ID_STANDARD);
@@ -219,7 +220,7 @@ CALCWindow::CALCWindow(FXApp* app)
 
   helpmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&Help",NULL,helpmenu);
-  new FXMenuCommand(helpmenu,"&Tool tips\tCtrl+B",NULL,this,ID_USETOOLTIPS);
+  new FXMenuCommand(helpmenu,"&Tool tips\tCtl-B",NULL,this,ID_USETOOLTIPS);
   new FXMenuSeparator(helpmenu);
   new FXMenuCommand(helpmenu,"&About fxcalc...",smallcalc,this,ID_ABOUT);
 
@@ -975,7 +976,7 @@ void CALCWindow::setLabelText(CALCdouble val)
 #else
       str.format("%.*le",ndigits,val);
 #endif
-      
+
       //remove zeros from sci mode
       len=str.length();
       epos=str.findb('e');
@@ -1091,7 +1092,7 @@ long CALCWindow::onClipboardRequest(FXObject* sender,FXSelector sel,void* ptr)
     FXuchar* data=NULL;
     FXCALLOC(&data,FXuchar,len+1);
     if(!data)
-      fxwarning("%s::onClipboardRequest: out of memory\n",getClassName()); 
+      fxwarning("%s::onClipboardRequest: out of memory\n",getClassName());
     else
     {
       memcpy(data,clipping.text(),len);
@@ -1312,7 +1313,7 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   new FXLabel(aboutlabels,NULL,bigcalc,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 20,20,20,20);
   new FXLabel(aboutlabels,msg,NULL,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 0,20,20,20);
 
-  about.execute();  
+  about.execute();
 
   return 1;
 }

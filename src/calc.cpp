@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+#include <signal.h>
 #include "fox/fx.h"
 #include "fox/FXElement.h"
 #include "fox/FXArray.h"
@@ -28,6 +29,7 @@ int main(int argc, char** argv)
   app.init(argc,argv);
 
   CALCWindow* win=new CALCWindow(&app);
+  app.addSignal(SIGINT,win,CALCWindow::ID_QUIT);
   app.create();
   win->show();
   return app.run();
