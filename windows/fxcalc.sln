@@ -1,15 +1,17 @@
-Microsoft Visual Studio Solution File, Format Version 7.00
+Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doubledouble", "..\doubledouble\doubledouble.vcproj", "{97D3BB2B-29AB-4306-ACFA-0D4F41A3CE50}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fxcalc", "fxcalc.vcproj", "{53E30BB8-C984-4918-A09E-D4E19FC02329}"
+	ProjectSection(ProjectDependencies) = postProject
+		{97D3BB2B-29AB-4306-ACFA-0D4F41A3CE50} = {97D3BB2B-29AB-4306-ACFA-0D4F41A3CE50}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
-		ConfigName.0 = Debug
-		ConfigName.1 = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
-		{53E30BB8-C984-4918-A09E-D4E19FC02329}.0 = {97D3BB2B-29AB-4306-ACFA-0D4F41A3CE50}
+		Debug = Debug
+		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{97D3BB2B-29AB-4306-ACFA-0D4F41A3CE50}.Debug.ActiveCfg = Debug|Win32

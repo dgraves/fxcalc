@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="fxcalc"
 	SccProjectName=""
 	SccLocalPath="">
@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="foxd.lib comctl32.lib wsock32.lib ws2_32.lib"
+				AdditionalDependencies="foxd-1.1.lib comctl32.lib wsock32.lib ws2_32.lib"
 				OutputFile=".\Debug/fxcalc.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -68,7 +68,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -100,7 +106,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="fox.lib comctl32.lib wsock32.lib ws2_32.lib odbc32.lib odbccp32.lib"
+				AdditionalDependencies="fox-1.1.lib comctl32.lib wsock32.lib ws2_32.lib odbc32.lib odbccp32.lib"
 				OutputFile=".\Release/fxcalc.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -128,13 +134,24 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="..\src\calc.cpp">
+			</File>
 			<File
 				RelativePath="..\src\CALCButton.cpp">
 			</File>
@@ -157,9 +174,6 @@
 				RelativePath="..\src\CALCWindow.cpp">
 			</File>
 			<File
-				RelativePath="..\src\calc.cpp">
-			</File>
-			<File
 				RelativePath="..\src\icons.cpp">
 			</File>
 		</Filter>
@@ -168,6 +182,9 @@
 			Filter="h;hpp;hxx;hm;inl">
 			<File
 				RelativePath="..\include\CALCButton.h">
+			</File>
+			<File
+				RelativePath="..\include\CALCdefs.h">
 			</File>
 			<File
 				RelativePath="..\include\CALCDigitBox.h">
@@ -189,9 +206,6 @@
 			</File>
 			<File
 				RelativePath="..\include\CALCWindow.h">
-			</File>
-			<File
-				RelativePath="..\include\CALCdefs.h">
 			</File>
 			<File
 				RelativePath="..\include\icons.h">
