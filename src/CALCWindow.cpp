@@ -240,15 +240,15 @@ CALCWindow::CALCWindow(FXApp* app)
   new FXMenuCommand(editmenu,"Pr&eferences...\tCtl-E",NULL,this,ID_PREFERENCES);
   viewmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&View",NULL,viewmenu);
-  new FXMenuCommand(viewmenu,"&Standard",NULL,this,ID_STANDARD);
-  new FXMenuCommand(viewmenu,"S&cientific",NULL,this,ID_SCIENTIFIC);
+  new FXMenuRadio(viewmenu,"&Standard",this,ID_STANDARD);
+  new FXMenuRadio(viewmenu,"S&cientific",this,ID_SCIENTIFIC);
   extrasSep=new FXMenuSeparator(viewmenu);
-  hexCommand=new FXMenuCommand(viewmenu,"&Hex",NULL,this,ID_HEXADECIMAL);
-  decCommand=new FXMenuCommand(viewmenu,"&Dec",NULL,this,ID_DECIMAL);
-  octCommand=new FXMenuCommand(viewmenu,"&Oct",NULL,this,ID_OCTAL);
-  binCommand=new FXMenuCommand(viewmenu,"&Bin",NULL,this,ID_BINARY);
+  hexCommand=new FXMenuRadio(viewmenu,"&Hex",this,ID_HEXADECIMAL);
+  decCommand=new FXMenuRadio(viewmenu,"&Dec",this,ID_DECIMAL);
+  octCommand=new FXMenuRadio(viewmenu,"&Oct",this,ID_OCTAL);
+  binCommand=new FXMenuRadio(viewmenu,"&Bin",this,ID_BINARY);
   new FXMenuSeparator(viewmenu);
-  new FXMenuCommand(viewmenu,"Digit &Grouping",NULL,this,ID_DIGITGROUPING);
+  new FXMenuCheck(viewmenu,"Digit &Grouping",this,ID_DIGITGROUPING);
 
   helpmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&Help",NULL,helpmenu);

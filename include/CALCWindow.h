@@ -244,10 +244,10 @@ protected:
   FXMenuPane* viewmenu;
   FXMenuPane* helpmenu;
   FXMenuSeparator* extrasSep;
-  FXMenuCommand* hexCommand;
-  FXMenuCommand* decCommand;
-  FXMenuCommand* octCommand;
-  FXMenuCommand* binCommand;
+  FXMenuRadio* hexCommand;
+  FXMenuRadio* decCommand;
+  FXMenuRadio* octCommand;
+  FXMenuRadio* binCommand;
   FXToolTip* tooltip;
   CALCStatBox* statBox;
 
