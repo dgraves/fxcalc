@@ -119,11 +119,13 @@ D. Priest
 and more references in http://www.cs.wisc.edu/~shoup/ntl/quad_float.txt.
 */
 
-#include <iostream.h>
-#include <iomanip.h>
+#include <iostream>
+#include <iomanip>
 #include <math.h>
 #include <stdlib.h>
 #include <float.h>
+
+using namespace std;
 
 class doubledouble {
 protected:
