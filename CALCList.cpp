@@ -54,33 +54,26 @@ void CALCList::create()
   dropEnable();
 }
 
-FXint CALCList::getInsertPosition(FXEvent* event) const
+FXint CALCList::getInsertPosition() const
 {
-  FXint itemHeight=getItemHeight(0); // All heights should be equal.  
-  FXint curx,cury; FXuint buttons;
-  getCursorPosition(curx,cury,buttons);
+  FXint item,h,i,p=0;
+  FXint x,y; FXuint buttons;
 
-  FXint index=(cury-pos_y)/itemHeight;
-  FXint distance=(cury-pos_y)%itemHeight;
+  getCursorPosition(x,y,buttons);
+  item=getItemAt(x,y);
+
+  //Is there an item?
+  if(item<0)
+    return nitems;
 
   //Does it go before or after the item
-  if(event->click_y<event->win_y)
-  {
-    if(distance<(itemHeight/2))
-      index--;
-  }
-  else
-  {
-    if(distance>=(itemHeight/2))
-      index++;
-  }
+  for(i=0;i<item;i++)
+    p+=getItemHeight(i);
+  p+=getItemHeight(item)/2;
 
-  if(index<0)
-    index=0;
-  if(index>=nitems)
-    index=nitems;
+  if(y>p) item++;
 
-  return index;
+  return item;
 }
 
 long CALCList::onLeftBtnPress(FXObject* sender,FXSelector sel,void* ptr)

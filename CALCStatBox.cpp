@@ -205,7 +205,7 @@ long CALCStatBox::onDNDDrop(FXObject*,FXSelector,void* ptr)
     getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_GETLCDVALUE,SEL_COMMAND),(void*)&value);
     getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_SETLCDTEXT,SEL_COMMAND),(void*)&current);
 
-    pos=values->getInsertPosition(event);
+    pos=values->getInsertPosition();
     addData(label,value,pos);
  
     if(action==DRAG_MOVE&&pos>=0)
