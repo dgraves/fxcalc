@@ -314,7 +314,7 @@ CALCWindow::CALCWindow(FXApp* app)
   //Right scientific button segment
   FXVerticalFrame* rightSci=new FXVerticalFrame(scientificFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,8);
 
-  FXLabel* parenLabel=new FXLabel(rightSci," \t"PARENLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  parenLabel=new FXLabel(rightSci," \t"PARENLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   parenLabel->setTarget(this);
   parenLabel->setSelector(ID_PARENLABEL);
   parenLabel->enable(); //So it gets the mouse clicks
@@ -331,7 +331,7 @@ CALCWindow::CALCWindow(FXApp* app)
 
   //Group with memory and PI
   FXVerticalFrame* leftStan=new FXVerticalFrame(standardFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,8);
-  FXLabel* memLabel=new FXLabel(leftStan," \t"MEMORYLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  memLabel=new FXLabel(leftStan," \t"MEMORYLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   memLabel->setTarget(this);
   memLabel->setSelector(ID_MEMORYLABEL);
   memLabel->enable(); //So it gets the mouse clicks
@@ -748,6 +748,8 @@ FXFont* CALCWindow::getDisplayFont() const
 
 void CALCWindow::setButtonFont(FXFont* font)
 {
+  parenLabel->setFont(font);
+  memLabel->setFont(font);
   setFont(baseBtns,font);
   setFont(repBtns,font);
   setFont(modeBtns,font);

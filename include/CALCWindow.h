@@ -251,6 +251,8 @@ protected:
   FXTooltip* tooltip;
   CALCStatBox* statBox;
 
+  FXLabel* parenLabel;
+  FXLabel* memLabel;
   FXLabel* baseBtns[5];
   FXLabel* repBtns[8];
   FXLabel* modeBtns[3];
