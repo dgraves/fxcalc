@@ -1,3 +1,13 @@
+fxcalc version 1.0.1, Copyright (C) 2000,2001 Dustin Graves <dgraves@computer.org>
+fxcalc comes with ABSOLUTELY NO WARRANTY.  This is free software, and you are 
+welcome to redistribute it under certain conditions; see COPYING for details.
+
+
+fxcalc is a platform independent scientific calculator, capable of 
+128-bit floating point math, and distributed under the terms of the 
+GNU General Public License.  
+
+
 The version of the doubledouble library, which this program uses for 128-bit
 floating point math, that is being distributed with this program is
 slightly different from the official doubledouble distribution.  I 
