@@ -34,6 +34,13 @@ Use RESWRAP variable to specify the location of reswrap.
 Use CPPFLAGS to specify the -I include directive.
 Use LDFLAGS to specify the -L library directive.
 
+When using the SGI MIPSPro compiler, the compiler must be specified as:
+
+CXX="CC -LANG:std"
+
+The usage of the new iostream requires "-LANG:std" be specifed with 
+the SGI MIPSPro compiler.  
+
 If you would like to test the doubledouble library, enter the doubledouble 
 subdirectory and build trydd.cpp with Makefile.kmb like so:
   make -f Makefile.kmb
