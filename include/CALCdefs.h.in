@@ -55,7 +55,7 @@ typedef doubledouble CALCdouble;
 //Define constants for double length
 //There are noticeable precision errors when using a doubledouble with 31 digits to do trig operations (eg acos(0) ends up being ~89.9999999999999998)
 //Therefore there is an option to select mantissa lengths (starts at 14 by default)
-#define CALCDBL_DIG 31
+#define CALCDBL_DIG 26
 #define CALCDBL_MANT_DIG 107      //For 128-bit doubles this should be 113, but because doubledouble combines two doubles this is more likely to be closer to 106 or 107
 #define CALCDBL_MAX_EXP 4932      //Values for actual 128-bit floats.
 #define CALCDBL_MIN_EXP (-4931)
