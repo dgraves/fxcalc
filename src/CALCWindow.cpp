@@ -894,8 +894,11 @@ CALCdouble CALCWindow::getLabelText() const
     FXuchar dig=(base==BASE_TEN)?',':' ';
     FXint i,j=0;
     for(i=0;i<len;i++)
-      if(str[i]!=dig) str[j++]=str[i];
-    str[j]='\0';
+    {
+      if(str[i]!=dig)
+        str.replace(j++,str[i]);
+    }
+    str.trunc(j);
     len=j;
   }
 
@@ -1549,8 +1552,11 @@ long CALCWindow::onCmdBackSpace(FXObject*,FXSelector,void*)
           FXint gap;
           FXint i,j=0,len=val.length();
           for(i=0;i<len;i++)
-          if(val[i]!=grp) val[j++]=val[i];
-            val[j]='\0';
+          {
+            if(val[i]!=grp)
+              val.replace(j++,val[i]);
+          }
+          val.trunc(j);
           pos=(base==BASE_TEN)?j-1:j;
 
           switch(base)
@@ -1772,8 +1778,11 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
         {
           FXint i,j=0,len=val.length();
           for(i=0;i<len;i++)
-          if(val[i]!=grp) val[j++]=val[i];
-            val[j]='\0';
+          {
+            if(val[i]!=grp)
+              val.replace(j++,val[i]);
+          }
+          val.trunc(j);
           pos=(base==BASE_TEN)?j-2:j-1;
         }
 
@@ -2091,8 +2100,11 @@ long CALCWindow::onCmdHexDigit(FXObject*,FXSelector sel,void*)
       {
         FXint i,j=0,len=val.length();
         for(i=0;i<len;i++)
-        if(val[i]!=' ') val[j++]=val[i];
-          val[j]='\0';
+        {
+          if(val[i]!=' ')
+            val.replace(j++,val[i]);
+        }
+        val.trunc(j);
         pos=j;
       }
 
