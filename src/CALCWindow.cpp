@@ -702,7 +702,7 @@ void CALCWindow::create()
   if(fontspec&&fxparsefontdesc(fontdesc,fontspec))
   {
     btnfont=new FXFont(getApp(),fontdesc);
-    setDisplayFont(btnfont);
+    setButtonFont(btnfont);
   }
 
   FXColor displayclr=getApp()->reg().readColorEntry("SETTINGS","displaycolor",getApp()->getBackColor());

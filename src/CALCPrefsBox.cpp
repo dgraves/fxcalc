@@ -169,6 +169,7 @@ long CALCPrefsBox::onCmdDefaults(FXObject*,FXSelector,void*)
       getOwner()->handle(this,MKUINT(CALCWindow::ID_DEFAULTWIDTH,SEL_COMMAND),NULL);
       getOwner()->handle(this,MKUINT(CALCWindow::ID_DEFAULTHEIGHT,SEL_COMMAND),NULL);
       getOwner()->handle(this,MKUINT(CALCWindow::ID_DEFAULTNUMDIGITS,SEL_COMMAND),NULL);
+      break;
     case 1:
       getOwner()->handle(this,MKUINT(CALCWindow::ID_DEFAULTCOLORS,SEL_COMMAND),NULL);
       break;
