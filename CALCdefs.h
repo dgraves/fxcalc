@@ -19,8 +19,6 @@
 #ifndef _CALCDEFS_H_
 #define _CALCDEFS_H_
 
-#define VERSION_STRING "1.0"
-
 #include <math.h>
 #include <float.h>
 
