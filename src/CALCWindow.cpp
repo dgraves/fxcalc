@@ -3089,4 +3089,3 @@ long CALCWindow::onCmdDefaultTextColors(FXObject*,FXSelector,void*)
 
   return 1;
 }
-
