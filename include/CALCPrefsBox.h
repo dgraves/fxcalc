@@ -41,6 +41,13 @@ public:
   ~CALCPrefsBox();
 
   void setPrefTab(FXuint tab);
+  long CALCPrefsBox::onCmdDefaults(FXObject*,FXSelector,void*);
+
+  enum
+  {
+    ID_DEFAULTS=FXDialogBox::ID_LAST,
+    ID_LAST
+  };
 };
 
 #endif
