@@ -57,7 +57,7 @@ void CALCList::create()
 
 FXint CALCList::getInsertPosition() const
 {
-  FXint item,h,i,p=0;
+  FXint item,i,p=0;
   FXint x,y; FXuint buttons;
 
   getCursorPosition(x,y,buttons);

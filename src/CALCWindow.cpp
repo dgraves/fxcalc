@@ -194,7 +194,7 @@ CALCWindow::CALCWindow(FXApp* app)
   storePair.op=ID_ADD;
   storePair.value=0.0;
 
-  FXMenuBar* menu=new FXMenuBar(this);
+  FXMenubar* menu=new FXMenubar(this);
   filemenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&File",NULL,filemenu);
   new FXMenuCommand(filemenu,"&Quit\tCtrl+Q",NULL,this,ID_QUIT);
@@ -685,10 +685,10 @@ void CALCWindow::create()
   //Dimensions
   FXint x=getApp()->reg().readIntEntry("SETTINGS","x",10);
   FXint y=getApp()->reg().readIntEntry("SETTINGS","y",10);
-  width[CALC_STANDARD-1]=getApp()->reg().readIntEntry("SETTINGS","standardwidth",0);
-  height[CALC_STANDARD-1]=getApp()->reg().readIntEntry("SETTINGS","standardheight",0);
-  width[CALC_SCIENTIFIC-1]=getApp()->reg().readIntEntry("SETTINGS","scientificwidth",0);
-  height[CALC_SCIENTIFIC-1]=getApp()->reg().readIntEntry("SETTINGS","scientificheight",0);
+  FXint w1=getApp()->reg().readIntEntry("SETTINGS","standardwidth",0);
+  FXint h1=getApp()->reg().readIntEntry("SETTINGS","standardheight",0);
+  FXint w2=getApp()->reg().readIntEntry("SETTINGS","scientificwidth",0);
+  FXint h2=getApp()->reg().readIntEntry("SETTINGS","scientificheight",0);
 
   //Fonts and colors
   fontspec=getApp()->reg().readStringEntry("SETTINGS","displayfont",NULL);
@@ -749,6 +749,11 @@ void CALCWindow::create()
     ndigits=CALCDBL_DIG;
 
   setMode(m);
+
+  width[CALC_STANDARD-1]=w1;
+  height[CALC_STANDARD-1]=h1;
+  width[CALC_SCIENTIFIC-1]=w2;
+  height[CALC_SCIENTIFIC-1]=h2;
   position(x,y,width[m-1],height[m-1]);
 
   setDisplayColor(displayclr);
@@ -1397,7 +1402,7 @@ long CALCWindow::onCmdUseTooltips(FXObject*,FXSelector,void*)
 {
   if(tooltip==NULL)
   {
-    tooltip=new FXToolTip(getApp(),TOOLTIP_PERMANENT);
+    tooltip=new FXTooltip(getApp(),TOOLTIP_PERMANENT);
     tooltip->create();
   }
   else
