@@ -1,3 +1,9 @@
+Sat May 10 2003 Dustin Graves <dgraves@computer.org>
+ * Fixed bug when reading screen y position from registry
+ * Stat box is now parented to main window instead of FXApp
+ * Fixed stat box drag and drop placement to be more accurate
+ * Updated to work with fox 1.1.x development series
+
 Sat Nov 23 2002 Dustin Graves <dgraves@computer.org>
  * Added new default colors for buttons.
  * Added new preferences tab.

@@ -1,4 +1,4 @@
-fxcalc version 1.0.10, Copyright (C) 2000,2001 Dustin Graves <dgraves@computer.org>
+fxcalc version 1.0.11, Copyright (C) 2000-2003 Dustin Graves <dgraves@computer.org>
 fxcalc comes with ABSOLUTELY NO WARRANTY.  This is free software, and you are
 welcome to redistribute it under certain conditions; see COPYING for details.
 
@@ -7,7 +7,7 @@ fxcalc is a platform independent scientific calculator, capable of
 GNU General Public License.
 
 This software uses the FOX Platform Independent GUI Toolkit Library.
-The FOX Library is Copyright (C) 1997,2000,2001 Jeroen van der Zijp and is
+The FOX Library is Copyright (C) 1997,2000-2003 Jeroen van der Zijp and is
 available freely under the GNU Lesser Public License at the following site:
 http://www.fox-toolkit.org
 
@@ -15,8 +15,7 @@ This software contains code from version 2.2 of the`doubledouble' software
 package which implements doubled-double (approximately 30 decimal place) floating
 point arithmetic on IEEE 754 floating-point hardware.
 The doubledouble library is Copyright (C) 1997 Keith Martin Briggs and is
-available freely under the GNU General Public License at the following site
-http://www.btexact.com/people/briggsk2/doubledouble.html
+available freely under the GNU General Public License.  
 
 The version of the doubledouble library (which this program uses for 128-bit
 floating point math) distributed with this program differs from the
