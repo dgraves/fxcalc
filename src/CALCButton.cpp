@@ -21,7 +21,7 @@
 
 FXIMPLEMENT(CALCButton,FXButton,NULL,0)
 
-CALCButton::CALCButton(FXComposite* p,const FXString& text,FXIcon* ic=NULL,FXObject* tgt=NULL,FXSelector sel=0,FXuint opts=BUTTON_NORMAL,FXint x=0,FXint y=0,FXint w=0,FXint h=0,FXint pl=DEFAULT_PAD,FXint pr=DEFAULT_PAD,FXint pt=DEFAULT_PAD,FXint pb=DEFAULT_PAD)
+CALCButton::CALCButton(FXComposite* p,const FXString& text,FXIcon* ic,FXObject* tgt,FXSelector sel,FXuint opts,FXint x,FXint y,FXint w,FXint h,FXint pl,FXint pr,FXint pt,FXint pb)
 : FXButton(p,text,ic,tgt,sel,opts,x,y,w,h,pl,pr,pt,pb),
   dw(w),
   dh(h)
