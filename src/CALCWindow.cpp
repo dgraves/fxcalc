@@ -675,14 +675,14 @@ void CALCWindow::setFont(FXLabel* targets[],FXFont* font)
     targets[i++]->setFont(font);
 }
 
-void CALCWindow::setBackColor(FXLabel* target,FXColor color)
+void CALCWindow::setBackColors(FXLabel* target,FXColor color)
 {
   target->setBackColor(color);
   target->setHiliteColor(makeHiliteColor(color));
   target->setShadowColor(makeShadowColor(color));
 }
 
-void CALCWindow::setBackColor(FXLabel* targets[],FXColor color)
+void CALCWindow::setBackColors(FXLabel* targets[],FXColor color)
 {
   FXint i=0;
   FXColor h=makeHiliteColor(color);
@@ -695,7 +695,7 @@ void CALCWindow::setBackColor(FXLabel* targets[],FXColor color)
   }
 }
 
-void CALCWindow::setTextColor(FXLabel* targets[],FXColor color)
+void CALCWindow::setTextColors(FXLabel* targets[],FXColor color)
 {
   FXint i=0;
   while(targets[i]!=NULL)
@@ -2608,7 +2608,16 @@ long CALCWindow::onCmdFactorial(FXObject*,FXSelector,void*)
 long CALCWindow::onCmdInvert(FXObject*,FXSelector,void*)
 {
   CALCdouble val=getLabelText();
-  setLabelText(1.0/val);
+
+  if(val==((CALCdouble)0.0))
+  {
+    lcd->setText(ZERODIVERR(easteregg2));
+  }
+  else
+  {
+    setLabelText(1.0/val);
+  }
+  
   started=FALSE;
   return 1;
 }
