@@ -221,7 +221,7 @@ CALCWindow::CALCWindow(FXApp* app)
   new FXMenuTitle(menu,"&Help",NULL,helpmenu);
   new FXMenuCommand(helpmenu,"&Tool tips\tCtrl+B",NULL,this,ID_USETOOLTIPS);
   new FXMenuSeparator(helpmenu);
-  new FXMenuCommand(helpmenu,"&About",smallcalc,this,ID_ABOUT);
+  new FXMenuCommand(helpmenu,"&About fxcalc...",smallcalc,this,ID_ABOUT);
 
   FXHorizontalFrame* lcdframe=new FXHorizontalFrame(this,LAYOUT_FILL_X,0,0,0,0, 4,4,2,2);
   lcd=new CALCLabel(lcdframe,"0.\t"LCD_HELP,NULL,JUSTIFY_RIGHT|FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X);
