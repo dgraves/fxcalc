@@ -41,7 +41,7 @@ CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
   new FXHorizontalSeparator(contents,SEPARATOR_RIDGE|LAYOUT_BOTTOM|LAYOUT_FILL_X);
 
   tabbook=new FXTabBook(contents,NULL,0,LAYOUT_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  FXTabItem* tab1=new FXTabItem(tabbook,"&Settings",NULL);
+  new FXTabItem(tabbook,"&Settings",NULL);
   FXVerticalFrame* settingsframe=new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   new FXLabel(settingsframe,"fxcalc settings");
   new FXHorizontalSeparator(settingsframe,SEPARATOR_LINE|LAYOUT_FILL_X);
@@ -73,7 +73,7 @@ CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
   new FXButton(matrix1,"Default",NULL,owner,CALCWindow::ID_DEFAULTNUMDIGITS,FRAME_RAISED|FRAME_THICK|LAYOUT_RIGHT|LAYOUT_CENTER_Y|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW,0,0,0,0, 10,10);
 
 
-  FXTabItem* tab2=new FXTabItem(tabbook,"C&olors",NULL);
+  new FXTabItem(tabbook,"C&olors",NULL);
   FXVerticalFrame* colorframe=new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   new FXLabel(colorframe,"fxcalc colors");
   new FXHorizontalSeparator(colorframe,SEPARATOR_LINE|LAYOUT_FILL_X);
@@ -111,7 +111,7 @@ CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
   new FXColorWell(matrix22,FXRGB(0,0,0),owner,CALCWindow::ID_COLOR_CLEARENTRY,COLORWELL_OPAQUEONLY|FRAME_SUNKEN|FRAME_THICK|LAYOUT_RIGHT|LAYOUT_CENTER_Y|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW,0,0,40,24);
   new FXColorWell(matrix22,FXRGB(0,0,0),owner,CALCWindow::ID_COLOR_CLEARALL,COLORWELL_OPAQUEONLY|FRAME_SUNKEN|FRAME_THICK|LAYOUT_RIGHT|LAYOUT_CENTER_Y|LAYOUT_FIX_WIDTH|LAYOUT_FIX_HEIGHT|LAYOUT_FILL_COLUMN|LAYOUT_FILL_ROW,0,0,40,24);
 
-  FXTabItem* tab3=new FXTabItem(tabbook,"&Text Colors",NULL);
+  new FXTabItem(tabbook,"&Text Colors",NULL);
   FXVerticalFrame* textcolorframe=new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   new FXLabel(textcolorframe,"fxcalc text colors");
   new FXHorizontalSeparator(textcolorframe,SEPARATOR_LINE|LAYOUT_FILL_X);

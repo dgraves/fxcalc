@@ -1549,7 +1549,7 @@ long CALCWindow::onCmdBackSpace(FXObject*,FXSelector,void*)
         if(digitgrouping)
         {
           FXuchar grp=(base==BASE_TEN)?',':' ';
-          FXint gap;
+          FXint gap=0;
           FXint i,j=0,len=val.length();
           for(i=0;i<len;i++)
           {
@@ -1790,8 +1790,8 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
 
         if(digitgrouping)
         {
-          FXint count;
-          FXint gap;
+          FXint count=0;
+          FXint gap=0;
 	  FXint fin=(val[0]=='-')?1:0;
 
           switch(base)
