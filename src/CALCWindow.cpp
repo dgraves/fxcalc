@@ -164,7 +164,7 @@ FXDEFMAP(CALCWindow) CALCWindowMap[]={
   FXMAPFUNCS(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_BINARY,CALCWindow::ID_PI,CALCWindow::onPopupMenu),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_CLARIFY,CALCWindow::onCmdClarify),
 
-  //The default settings  
+  //The default settings
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DISPLAYFONT,CALCWindow::onCmdDisplayFont),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_BUTTONFONT,CALCWindow::onCmdButtonFont),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_CALCWIDTH,CALCWindow::onCmdCalcWidth),
@@ -611,6 +611,9 @@ void CALCWindow::create()
   digitgrouping=getApp()->reg().readIntEntry("SETTINGS","grouping",FALSE);
   if(getApp()->reg().readIntEntry("SETTINGS","tooltips",FALSE))
     handle(this,MKUINT(ID_USETOOLTIPS,SEL_COMMAND),NULL);
+
+  easteregg1=getApp()->reg().readIntEntry("SETTINGS","eaone",easteregg1);
+  easteregg2=getApp()->reg().readIntEntry("SETTINGS","eatwo",easteregg2);
 
   //Make sure it's within a valid range
   //Digit box gives a leeway of 2, so this value is considered valid
@@ -1106,6 +1109,9 @@ long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
   getApp()->reg().writeUnsignedEntry("SETTINGS","digits",ndigits);
   getApp()->reg().writeIntEntry("SETTINGS","grouping",digitgrouping);
   getApp()->reg().writeIntEntry("SETTINGS","tooltips",(tooltip==NULL)?FALSE:TRUE);
+
+  getApp()->reg().writeIntEntry("SETTINGS","eaone",easteregg1);
+  getApp()->reg().writeIntEntry("SETTINGS","eatwo",easteregg2);
 
   getApp()->reg().write();
   getApp()->stop();
