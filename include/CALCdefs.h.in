@@ -23,8 +23,8 @@
 #include <float.h>
 
 //Version number - for windows
-#define PROG_VERSION "1.0.3"
-#define PROG_PACKAGE "fxcalc"
+#define PROG_VERSION "@VERSION@"
+#define PROG_PACKAGE "@PACKAGE@"
 
 //64 bit int
 #ifdef WIN32
