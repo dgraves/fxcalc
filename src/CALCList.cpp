@@ -42,8 +42,8 @@ FXDEFMAP(CALCList) CALCListMap[]={
 
 FXIMPLEMENT(CALCList,FXList,CALCListMap,ARRAYNUMBER(CALCListMap))
 
-CALCList::CALCList(FXComposite *p,FXint nvis,FXObject* tgt,FXSelector sel,FXuint opts,FXint x,FXint y,FXint w,FXint h)
-: FXList(p,nvis,tgt,sel,opts,x,y,w,h),
+CALCList::CALCList(FXComposite *p,FXObject* tgt,FXSelector sel,FXuint opts,FXint x,FXint y,FXint w,FXint h)
+: FXList(p,tgt,sel,opts,x,y,w,h),
   dragmode(MOUSE_NONE)
 {
 }

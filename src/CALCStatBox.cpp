@@ -45,7 +45,7 @@ CALCStatBox::CALCStatBox(CALCWindow* owner)
 {
   FXVerticalFrame* contents=new FXVerticalFrame(this,LAYOUT_FILL_X|LAYOUT_FILL_Y);
   FXVerticalFrame* listFrame=new FXVerticalFrame(contents,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
-  values=new CALCList(listFrame,0,this,ID_VALUES,LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  values=new CALCList(listFrame,this,ID_VALUES,LIST_BROWSESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
   FXHorizontalFrame* buttons=new FXHorizontalFrame(contents,PACK_UNIFORM_WIDTH|LAYOUT_FILL_X,0,0,0,0, 0,0,0,0);
   new FXButton(buttons,"Forw\t"STATFORWARD_HELP,NULL,this,ID_FORWARD,FRAME_RAISED|FRAME_THICK|LAYOUT_FILL_X|LAYOUT_FILL_Y);
