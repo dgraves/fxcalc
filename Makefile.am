@@ -1,4 +1,4 @@
-SUBDIRS = icons src
+SUBDIRS = doubledouble icons include src
 
 dist-hook:
 	mkdir $(distdir)/windows
