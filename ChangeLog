@@ -1,25 +1,29 @@
+Sat Nov 23 2002 Dustin Graves <dgraves@computer.org>
+ * Added new default colors for buttons.  
+ * Added new preferences tab.  
+
 Tue Aug 27 2002 Dustin Graves <dgraves@computer.org>
- * Created CALCButton to return the width and height values specified in 
+ * Created CALCButton to return the width and height values specified in
    constructor as the default width and height - for resizeable buttons
-   with an initial fixed size.  
- * Added check for registry values to ensure x, y, width, and height are always 
-   greater than 0 and less than the screen resolution.  
+   with an initial fixed size.
+ * Added check for registry values to ensure x, y, width, and height are always
+   greater than 0 and less than the screen resolution.
 
 Sun Jun 02 2002 Dustin Graves <dgraves@computer.org>
  * Added prefs box for setting custom colors and fonts
 
 Sat Apr 06 2002 Dustin Graves <dgraves@computer.org>
- * Added macro DD_ISINF for "isinf" functionality needed by doubledouble.  
- * Replaced doubledouble WIN32 _isnan code with DD_ISINF.  
- * Added configure tests for finite and isinf to be used for DD_ISINF.  
- * Added CALCdefs.h.in to generate CALCdefs.h with PROG_VERSION defined.  
+ * Added macro DD_ISINF for "isinf" functionality needed by doubledouble.
+ * Replaced doubledouble WIN32 _isnan code with DD_ISINF.
+ * Added configure tests for finite and isinf to be used for DD_ISINF.
+ * Added CALCdefs.h.in to generate CALCdefs.h with PROG_VERSION defined.
 
 Wen Mar 31 2002 Dustin Graves <dgraves@computer.org>
- * Window is now resizeable.  
- * Fixed doubledouble pow related bugs in calc x^2 function.  
- * Fixed doubledouble pow related bugs in statistics box.  
- * doubledouble package was integrated with configure.  
- * Updated URL for FOX website.  
+ * Window is now resizeable.
+ * Fixed doubledouble pow related bugs in calc x^2 function.
+ * Fixed doubledouble pow related bugs in statistics box.
+ * doubledouble package was integrated with configure.
+ * Updated URL for FOX website.
 
 Tue Mar 29 2002 Dustin Graves <dgraves@computer.org>
  * Updates for compatability with changes to FXList
@@ -48,15 +52,15 @@ Sun Mar 4 2001 Dustin Graves <dgraves@computer.org>
 	- within the 0-360 range.  This will catch all entries
 	- of 90 and 270 for degrees or 100 and 300 for gradients.
 	- It does not always work with radians because here we are
-	- not testing for whole numbers.  So, if an angle fails the 
+	- not testing for whole numbers.  So, if an angle fails the
 	- first test, it is put into to the cos function and
-	- the result checked to be 0.  This also tends to fail 
+	- the result checked to be 0.  This also tends to fail
 	- in some situations, since most cos implementations
 	- return a very small non-zero value for 90 (which is why tan(90)
 	- produces a valid result on most systems).  I should probably
 	- apply a threshold to the results of trig functions to attempt
-	- to remove these small imprecisions.  
-  * Added info for doubledouble to the about box.  
+	- to remove these small imprecisions.
+  * Added info for doubledouble to the about box.
   * Added GNU GPL info to each file
 
 Sat Mar 3 2001 Dustin Graves <dgraves@computer.org>
