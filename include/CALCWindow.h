@@ -19,11 +19,6 @@
 #ifndef _CALCWINDOW_H_
 #define _CALCWINDOW_H_
 
-#include "fox/fx.h"
-#include "fox/FXElement.h"
-#include "fox/FXArray.h"
-#include "CALCdefs.h"
-
 enum
 {
   CALC_STANDARD=0x01,
@@ -59,22 +54,35 @@ enum
   NOTATION_SCI =0x02
 };
 
-//modes
+//Numeric base
 enum
 {
-  MODE_HEX=0,
-  MODE_DEC=1,
-  MODE_OCT=2,
-  MODE_BIN=3,
-  MODE_DEGREES=4,
-  MODE_RADIANS=5,
-  MODE_GRADIENTS=6,
-  MODE_DLWORD=7,
-  MODE_LWORD=8,
-  MODE_WORD=9,
-  MODE_BYTE=10,
-  MODE_INV=11,
-  MODE_HYP=12
+  BASE_HEX=0,
+  BASE_DEC=1,
+  BASE_OCT=2,
+  BASE_BIN=3,
+  BASE_LAST=4
+};
+
+//Representation
+enum
+{
+  REP_DEGREES=0,
+  REP_RADIANS=1,
+  REP_GRADIENTS=2,
+  REP_DLWORD=3,
+  REP_LWORD=4,
+  REP_WORD=5,
+  REP_BYTE=6,
+  REP_LAST=7
+};
+
+//Mode
+enum
+{
+  MODE_INV=0,
+  MODE_HYP=1,
+  MODE_LAST=2
 };
 
 //Digit buttons
@@ -89,18 +97,20 @@ enum
   DIGIT_6=6,
   DIGIT_7=7,
   DIGIT_8=8,
-  DIGIT_9=9
+  DIGIT_9=9,
+  DIGIT_LAST=10
 };
 
 //Hex digit buttons
 enum
 {
-  DIGIT_A=0,
-  DIGIT_B=1,
-  DIGIT_C=2,
-  DIGIT_D=3,
-  DIGIT_E=4,
-  DIGIT_F=5
+  HEXDIGIT_A=0,
+  HEXDIGIT_B=1,
+  HEXDIGIT_C=2,
+  HEXDIGIT_D=3,
+  HEXDIGIT_E=4,
+  HEXDIGIT_F=5,
+  HEXDIGIT_LAST=6,
 };
 
 //Opertor buttons
@@ -123,7 +133,8 @@ enum
   OPERATOR_SIMPLE_SQRT=14,
   OPERATOR_SIMPLE_PERCENT=15,
   OPERATOR_SIMPLE_INVERT=16,
-  OPERATOR_SIMPLE_EQUAL=17
+  OPERATOR_SIMPLE_EQUAL=17,
+  OPERATOR_LAST=18
 };
 
 //Function buttons
@@ -144,7 +155,8 @@ enum
   FUNC_LOG=12,
   FUNC_FACTORIAL=13,
   FUNC_INVERT=14,
-  FUNC_PI=15
+  FUNC_PI=15,
+  FUNC_LAST=16
 };
 
 //Memory buttons
@@ -153,7 +165,8 @@ enum
   MEMORY_CLEAR=0,
   MEMORY_RECALL=1,
   MEMORY_STORE=2,
-  MEMORY_ADD=3
+  MEMORY_ADD=3,
+  MEMORY_LAST=4
 };
 
 //Stat buttons
@@ -163,7 +176,8 @@ enum
   STAT_MEAN=1,
   STAT_SUM=2,
   STAT_STANDARDDEV=3,
-  STAT_ADD=4
+  STAT_ADD=4,
+  STAT_LAST=5
 };
 
 //Clear buttons
@@ -171,7 +185,8 @@ enum
 {
   CLEAR_BACKSPACE=0,
   CLEAR_ENTRY=1,
-  CLEAR_ALL=2
+  CLEAR_ALL=2,
+  CLEAR_LAST=3
 };
 
 //Had some trouble with the templated constructElms
@@ -209,6 +224,8 @@ protected:
 
   FXIcon* bigcalc;
   FXIcon* smallcalc;
+  FXFont* lcdfont;
+  FXFont* btnfont;
   CALCLabel* lcd;
 
   FXHorizontalFrame* modesFrame;
@@ -231,14 +248,16 @@ protected:
   FXToolTip* tooltip;
   CALCStatBox* statBox;
 
-  FXLabel* modeBtns[13];
-  FXButton* digitBtns[10];
-  FXButton* hexdigitBtns[6];
-  FXButton* operatorBtns[18];
-  FXButton* funcBtns[16];
-  FXButton* memoryBtns[4];
-  FXButton* statBtns[5];
-  FXButton* clearBtns[3];
+  FXLabel* baseBtns[5];
+  FXLabel* repBtns[8];
+  FXLabel* modeBtns[3];
+  FXLabel* digitBtns[11];
+  FXLabel* hexdigitBtns[7];
+  FXLabel* operatorBtns[19];
+  FXLabel* funcBtns[17];
+  FXLabel* memoryBtns[5];
+  FXLabel* statBtns[6];
+  FXLabel* clearBtns[4];
 
   CALCdouble powY(const CALCdouble& x,const CALCdouble& y);
   CALCdouble truncate(const CALCdouble& x);
@@ -250,11 +269,80 @@ protected:
 
   CALCWindow() {}
 
+  void setFont(FXLabel* targets[],FXFont* font);
+  void setBackColor(FXLabel* targets,FXColor color);
+  void setBackColor(FXLabel* targets[],FXColor color);
+  void setTextColor(FXLabel* targets[],FXColor color);
+
 public:
   CALCWindow(FXApp* app);
   ~CALCWindow();
 
   virtual void create();
+
+  void setDisplayColor(FXColor color);
+  void setDigitColor(FXColor color) {setBackColor(digitBtns,color);}
+  void setHexDigitColor(FXColor color) {setBackColor(hexdigitBtns,color);}
+  void setOperatorColor(FXColor color) {setBackColor(operatorBtns,color);}
+  void setFunctionColor(FXColor color) {setBackColor(funcBtns,color);}
+  void setMemoryColor(FXColor color) {setBackColor(memoryBtns,color);}
+  void setStatColor(FXColor color) {setBackColor(statBtns,color);}
+  void setBaseColor(FXColor color);
+  void setRepColor(FXColor color);
+  void setInvColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_INV])->setBoxColor(color);}
+  void setHypColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_HYP])->setBoxColor(color);}
+  void setBackspaceColor(FXColor color) {setBackColor(clearBtns[CLEAR_BACKSPACE],color);}
+  void setClearEntryColor(FXColor color) {setBackColor(clearBtns[CLEAR_ENTRY],color);}
+  void setClearAllColor(FXColor color) {setBackColor(clearBtns[CLEAR_ALL],color);}
+  void setDisplayTextColor(FXColor color);
+  void setDigitTextColor(FXColor color) {setTextColor(digitBtns,color);}
+  void setHexDigitTextColor(FXColor color) {setTextColor(hexdigitBtns,color);}
+  void setOperatorTextColor(FXColor color) {setTextColor(operatorBtns,color);}
+  void setFunctionTextColor(FXColor color) {setTextColor(funcBtns,color);}
+  void setMemoryTextColor(FXColor color) {setTextColor(memoryBtns,color);}
+  void setStatTextColor(FXColor color) {setTextColor(statBtns,color);}
+  void setBaseTextColor(FXColor color) {setTextColor(baseBtns,color);}
+  void setRepTextColor(FXColor color) {setTextColor(repBtns,color);}
+  void setInvTextColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_INV])->setTextColor(color);}
+  void setHypTextColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_HYP])->setTextColor(color);}
+  void setBackspaceTextColor(FXColor color) {clearBtns[CLEAR_BACKSPACE]->setTextColor(color);}
+  void setClearEntryTextColor(FXColor color) {clearBtns[CLEAR_ENTRY]->setTextColor(color);}
+  void setClearAllTextColor(FXColor color) {clearBtns[CLEAR_ALL]->setTextColor(color);}
+
+  FXColor getDisplayColor() const;
+  FXColor getDigitColor() const {return digitBtns[0]->getBackColor();}
+  FXColor getHexDigitColor() const {return hexdigitBtns[0]->getBackColor();}
+  FXColor getOperatorColor() const {return operatorBtns[0]->getBackColor();}
+  FXColor getFunctionColor() const {return funcBtns[0]->getBackColor();}
+  FXColor getMemoryColor() const {return memoryBtns[0]->getBackColor();}
+  FXColor getStatColor() const {return statBtns[0]->getBackColor();}
+  FXColor getBaseColor() const {return ((FXRadioButton*)baseBtns[0])->getRadioColor();}
+  FXColor getRepColor() const {return ((FXRadioButton*)repBtns[0])->getRadioColor();}
+  FXColor getInvColor() const {return ((FXCheckButton*)modeBtns[MODE_INV])->getBoxColor();}
+  FXColor getHypColor() const {return ((FXCheckButton*)modeBtns[MODE_HYP])->getBoxColor();}
+  FXColor getBackspaceColor() const {return clearBtns[CLEAR_BACKSPACE]->getBackColor();}
+  FXColor getClearEntryColor() const {return clearBtns[CLEAR_ENTRY]->getBackColor();}
+  FXColor getClearAllColor() const {return clearBtns[CLEAR_ALL]->getBackColor();}
+  FXColor getDisplayTextColor() const;
+  FXColor getDigitTextColor() const {return digitBtns[0]->getTextColor();}
+  FXColor getHexDigitTextColor() const {return hexdigitBtns[0]->getTextColor();}
+  FXColor getOperatorTextColor() const {return operatorBtns[0]->getTextColor();}
+  FXColor getFunctionTextColor() const {return funcBtns[0]->getTextColor();}
+  FXColor getMemoryTextColor() const {return memoryBtns[0]->getTextColor();}
+  FXColor getStatTextColor() const {return statBtns[0]->getTextColor();}
+  FXColor getBaseTextColor() const {return baseBtns[0]->getTextColor();}
+  FXColor getRepTextColor() const {return repBtns[0]->getTextColor();}
+  FXColor getInvTextColor() const {return modeBtns[MODE_INV]->getTextColor();}
+  FXColor getHypTextColor() const {return modeBtns[MODE_HYP]->getTextColor();}
+  FXColor getBackspaceTextColor() const {return clearBtns[CLEAR_BACKSPACE]->getTextColor();}
+  FXColor getClearEntryTextColor() const {return clearBtns[CLEAR_ENTRY]->getTextColor();}
+  FXColor getClearAllTextColor() const {return clearBtns[CLEAR_ALL]->getTextColor();}
+
+  void setDisplayFont(FXFont* font);
+  FXFont* getDisplayFont() const;
+
+  void setButtonFont(FXFont* font);
+  FXFont* getButtonFont() const;
 
   void setMode(FXuint m);
   FXuint getMode() const;
@@ -288,7 +376,7 @@ public:
   long onCmdCopy(FXObject*,FXSelector,void*);
   long onCmdPaste(FXObject*,FXSelector,void*);
   long onUpdPaste(FXObject*,FXSelector,void*);
-  long onCmdNumDigits(FXObject*,FXSelector,void*);
+  long onCmdPreferences(FXObject*,FXSelector,void*);
   long onCmdDigitGrouping(FXObject*,FXSelector,void*);
   long onUpdDigitGrouping(FXObject*,FXSelector,void*);
   long onCmdUseTooltips(FXObject*,FXSelector,void*);
@@ -379,6 +467,15 @@ public:
   long onCmdPI(FXObject*,FXSelector,void*);
   long onUpdPI(FXObject*,FXSelector,void*);
 
+  long onCmdDisplayFont(FXObject*,FXSelector,void*);
+  long onCmdButtonFont(FXObject*,FXSelector,void*);
+  long onCmdNumDigits(FXObject*,FXSelector,void*);
+  long onCmdBackColor(FXObject*,FXSelector,void*);
+  long onCmdTextColor(FXObject*,FXSelector,void*);
+  long onUpdBackColor(FXObject*,FXSelector,void*);
+  long onUpdTextColor(FXObject*,FXSelector,void*);
+  long onUpdNumDigits(FXObject*,FXSelector,void*);
+
   long onPopupMenu(FXObject*,FXSelector,void*);
   long onCmdClarify(FXObject*,FXSelector,void*);
 
@@ -387,7 +484,7 @@ public:
     ID_QUIT=FXMainWindow::ID_LAST,
     ID_COPY,
     ID_PASTE,
-    ID_NUMDIGITS,
+    ID_PREFERENCES,
     ID_DIGITGROUPING,
     ID_USETOOLTIPS,
     ID_ABOUT,
@@ -491,6 +588,38 @@ public:
     ID_MEMORYADD,
 
     ID_PI,
+
+    ID_DISPLAYFONT,
+    ID_BUTTONFONT,
+    ID_NUMDIGITS,
+    ID_COLOR_DISPLAY,
+    ID_COLOR_DIGITS,
+    ID_COLOR_HEXDIGITS,
+    ID_COLOR_OPERATORS,
+    ID_COLOR_FUNCTIONS,
+    ID_COLOR_MEMORY,
+    ID_COLOR_STATISTICS,
+    ID_COLOR_BASE,
+    ID_COLOR_REPRESENTATION,
+    ID_COLOR_INV,
+    ID_COLOR_HYP,
+    ID_COLOR_BACKSPACE,
+    ID_COLOR_CLEARENTRY,
+    ID_COLOR_CLEARALL,
+    ID_TEXTCOLOR_DISPLAY,
+    ID_TEXTCOLOR_DIGITS,
+    ID_TEXTCOLOR_HEXDIGITS,
+    ID_TEXTCOLOR_OPERATORS,
+    ID_TEXTCOLOR_FUNCTIONS,
+    ID_TEXTCOLOR_MEMORY,
+    ID_TEXTCOLOR_STATISTICS,
+    ID_TEXTCOLOR_BASE,
+    ID_TEXTCOLOR_REPRESENTATION,
+    ID_TEXTCOLOR_INV,
+    ID_TEXTCOLOR_HYP,
+    ID_TEXTCOLOR_BACKSPACE,
+    ID_TEXTCOLOR_CLEARENTRY,
+    ID_TEXTCOLOR_CLEARALL,
 
     ID_CLARIFY,
     ID_LAST

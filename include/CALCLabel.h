@@ -19,8 +19,6 @@
 #ifndef _CALCLABEL_H_
 #define _CALCLABEL_H_
 
-#include "fox/fx.h"
-
 class CALCLabel : public FXLabel
 {
   FXDECLARE(CALCLabel)

@@ -1,5 +1,5 @@
 /* CALCStatBox.h
- * Copyright (C) 2001 Dustin Graves <dgraves@computer.org>
+ * Copyright (C) 2001,2002 Dustin Graves <dgraves@computer.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,11 +19,7 @@
 #ifndef _CALCSTATBOX_H_
 #define _CALCSTATBOX_H_
 
-#include "fox/fx.h"
-#include "CALCdefs.h"
-
 class CALCList;
-class CALCWindow;
 
 class CALCStatBox : public FXDialogBox
 {

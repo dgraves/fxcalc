@@ -19,8 +19,6 @@
 #ifndef _CALCLIST_H_
 #define _CALCLIST_H_
 
-#include "fox/fx.h"
-
 class CALCList : public FXList
 {
   FXDECLARE(CALCList)

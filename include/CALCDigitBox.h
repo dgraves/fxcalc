@@ -19,9 +19,6 @@
 #ifndef _CALCDIGITBOX_H_
 #define _CALCDIGITBOX_H_
 
-#include "fox/fx.h"
-#include "CALCdefs.h"
-
 class CALCDigitBox : public FXDialogBox
 {
   FXDECLARE(CALCDigitBox)
