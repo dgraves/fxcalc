@@ -22,6 +22,5 @@ The version of the doubledouble library (which this program uses for 128-bit
 floating point math) distributed with this program differs from the 
 official doubledouble distribution.  Some modifications to the source have been 
 made in order to compile with current versions of gcc, MIPSpro CC, and Visual C++.  
-A bug with the 'pow' function has also been fixed.  See ChangeLog for details.  
 
 See INSTALL for installation instructions
