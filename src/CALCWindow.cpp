@@ -942,7 +942,9 @@ void CALCWindow::setLabelText(CALCdouble val)
   FXint count=0;
 
   //Make proper word size
-  ival&=(0xFFFFFFFF00000000*((word==NUM_DLWORD)?1:0))|(0xFFFF0000*((word>=NUM_LWORD)?1:0))|(0xFF00*((word>=NUM_WORD)?1:0))|(0xFF*((word>=NUM_BYTE)?1:0));
+//Workaround for gcc problems with large constants being treated as long rather than long long: integer constant is too large for "long" type
+//  ival&=(0xFFFFFFFF00000000*((word==NUM_DLWORD)?1:0))|(0xFFFF0000*((word>=NUM_LWORD)?1:0))|(0xFF00*((word>=NUM_WORD)?1:0))|(0xFF*((word>=NUM_BYTE)?1:0));
+  ival&=((((CALCuint64)0xFFFFFFFF)<<32)*((word==NUM_DLWORD)?1:0))|(0xFFFF0000*((word>=NUM_LWORD)?1:0))|(0xFF00*((word>=NUM_WORD)?1:0))|(0xFF*((word>=NUM_BYTE)?1:0));
 
   if((base!=BASE_TEN))
   {
