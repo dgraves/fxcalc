@@ -1,7 +1,3 @@
 1 Placement of values when dragged from a source outside of Stat box could be improved
 
-2 Integrate with foxdesktop???
-
-3 Possibly contact MS tech support about internal linker error when
-  compiling optimized for speed on Windows 98.  It currently has to 
-  be optimized for size when compiling with Visual C++ on 98.
+2 Add "Default" buttons for prefss dialog, to reset colors, fonts, etc to original values
