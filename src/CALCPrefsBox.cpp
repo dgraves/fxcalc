@@ -43,7 +43,7 @@ CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
   tabbook=new FXTabBook(contents,NULL,0,LAYOUT_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   new FXTabItem(tabbook,"&Settings",NULL);
   FXVerticalFrame* settingsframe=new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  new FXLabel(settingsframe,"fxcalc settings");
+  new FXLabel(settingsframe,PROG_PACKAGE" settings");
   new FXHorizontalSeparator(settingsframe,SEPARATOR_LINE|LAYOUT_FILL_X);
 
   FXMatrix *matrix1=new FXMatrix(settingsframe,6,MATRIX_BY_ROWS|PACK_UNIFORM_HEIGHT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
@@ -75,7 +75,7 @@ CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
 
   new FXTabItem(tabbook,"C&olors",NULL);
   FXVerticalFrame* colorframe=new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  new FXLabel(colorframe,"fxcalc colors");
+  new FXLabel(colorframe,PROG_PACKAGE" colors");
   new FXHorizontalSeparator(colorframe,SEPARATOR_LINE|LAYOUT_FILL_X);
 
   FXHorizontalFrame *frame1=new FXHorizontalFrame(colorframe,PACK_UNIFORM_WIDTH|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
@@ -113,7 +113,7 @@ CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
 
   new FXTabItem(tabbook,"&Text Colors",NULL);
   FXVerticalFrame* textcolorframe=new FXVerticalFrame(tabbook,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  new FXLabel(textcolorframe,"fxcalc text colors");
+  new FXLabel(textcolorframe,PROG_PACKAGE" text colors");
   new FXHorizontalSeparator(textcolorframe,SEPARATOR_LINE|LAYOUT_FILL_X);
 
   FXHorizontalFrame *frame2=new FXHorizontalFrame(textcolorframe,PACK_UNIFORM_WIDTH|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);

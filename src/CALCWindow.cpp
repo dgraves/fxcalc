@@ -195,7 +195,7 @@ FXDEFMAP(CALCWindow) CALCWindowMap[]={
 FXIMPLEMENT(CALCWindow,FXMainWindow,CALCWindowMap,ARRAYNUMBER(CALCWindowMap))
 
 CALCWindow::CALCWindow(FXApp* app)
-: FXMainWindow(app,"fxcalc",NULL,NULL,DECOR_ALL), //DECOR_TITLE|DECOR_MINIMIZE|DECOR_CLOSE|DECOR_BORDER|DECOR_MENU),
+: FXMainWindow(app,PROG_PACKAGE,NULL,NULL,DECOR_ALL), //DECOR_TITLE|DECOR_MINIMIZE|DECOR_CLOSE|DECOR_BORDER|DECOR_MENU),
   mode(CALC_SCIENTIFIC),
   base(BASE_TEN),
   rep(DEGREES),
@@ -254,7 +254,7 @@ CALCWindow::CALCWindow(FXApp* app)
   new FXMenuTitle(menu,"&Help",NULL,helpmenu);
   new FXMenuCommand(helpmenu,"&Tool tips\tCtl-B",NULL,this,ID_USETOOLTIPS);
   new FXMenuSeparator(helpmenu);
-  new FXMenuCommand(helpmenu,"&About fxcalc...",smallcalc,this,ID_ABOUT);
+  new FXMenuCommand(helpmenu,"&About "PROG_PACKAGE"...",smallcalc,this,ID_ABOUT);
 
   FXHorizontalFrame* lcdframe=new FXHorizontalFrame(this,LAYOUT_FILL_X,0,0,0,0, 4,4,2,2);
   lcd=new CALCLabel(lcdframe,"0.\t"LCD_HELP,NULL,JUSTIFY_RIGHT|FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X);
@@ -1352,7 +1352,7 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   new FXButton(buttons,"&Close",NULL,&about,FXDialogBox::ID_ACCEPT,BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_RIGHT|FRAME_RAISED|FRAME_THICK,0,0,0,0, 20,20);
   new FXHorizontalSeparator(&about,SEPARATOR_RIDGE|LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X);
   FXVerticalFrame* aboutframe=new FXVerticalFrame(&about,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  new FXLabel(aboutframe,"About fxcalc");
+  new FXLabel(aboutframe,"About "PROG_PACKAGE);
   new FXHorizontalSeparator(aboutframe,SEPARATOR_LINE|LAYOUT_FILL_X);
   FXHorizontalFrame* aboutlabels=new FXHorizontalFrame(aboutframe,LAYOUT_FILL_X|LAYOUT_FILL_Y);
   new FXLabel(aboutlabels,NULL,bigcalc,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 20,20,20,20);
