@@ -1,6 +1,7 @@
 EXTRA_DIST = \
 		CALCdefs.h     \
 		CALCHelp.h     \
+		CALCButton.h   \
 		CALCDigitBox.h \
 		CALCPrefsBox.h \
 		CALCList.h     \

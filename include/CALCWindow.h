@@ -233,10 +233,9 @@ protected:
   FXHorizontalFrame* modesFrame;
   FXSwitcher* modeSwitch;
   FXHorizontalFrame* scientificFrame;
-  FXMatrix* piMatrix;
   FXMatrix* advancedMatrix;
-  FXMatrix* simpleMatrix;
-  FXMatrix* hexMatrix;
+  FXVerticalFrame* simpleFrame;
+  FXHorizontalFrame* hexFrame;
 
   FXMenuPane* filemenu;
   FXMenuPane* editmenu;
