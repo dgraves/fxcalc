@@ -1275,7 +1275,7 @@ long CALCWindow::onUpdPaste(FXObject* sender,FXSelector,void*)
 long CALCWindow::onCmdPreferences(FXObject*,FXSelector,void*)
 {
   CALCPrefsBox dialog(this);
-  dialog.execute();
+  dialog.execute(PLACEMENT_OWNER);
   return 1;
 }
 
@@ -1352,7 +1352,7 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   new FXLabel(aboutlabels,NULL,bigcalc,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 20,20,20,20);
   new FXLabel(aboutlabels,msg,NULL,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 0,20,20,20);
 
-  about.execute();
+  about.execute(PLACEMENT_OWNER);
 
   return 1;
 }
@@ -2744,7 +2744,7 @@ long CALCWindow::onCmdDisplayFont(FXObject*,FXSelector,void*)
 
   lcd->getFont()->getFontDesc(fontdesc);
   dialog.setFontSelection(fontdesc);
-  if(dialog.execute())
+  if(dialog.execute(PLACEMENT_OWNER))
   {
     FXFont *oldfont=lcdfont;
     dialog.getFontSelection(fontdesc);
@@ -2763,7 +2763,7 @@ long CALCWindow::onCmdButtonFont(FXObject*,FXSelector,void*)
 
   baseBtns[0]->getFont()->getFontDesc(fontdesc);
   dialog.setFontSelection(fontdesc);
-  if(dialog.execute())
+  if(dialog.execute(PLACEMENT_OWNER))
   {
     FXFont *oldfont=btnfont;
     dialog.getFontSelection(fontdesc);
