@@ -1,5 +1,2 @@
-* Add "Default" buttons for prefss dialog, to reset colors, fonts, etc to original values
-* Add settings for width and height.  
-* Stop mode change from resetting width and height.  
 * Add registry entries for numeric base, angle type, and word size?
 

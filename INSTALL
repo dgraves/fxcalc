@@ -1,7 +1,7 @@
 Windows
 =======
 
-Use the fxcalc project files (fxcalc.dsw) found in the windows subdirectory to 
+Use the fxcalc project files found in the windows subdirectory to
 build fxcalc.  This will build both doubledouble and fxcalc.
 
 
@@ -30,7 +30,7 @@ include files in /home/username/software/include
 library files in /home/username/software/lib
 and reswrap in /home/username/software/bin/reswrap
 
-Use RESWRAP variable to specify the location of reswrap.      
+Use RESWRAP variable to specify the location of reswrap.
 Use CPPFLAGS to specify the -I include directive.
 Use LDFLAGS to specify the -L library directive.
 
@@ -38,15 +38,15 @@ When using the SGI MIPSPro compiler, the compiler must be specified as:
 
 CXX="CC -LANG:std"
 
-The usage of the new iostream requires "-LANG:std" be specifed with 
-the SGI MIPSPro compiler.  
+The usage of the new iostream requires "-LANG:std" be specifed with
+the SGI MIPSPro compiler.
 
-If you would like to test the doubledouble library, enter the doubledouble 
+If you would like to test the doubledouble library, enter the doubledouble
 subdirectory and build trydd.cpp with Makefile.kmb like so:
   make -f Makefile.kmb
-This will build doubledouble (if necessary), build the trydd test program, 
-and execute the trydd test program.  You may need to edit Makefile.kmb first, 
-in order to set the proper compilation flags for your compiler and host os.  
+This will build doubledouble (if necessary), build the trydd test program,
+and execute the trydd test program.  You may need to edit Makefile.kmb first,
+in order to set the proper compilation flags for your compiler and host os.
 
 
 Basic Installation
