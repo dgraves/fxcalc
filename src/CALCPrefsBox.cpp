@@ -201,8 +201,8 @@ long CALCPrefsBox::onCmdDefaults(FXObject*,FXSelector,void*)
 long CALCPrefsBox::onUpdEasterEggs(FXObject* sender,FXSelector,void*)
 {
   CALCdouble value=0.0;
-  getApp()->getMainWindow()->handle(this,MKUINT(CALCWindow::ID_GETLCDVALUE,SEL_COMMAND),(void*)&value);
-  
+  getOwner()->handle(this,MKUINT(CALCWindow::ID_GETLCDVALUE,SEL_COMMAND),(void*)&value);
+
   FXuint msg=(value==(CALCdouble)42.0) ? ID_SHOW : ID_HIDE;
   sender->handle(this,MKUINT(msg,SEL_COMMAND),NULL);
   return 1;
