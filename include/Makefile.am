@@ -1,5 +1,4 @@
-pkginclude_HEADERS = \
-		icons.h        \
+EXTRA_DIST = \
 		CALCdefs.h     \
 		CALCHelp.h     \
 		CALCDigitBox.h \
