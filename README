@@ -1,4 +1,4 @@
-fxcalc version 1.0.11, Copyright (C) 2000-2004 Dustin Graves <dgraves@computer.org>
+fxcalc version 1.0.12, Copyright (C) 2000-2004 Dustin Graves <dgraves@computer.org>
 fxcalc comes with ABSOLUTELY NO WARRANTY.  This is free software, and you are
 welcome to redistribute it under certain conditions; see COPYING for details.
 
@@ -7,7 +7,7 @@ fxcalc is a platform independent scientific calculator, capable of
 GNU General Public License.
 
 This software uses the FOX Platform Independent GUI Toolkit Library.
-The FOX Library is Copyright (C) 1997,2000-2003 Jeroen van der Zijp and is
+The FOX Library is Copyright (C) 1997,2000-2004 Jeroen van der Zijp and is
 available freely under the GNU Lesser Public License at the following site:
 http://www.fox-toolkit.org
 

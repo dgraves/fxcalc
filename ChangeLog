@@ -1,3 +1,8 @@
+Sun Feb 15 2004 Dustin Graves <dgraves@computer.org>
+ * Fixed digit grouping bug resulting from FXString changes
+ * Updates for fox 1.1.46 changes to FXList constructor
+ * Modifications to autoconf script
+
 Sat May 10 2003 Dustin Graves <dgraves@computer.org>
  * Fixed bug when reading screen y position from registry
  * Stat box is now parented to main window instead of FXApp
