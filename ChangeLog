@@ -1,3 +1,8 @@
+Tue Mar 29 2002 Dustin Graves <dgraves@computer.org>
+ * Updates for compatability with changes to FXList
+ * Improved drag and drop in stat list
+ * Fixed digit grouping bug with comma appearing after negative sign '-'
+
 Sat Apr 7 2001 Dustin Graves <dgraves@computer.org>
  * Added context sensitive help to CALCStatBox and CALCDigitBox
  * Fixed clipboard code

@@ -8,7 +8,3 @@ Fri Mar  9 17:43:33 HST 2001 Dustin Graves <dgraves@computer.org>
     - Supports drag and drop of numbers between the calculator and other applications, and between the calculator and its statistics box
     - Uses tooltips in a sort of Ballon help style to show descriptions of the different functions
     - Context sensitive help (Microsoft "What's this?" style pop-up menu) to request a description of an Item's functionality
-
-Tue Mar 26 23:00:38 HST 2002 Dustin Graves <dgraves@computer.org>
-  * Updates for compatability with latest FOX versions.  
-  * Fix digit grouping bug with negative numbers.  
