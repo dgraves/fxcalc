@@ -144,21 +144,21 @@ long CALCList::onMotion(FXObject* sender,FXSelector sel,void* ptr)
   return 1;
 }
 
-long CALCList::onBeginDrag(FXObject* sender,FXSelector sel,void* ptr)
+long CALCList::onBeginDrag(FXObject*,FXSelector,void*)
 {
   beginDrag(&textType,1);
   setDragCursor(getApp()->getDefaultCursor(DEF_DNDMOVE_CURSOR));
   return 1;
 }
 
-long CALCList::onEndDrag(FXObject* sender,FXSelector sel,void* ptr)
+long CALCList::onEndDrag(FXObject*,FXSelector,void*)
 {
   endDrag((didAccept()!=DRAG_REJECT));
   setDragCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
   return 1;
 }
 
-long CALCList::onDragged(FXObject* sender,FXSelector sel,void* ptr)
+long CALCList::onDragged(FXObject*,FXSelector,void* ptr)
 {
   FXEvent* event=(FXEvent*)ptr;
   FXDragAction action=DRAG_COPY;
@@ -179,7 +179,7 @@ long CALCList::onDragged(FXObject* sender,FXSelector sel,void* ptr)
   return 1;
 }
 
-long CALCList::onDNDMotion(FXObject* sender,FXSelector sel,void* ptr)
+long CALCList::onDNDMotion(FXObject*,FXSelector,void*)
 {
   FXDragAction action;
 
@@ -199,13 +199,13 @@ long CALCList::onDNDMotion(FXObject* sender,FXSelector sel,void* ptr)
   return 0;
 }
 
-long CALCList::onDNDDrop(FXObject* sender,FXSelector sel,void* ptr)
+long CALCList::onDNDDrop(FXObject*,FXSelector,void* ptr)
 {
   if(target && target->handle(this,MKUINT(message,SEL_DND_DROP),ptr)) return 1;
   return 0;
 }
 
-long CALCList::onDNDRequest(FXObject* sender,FXSelector sel,void* ptr)
+long CALCList::onDNDRequest(FXObject*,FXSelector,void* ptr)
 {
   if(target && target->handle(this,MKUINT(message,SEL_DND_REQUEST),ptr)) return 1;
   return 0;

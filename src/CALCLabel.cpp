@@ -122,21 +122,21 @@ long CALCLabel::onMotion(FXObject* sender,FXSelector sel,void* ptr)
   return 1;
 }
 
-long CALCLabel::onBeginDrag(FXObject* sender,FXSelector sel,void* ptr)
+long CALCLabel::onBeginDrag(FXObject*,FXSelector,void*)
 {
   beginDrag(&textType,1);
   setDragCursor(getApp()->getDefaultCursor(DEF_DNDSTOP_CURSOR));
   return 1;
 }
 
-long CALCLabel::onEndDrag(FXObject* sender,FXSelector sel,void* ptr)
+long CALCLabel::onEndDrag(FXObject*,FXSelector,void*)
 {
   endDrag((didAccept()!=DRAG_REJECT));
   setDragCursor(getApp()->getDefaultCursor(DEF_ARROW_CURSOR));
   return 1;
 }
 
-long CALCLabel::onDragged(FXObject* sender,FXSelector sel,void* ptr)
+long CALCLabel::onDragged(FXObject*,FXSelector,void* ptr)
 {
   FXEvent* event=(FXEvent*)ptr;
   FXDragAction action=DRAG_COPY;
@@ -161,7 +161,7 @@ long CALCLabel::onDragged(FXObject* sender,FXSelector sel,void* ptr)
   return 1;
 }
 
-long CALCLabel::onDNDMotion(FXObject* sender,FXSelector sel,void* ptr)
+long CALCLabel::onDNDMotion(FXObject*,FXSelector,void*)
 {
   FXDragAction action;
 
@@ -181,13 +181,13 @@ long CALCLabel::onDNDMotion(FXObject* sender,FXSelector sel,void* ptr)
   return 0;
 }
 
-long CALCLabel::onDNDDrop(FXObject* sender,FXSelector sel,void* ptr)
+long CALCLabel::onDNDDrop(FXObject*,FXSelector,void* ptr)
 {
   if(target && target->handle(this,MKUINT(message,SEL_DND_DROP),ptr)) return 1;
   return 0;
 }
 
-long CALCLabel::onDNDRequest(FXObject* sender,FXSelector sel,void* ptr)
+long CALCLabel::onDNDRequest(FXObject*,FXSelector,void* ptr)
 {
   if(target && target->handle(this,MKUINT(message,SEL_DND_REQUEST),ptr)) return 1;
   return 0;

@@ -196,27 +196,27 @@ FXIMPLEMENT(CALCWindow,FXMainWindow,CALCWindowMap,ARRAYNUMBER(CALCWindowMap))
 
 CALCWindow::CALCWindow(FXApp* app)
 : FXMainWindow(app,"fxcalc",NULL,NULL,DECOR_ALL), //DECOR_TITLE|DECOR_MINIMIZE|DECOR_CLOSE|DECOR_BORDER|DECOR_MENU),
-  tooltip(NULL),
+  mode(CALC_SCIENTIFIC),
+  base(BASE_TEN),
+  rep(DEGREES),
+  word(NUM_DLWORD),
+  notation(NOTATION_NONE),
   op(0),
+  ndigits(CALCDBL_DIG),
   inv(FALSE),
   hyp(FALSE),
   digitgrouping(FALSE),
   started(FALSE),
   mantissa(FALSE),
   exponent(FALSE),
-  value(0.0),
-  memory(0.0),
-  mode(CALC_SCIENTIFIC),
-  base(BASE_TEN),
-  rep(DEGREES),
-  word(NUM_DLWORD),
-  notation(NOTATION_NONE),
-  ndigits(CALCDBL_DIG),
   clarify(FALSE),
   easteregg1(FALSE),
   easteregg2(FALSE),
+  value(0.0),
+  memory(0.0),
   lcdfont(NULL),
-  btnfont(NULL)
+  btnfont(NULL),
+  tooltip(NULL)
 {
   statBox=new CALCStatBox(this);
 
@@ -1122,7 +1122,7 @@ long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
   return 1;
 }
 
-long CALCWindow::onClipboardRequest(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onClipboardRequest(FXObject*,FXSelector,void* ptr)
 {
   FXEvent *event=(FXEvent*)ptr;
 
@@ -1205,7 +1205,8 @@ void CALCWindow::pasteData(FXuchar* data,FXuint len)
 }
 
 //Message is forwarded here from the CALCLabel
-long CALCWindow::onDNDDrop(FXObject* sender,FXSelector sel,void* ptr){
+long CALCWindow::onDNDDrop(FXObject*,FXSelector,void*)
+{
   FXuchar *data,*junk; FXuint len,dum;
 
   if(getDNDData(FROM_DRAGNDROP,textType,data,len))
@@ -1224,7 +1225,7 @@ long CALCWindow::onDNDDrop(FXObject* sender,FXSelector sel,void* ptr){
 }
 
 //Message is forwarded here from the CALCLabel
-long CALCWindow::onDNDRequest(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onDNDRequest(FXObject*,FXSelector,void* ptr)
 {
   FXEvent *event=(FXEvent*)ptr;
   FXuchar *data; FXuint len;
@@ -1357,19 +1358,19 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   return 1;
 }
 
-long CALCWindow::onCmdGetLCDText(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onCmdGetLCDText(FXObject*,FXSelector,void* ptr)
 {
   *((FXString*)ptr)=lcd->getText();
   return 1;
 }
 
-long CALCWindow::onCmdSetLCDText(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onCmdSetLCDText(FXObject*,FXSelector,void* ptr)
 {
   lcd->setText(*((FXString*)ptr));
   return 1;
 }
 
-long CALCWindow::onCmdPasteLCDText(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onCmdPasteLCDText(FXObject*,FXSelector,void* ptr)
 {
   FXString* str=(FXString*)ptr;
   FXuint len=str->length();
@@ -1381,13 +1382,13 @@ long CALCWindow::onCmdPasteLCDText(FXObject* sender,FXSelector sel,void* ptr)
   return 1;
 }
 
-long CALCWindow::onCmdGetLCDValue(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onCmdGetLCDValue(FXObject*,FXSelector,void* ptr)
 {
   *((CALCdouble*)ptr)=getLabelText();
   return 1;
 }
 
-long CALCWindow::onCmdSetLCDValue(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onCmdSetLCDValue(FXObject*,FXSelector,void* ptr)
 {
   setLabelText(*((CALCdouble*)ptr));
   return 1;
@@ -2683,7 +2684,7 @@ long CALCWindow::onUpdPI(FXObject* sender,FXSelector,void*)
   return 1;
 }
 
-long CALCWindow::onPopupMenu(FXObject* sender,FXSelector sel,void* ptr)
+long CALCWindow::onPopupMenu(FXObject* sender,FXSelector,void* ptr)
 {
 #ifdef HAVE_RTTI
   //Attemp to get tip text

@@ -230,7 +230,7 @@ long CALCStatBox::onDNDDrop(FXObject*,FXSelector,void* ptr)
   return 1;
 }
 
-long CALCStatBox::onDNDRequest(FXObject* sender,FXSelector sel,void* ptr)
+long CALCStatBox::onDNDRequest(FXObject*,FXSelector,void* ptr)
 {
   FXEvent *event=(FXEvent*)ptr;
   FXuchar *data; FXuint len;
