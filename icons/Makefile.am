@@ -4,15 +4,14 @@ ICONS  = \
         small_calc.bmp   \
         big_calc.bmp
 
-all: ../icons.h ../icons.cpp
+all: $(top_srcdir)/include/icons.h $(top_srcdir)/src/icons.cpp
 
-../icons.h: $(ICONS)
-	$(RESWRAP) -i -o ../icons.h $^
+$(top_srcdir)/include/icons.h: $(ICONS)
+	$(RESWRAP) -i -o $(top_srcdir)/include/icons.h $^
 
-../icons.cpp: $(ICONS)
-	$(RESWRAP) -e -o ../icons.cpp $^
+$(top_srcdir)/src/icons.cpp: $(ICONS)
+	$(RESWRAP) -e -o $(top_srcdir)/src/icons.cpp $^
 
-CLEANFILES = ../icons.h ../icons.cpp
+CLEANFILES = $(top_srcdir)/include/icons.h $(top_srcdir)/src/icons.cpp
 
 EXTRA_DIST = $(ICONS)
-
