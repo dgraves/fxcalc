@@ -39,6 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define DEBUG_QUAD 0
 
+/* Uncomment for older gcc versions
 #ifdef __GNUC__
   #if (__GNUC_MAJOR__<=2 && __GNUC_MINOR__<=6)
     #define bool int
@@ -48,6 +49,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     #endif
   #endif
 #endif
+*/
 
 #include <math.h>  // defines NAN, at least in gcc
 #include <assert.h>
