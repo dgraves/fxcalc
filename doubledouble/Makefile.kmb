@@ -10,7 +10,7 @@
 # 2. If you would like to be added to the doubledouble email list,
 #    remove the # in the next line.    Your email address will not be passed
 #    to anyone else, and will only be used for infrequent upgrade notices.
-MAIL=#@echo `whoami`@`hostname` has tested doubledouble 2.2 | mail kmb28@cam.ac.uk
+#MAIL=#@echo `whoami`@`hostname` has tested doubledouble 2.2 | mail kmb28@cam.ac.uk
 
 # linux-x86, standard setup...
 CPP=g++
@@ -61,7 +61,7 @@ PKG=README INSTALL ANNOUNCE COPYLEFT doubledouble.html Makefile doubledouble.h i
 trydd: trydd.o libdoubledouble.a
 	$(CPP) $(OPTS) -L. trydd.o -o trydd -ldoubledouble -lm
 	time ./trydd
-	$(MAIL)
+#	$(MAIL)
 
 trydd.o: trydd.cpp doubledouble.h inline.h
 	$(CPP) $(INC) $(OPTS) $(DEF) -c trydd.cpp
