@@ -59,6 +59,121 @@ enum
   NOTATION_SCI =0x02
 };
 
+//modes
+enum
+{
+  MODE_HEX=0,
+  MODE_DEC=1,
+  MODE_OCT=2,
+  MODE_BIN=3,
+  MODE_DEGREES=4,
+  MODE_RADIANS=5,
+  MODE_GRADIENTS=6,
+  MODE_DLWORD=7,
+  MODE_LWORD=8,
+  MODE_WORD=9,
+  MODE_BYTE=10,
+  MODE_INV=11,
+  MODE_HYP=12
+};
+
+//Digit buttons
+enum
+{
+  DIGIT_0=0,
+  DIGIT_1=1,
+  DIGIT_2=2,
+  DIGIT_3=3,
+  DIGIT_4=4,
+  DIGIT_5=5,
+  DIGIT_6=6,
+  DIGIT_7=7,
+  DIGIT_8=8,
+  DIGIT_9=9
+};
+
+//Hex digit buttons
+enum
+{
+  DIGIT_A=0,
+  DIGIT_B=1,
+  DIGIT_C=2,
+  DIGIT_D=3,
+  DIGIT_E=4,
+  DIGIT_F=5
+};
+
+//Opertor buttons
+enum
+{
+  OPERATOR_UMINUS=0,
+  OPERATOR_DECPOINT=1,
+  OPERATOR_DIVIDE=2,
+  OPERATOR_MULTIPLY=3,
+  OPERATOR_MINUS=4,
+  OPERATOR_PLUS=5,
+  OPERATOR_MODULUS=6,
+  OPERATOR_OR=7,
+  OPERATOR_LEFTSHIFT=8,
+  OPERATOR_EQUAL=9,
+  OPERATOR_AND=10,
+  OPERATOR_XOR=11,
+  OPERATOR_NOT=12,
+  OPERATOR_TRUNC=13,
+  OPERATOR_SIMPLE_SQRT=14,
+  OPERATOR_SIMPLE_PERCENT=15,
+  OPERATOR_SIMPLE_INVERT=16,
+  OPERATOR_SIMPLE_EQUAL=17
+};
+
+//Function buttons
+enum
+{
+  FUNC_FIXED=0,
+  FUNC_DMS=1,
+  FUNC_SIN=2,
+  FUNC_COS=3,
+  FUNC_TAN=4,
+  FUNC_LPAREN=5,
+  FUNC_EXPONENT=6,
+  FUNC_POWY=7,
+  FUNC_POW3=8,
+  FUNC_POW2=9,
+  FUNC_RPAREN=10,
+  FUNC_LN=11,
+  FUNC_LOG=12,
+  FUNC_FACTORIAL=13,
+  FUNC_INVERT=14,
+  FUNC_PI=15
+};
+
+//Memory buttons
+enum
+{
+  MEMORY_CLEAR=0,
+  MEMORY_RECALL=1,
+  MEMORY_STORE=2,
+  MEMORY_ADD=3
+};
+
+//Stat buttons
+enum
+{
+  STAT_SHOW=0,
+  STAT_MEAN=1,
+  STAT_SUM=2,
+  STAT_STANDARDDEV=3,
+  STAT_ADD=4
+};
+
+//Clear buttons
+enum
+{
+  CLEAR_BACKSPACE=0,
+  CLEAR_ENTRY=1,
+  CLEAR_ALL=2
+};
+
 //Had some trouble with the templated constructElms
 struct stackPair {FXuint op; CALCdouble value;};
 inline void constructElms(struct stackPair* ptr,unsigned int n){ptr=new stackPair[n];}
@@ -95,13 +210,15 @@ protected:
   FXIcon* bigcalc;
   FXIcon* smallcalc;
   CALCLabel* lcd;
-  FXButton* pi;
+
   FXHorizontalFrame* modesFrame;
-  FXHorizontalFrame* hexFrame;
-  FXHorizontalFrame* scientificFrame;
-  FXMatrix* advancedOps;
-  FXVerticalFrame* simpleOps;
   FXSwitcher* modeSwitch;
+  FXHorizontalFrame* scientificFrame;
+  FXMatrix* piMatrix;
+  FXMatrix* advancedMatrix;
+  FXMatrix* simpleMatrix;
+  FXMatrix* hexMatrix;
+
   FXMenuPane* filemenu;
   FXMenuPane* editmenu;
   FXMenuPane* viewmenu;
@@ -111,8 +228,17 @@ protected:
   FXMenuCommand* decCommand;
   FXMenuCommand* octCommand;
   FXMenuCommand* binCommand;
-  FXTooltip* tooltip;
+  FXToolTip* tooltip;
   CALCStatBox* statBox;
+
+  FXLabel* modeBtns[13];
+  FXButton* digitBtns[10];
+  FXButton* hexdigitBtns[6];
+  FXButton* operatorBtns[18];
+  FXButton* funcBtns[16];
+  FXButton* memoryBtns[4];
+  FXButton* statBtns[5];
+  FXButton* clearBtns[3];
 
   CALCdouble powY(const CALCdouble& x,const CALCdouble& y);
   CALCdouble truncate(const CALCdouble& x);
