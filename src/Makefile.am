@@ -10,6 +10,7 @@ ICONS  = \
 
 fxcalc_SOURCES = \
 		icons.cpp        \
+		CALCButton.cpp   \
 		CALCDigitBox.cpp \
                 CALCPrefsBox.cpp \
 		CALCList.cpp     \
