@@ -41,8 +41,8 @@ public:
   ~CALCPrefsBox();
 
   void setPrefTab(FXuint tab);
-  long CALCPrefsBox::onCmdDefaults(FXObject*,FXSelector,void*);
-  long CALCPrefsBox::onUpdEasterEggs(FXObject*,FXSelector,void*);
+  long onCmdDefaults(FXObject*,FXSelector,void*);
+  long onUpdEasterEggs(FXObject*,FXSelector,void*);
 
   enum
   {

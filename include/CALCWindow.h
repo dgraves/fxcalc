@@ -273,9 +273,9 @@ protected:
   CALCWindow() {}
 
   void setFont(FXLabel* targets[],FXFont* font);
-  void setBackColor(FXLabel* targets,FXColor color);
-  void setBackColor(FXLabel* targets[],FXColor color);
-  void setTextColor(FXLabel* targets[],FXColor color);
+  void setBackColors(FXLabel* targets,FXColor color);
+  void setBackColors(FXLabel* targets[],FXColor color);
+  void setTextColors(FXLabel* targets[],FXColor color);
 
 public:
   CALCWindow(FXApp* app);
@@ -284,28 +284,28 @@ public:
   virtual void create();
 
   void setDisplayColor(FXColor color);
-  void setDigitColor(FXColor color) {setBackColor(digitBtns,color);}
-  void setHexDigitColor(FXColor color) {setBackColor(hexdigitBtns,color);}
-  void setOperatorColor(FXColor color) {setBackColor(operatorBtns,color);}
-  void setFunctionColor(FXColor color) {setBackColor(funcBtns,color);}
-  void setMemoryColor(FXColor color) {setBackColor(memoryBtns,color);}
-  void setStatColor(FXColor color) {setBackColor(statBtns,color);}
+  void setDigitColor(FXColor color) {setBackColors(digitBtns,color);}
+  void setHexDigitColor(FXColor color) {setBackColors(hexdigitBtns,color);}
+  void setOperatorColor(FXColor color) {setBackColors(operatorBtns,color);}
+  void setFunctionColor(FXColor color) {setBackColors(funcBtns,color);}
+  void setMemoryColor(FXColor color) {setBackColors(memoryBtns,color);}
+  void setStatColor(FXColor color) {setBackColors(statBtns,color);}
   void setBaseColor(FXColor color);
   void setRepColor(FXColor color);
   void setInvColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_INV])->setBoxColor(color);}
   void setHypColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_HYP])->setBoxColor(color);}
-  void setBackspaceColor(FXColor color) {setBackColor(clearBtns[CLEAR_BACKSPACE],color);}
-  void setClearEntryColor(FXColor color) {setBackColor(clearBtns[CLEAR_ENTRY],color);}
-  void setClearAllColor(FXColor color) {setBackColor(clearBtns[CLEAR_ALL],color);}
+  void setBackspaceColor(FXColor color) {setBackColors(clearBtns[CLEAR_BACKSPACE],color);}
+  void setClearEntryColor(FXColor color) {setBackColors(clearBtns[CLEAR_ENTRY],color);}
+  void setClearAllColor(FXColor color) {setBackColors(clearBtns[CLEAR_ALL],color);}
   void setDisplayTextColor(FXColor color);
-  void setDigitTextColor(FXColor color) {setTextColor(digitBtns,color);}
-  void setHexDigitTextColor(FXColor color) {setTextColor(hexdigitBtns,color);}
-  void setOperatorTextColor(FXColor color) {setTextColor(operatorBtns,color);}
-  void setFunctionTextColor(FXColor color) {setTextColor(funcBtns,color);}
-  void setMemoryTextColor(FXColor color) {setTextColor(memoryBtns,color);}
-  void setStatTextColor(FXColor color) {setTextColor(statBtns,color);}
-  void setBaseTextColor(FXColor color) {setTextColor(baseBtns,color);}
-  void setRepTextColor(FXColor color) {setTextColor(repBtns,color);}
+  void setDigitTextColor(FXColor color) {setTextColors(digitBtns,color);}
+  void setHexDigitTextColor(FXColor color) {setTextColors(hexdigitBtns,color);}
+  void setOperatorTextColor(FXColor color) {setTextColors(operatorBtns,color);}
+  void setFunctionTextColor(FXColor color) {setTextColors(funcBtns,color);}
+  void setMemoryTextColor(FXColor color) {setTextColors(memoryBtns,color);}
+  void setStatTextColor(FXColor color) {setTextColors(statBtns,color);}
+  void setBaseTextColor(FXColor color) {setTextColors(baseBtns,color);}
+  void setRepTextColor(FXColor color) {setTextColors(repBtns,color);}
   void setInvTextColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_INV])->setTextColor(color);}
   void setHypTextColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_HYP])->setTextColor(color);}
   void setBackspaceTextColor(FXColor color) {clearBtns[CLEAR_BACKSPACE]->setTextColor(color);}

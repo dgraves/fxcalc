@@ -52,6 +52,21 @@ typedef unsigned long long uint64_t;
 #include "doubledouble.h"
 typedef doubledouble CALCdouble;
 
+//Define constants for double length
+//There are noticeable precision errors when using a doubledouble with 31 digits to do trig operations (eg acos(0) ends up being ~89.9999999999999998)
+//Therefore there is an option to select mantissa lengths (starts at 14 by default)
+#define CALCDBL_DIG 31
+#define CALCDBL_MANT_DIG 107      //For 128-bit doubles this should be 113, but because doubledouble combines two doubles this is more likely to be closer to 106 or 107
+#define CALCDBL_MAX_EXP 4932      //Values for actual 128-bit floats.
+#define CALCDBL_MIN_EXP (-4931)
+
+#define CALC_PI  doubledouble::Pi
+#define CALC_2PI doubledouble::TwoPi
+
+// doubledouble does not provide tan or acos
+inline CALCdouble tan(const CALCdouble& x) { return sin(x)/cos(x); }
+inline CALCdouble acos(const CALCdouble& x) { return (CALC_PI/2.0)-asin(x); }
+
 //Conversions for 64-bit integers
 inline CALCdouble calci64todd(CALCint64 n)
 {
@@ -111,7 +126,7 @@ inline CALCint64 calcddtoi64(const doubledouble& x)
 
   while(b>e)
   {
-    n+=(s[--b]-'0')*((i==0)?1:((CALCint64)pow(10,i)));
+    n+=(s[--b]-'0')*((i==0)?1:((CALCint64)pow(10.0,i)));
     i++;
   }
 
@@ -126,17 +141,6 @@ inline CALCuint64 calcddtoui64(const doubledouble& x)
   return (CALCuint64)calcddtoi64(x);
 }
 
-//Define constants for double length
-//There are noticeable precision errors when using a doubledouble with 31 digits to do trig operations (eg acos(0) ends up being ~89.9999999999999998)
-//Therefore there is an option to select mantissa lengths (starts at 14 by default)
-#define CALCDBL_DIG 31
-#define CALCDBL_MANT_DIG 107      //For 128-bit doubles this should be 113, but because doubledouble combines two doubles this is more likely to be closer to 106 or 107
-#define CALCDBL_MAX_EXP 4932      //Values for actual 128-bit floats.  
-#define CALCDBL_MIN_EXP (-4931)
-
-#define CALC_PI  doubledouble::Pi
-#define CALC_2PI doubledouble::TwoPi
-
 #else
 
 //Attempt to use IEEE 574 80-bit or 128-bit value.
@@ -150,7 +154,7 @@ typedef long double CALCdouble;
 #define CALCDBL_DIG LDBL_DIG
 #define CALCDBL_MANT_DIG LDBL_MANT_DIG
 #define CALCDBL_MAX_EXP LDBL_MAX_10_EXP
-#define CALCDBL_MIN_EXP LDBL_MIN_10_EXP 
+#define CALCDBL_MIN_EXP LDBL_MIN_10_EXP
 
 #define CALC_PI  3.1415926535897932384626433832795028841971693993751L
 #define CALC_2PI 6.2831853071795864769252867665590057683943387987502L
@@ -161,7 +165,7 @@ typedef double CALCdouble;
 #define CALCDBL_DIG DBL_DIG
 #define CALCDBL_MANT_DIG DBL_MANT_DIG
 #define CALCDBL_MAX_EXP DBL_MAX_10_EXP
-#define CALCDBL_MIN_EXP DBL_MIN_10_EXP 
+#define CALCDBL_MIN_EXP DBL_MIN_10_EXP
 
 #define CALC_PI  3.1415926535897932384626433832795028841971693993751
 #define CALC_2PI 6.2831853071795864769252867665590057683943387987502
