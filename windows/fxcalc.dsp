@@ -108,6 +108,10 @@ SOURCE=..\src\CALCList.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\CALCPrefsBox.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\CALCStatBox.cpp
 # End Source File
 # Begin Source File
@@ -141,6 +145,10 @@ SOURCE=..\include\CALCLabel.h
 # Begin Source File
 
 SOURCE=..\include\CALCList.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\include\CALCPrefsBox.h
 # End Source File
 # Begin Source File
 
