@@ -213,6 +213,8 @@ CALCWindow::CALCWindow(FXApp* app)
   notation(NOTATION_NONE),
   ndigits(CALCDBL_DIG),
   clarify(FALSE),
+  easteregg1(FALSE),
+  easteregg2(FALSE),
   lcdfont(NULL),
   btnfont(NULL)
 {
@@ -2991,8 +2993,8 @@ long CALCWindow::onCmdEasterEggs(FXObject*,FXSelector sel,void*)
     easteregg2=!easteregg2;
     break;
   case ID_DEFAULTEASTEREGGS:
-    easteregg1=TRUE;
-    easteregg2=TRUE;
+    easteregg1=FALSE;
+    easteregg2=FALSE;
     break;
   }
   return 1;
