@@ -190,7 +190,7 @@ CALCWindow::CALCWindow(FXApp* app)
   new FXMenuCommand(editmenu,"&Copy\tCtrl+C",NULL,this,ID_COPY);
   new FXMenuCommand(editmenu,"&Paste\tCtrl+V",NULL,this,ID_PASTE);
   new FXMenuSeparator(editmenu);
-  new FXMenuCommand(editmenu,"&Display Settings...\tCtrl+E",NULL,this,ID_PREFERENCES);
+  new FXMenuCommand(editmenu,"P&references...\tCtrl+P",NULL,this,ID_PREFERENCES);
   viewmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&View",NULL,viewmenu);
   new FXMenuCommand(viewmenu,"&Standard",NULL,this,ID_STANDARD);
@@ -301,7 +301,7 @@ CALCWindow::CALCWindow(FXApp* app)
   //Right scientific button segment
   FXVerticalFrame* rightSci=new FXVerticalFrame(scientificFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
 
-  FXHorizontalFrame* parenFrame=new FXHorizontalFrame(rightSci,LAYOUT_SIDE_RIGHT|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
+  FXHorizontalFrame* parenFrame=new FXHorizontalFrame(rightSci,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
   FXLabel* parenLabel=new FXLabel(parenFrame," \t"PARENLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   parenLabel->setTarget(this);
   parenLabel->setSelector(ID_PARENLABEL);
@@ -337,7 +337,7 @@ CALCWindow::CALCWindow(FXApp* app)
 
   //Group with memory and PI
   FXVerticalFrame* leftStan=new FXVerticalFrame(standardFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
-  FXHorizontalFrame* disFrame=new FXHorizontalFrame(leftStan,LAYOUT_SIDE_RIGHT|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
+  FXHorizontalFrame* disFrame=new FXHorizontalFrame(leftStan,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0, 0,0);
   FXLabel* memLabel=new FXLabel(disFrame," \t"MEMORYLABEL_HELP,NULL,FRAME_THICK|FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   memLabel->setTarget(this);
   memLabel->setSelector(ID_MEMORYLABEL);
@@ -531,174 +531,113 @@ CALCWindow::CALCWindow(FXApp* app)
   modeBtns[MODE_HYP]->addHotKey(KEY_H);
   statBtns[STAT_SHOW]->addHotKey(MKUINT(KEY_s,CONTROLMASK));
   statBtns[STAT_SHOW]->addHotKey(MKUINT(KEY_S,CONTROLMASK));
-  statBtns[STAT_SHOW]->setTextColor(FUNCTION);
   statBtns[STAT_MEAN]->addHotKey(MKUINT(KEY_a,CONTROLMASK));
   statBtns[STAT_MEAN]->addHotKey(MKUINT(KEY_A,CONTROLMASK));
-  statBtns[STAT_MEAN]->setTextColor(FUNCTION);
   statBtns[STAT_SUM]->addHotKey(MKUINT(KEY_t,CONTROLMASK));
   statBtns[STAT_SUM]->addHotKey(MKUINT(KEY_T,CONTROLMASK));
-  statBtns[STAT_SUM]->setTextColor(FUNCTION);
   statBtns[STAT_STANDARDDEV]->addHotKey(MKUINT(KEY_d,CONTROLMASK));
   statBtns[STAT_STANDARDDEV]->addHotKey(MKUINT(KEY_D,CONTROLMASK));
-  statBtns[STAT_STANDARDDEV]->setTextColor(FUNCTION);
   statBtns[STAT_ADD]->addHotKey(KEY_Insert);
-  statBtns[STAT_ADD]->setTextColor(FUNCTION);
   funcBtns[FUNC_FIXED]->addHotKey(KEY_v);
   funcBtns[FUNC_FIXED]->addHotKey(KEY_V);
-  funcBtns[FUNC_FIXED]->setTextColor(FUNCTION);
   funcBtns[FUNC_DMS]->addHotKey(KEY_m);
   funcBtns[FUNC_DMS]->addHotKey(KEY_M);
-  funcBtns[FUNC_DMS]->setTextColor(FUNCTION);
   funcBtns[FUNC_SIN]->addHotKey(KEY_s);
   funcBtns[FUNC_SIN]->addHotKey(KEY_S);
-  funcBtns[FUNC_SIN]->setTextColor(FUNCTION);
   funcBtns[FUNC_COS]->addHotKey(KEY_o);
   funcBtns[FUNC_COS]->addHotKey(KEY_O);
-  funcBtns[FUNC_COS]->setTextColor(FUNCTION);
   funcBtns[FUNC_TAN]->addHotKey(KEY_t);
   funcBtns[FUNC_TAN]->addHotKey(KEY_T);
-  funcBtns[FUNC_TAN]->setTextColor(FUNCTION);
   funcBtns[FUNC_LPAREN]->addHotKey(MKUINT(KEY_parenleft,SHIFTMASK));
-  funcBtns[FUNC_LPAREN]->setTextColor(FUNCTION);
   funcBtns[FUNC_EXPONENT]->addHotKey(KEY_x);
   funcBtns[FUNC_EXPONENT]->addHotKey(KEY_X);
-  funcBtns[FUNC_EXPONENT]->setTextColor(FUNCTION);
   funcBtns[FUNC_POWY]->addHotKey(KEY_y);
   funcBtns[FUNC_POWY]->addHotKey(KEY_Y);
-  funcBtns[FUNC_POWY]->setTextColor(FUNCTION);
   funcBtns[FUNC_POW3]->addHotKey(MKUINT(KEY_numbersign,SHIFTMASK));
-  funcBtns[FUNC_POW3]->setTextColor(FUNCTION);
   funcBtns[FUNC_POW2]->addHotKey(MKUINT(KEY_at,SHIFTMASK));
-  funcBtns[FUNC_POW2]->setTextColor(FUNCTION);
   funcBtns[FUNC_RPAREN]->addHotKey(MKUINT(KEY_parenright,SHIFTMASK));
-  funcBtns[FUNC_RPAREN]->setTextColor(FUNCTION);
   funcBtns[FUNC_LN]->addHotKey(KEY_n);
   funcBtns[FUNC_LN]->addHotKey(KEY_N);
-  funcBtns[FUNC_LN]->setTextColor(FUNCTION);
   funcBtns[FUNC_LOG]->addHotKey(KEY_l);
   funcBtns[FUNC_LOG]->addHotKey(KEY_L);
-  funcBtns[FUNC_LOG]->setTextColor(FUNCTION);
   funcBtns[FUNC_FACTORIAL]->addHotKey(MKUINT(KEY_exclam,SHIFTMASK));
-  funcBtns[FUNC_FACTORIAL]->setTextColor(FUNCTION);
   funcBtns[FUNC_INVERT]->addHotKey(KEY_r);
   funcBtns[FUNC_INVERT]->addHotKey(KEY_R);
-  funcBtns[FUNC_INVERT]->setTextColor(FUNCTION);
   memoryBtns[MEMORY_CLEAR]->addHotKey(MKUINT(KEY_l,CONTROLMASK));
   memoryBtns[MEMORY_CLEAR]->addHotKey(MKUINT(KEY_L,CONTROLMASK));
-  memoryBtns[MEMORY_CLEAR]->setTextColor(OPERATOR);
   memoryBtns[MEMORY_RECALL]->addHotKey(MKUINT(KEY_r,CONTROLMASK));
   memoryBtns[MEMORY_RECALL]->addHotKey(MKUINT(KEY_R,CONTROLMASK));
-  memoryBtns[MEMORY_RECALL]->setTextColor(OPERATOR);
   memoryBtns[MEMORY_STORE]->addHotKey(MKUINT(KEY_m,CONTROLMASK));
   memoryBtns[MEMORY_STORE]->addHotKey(MKUINT(KEY_M,CONTROLMASK));
-  memoryBtns[MEMORY_STORE]->setTextColor(OPERATOR);
   memoryBtns[MEMORY_ADD]->addHotKey(MKUINT(KEY_p,CONTROLMASK));
   memoryBtns[MEMORY_ADD]->addHotKey(MKUINT(KEY_P,CONTROLMASK));
-  memoryBtns[MEMORY_ADD]->setTextColor(OPERATOR);
   funcBtns[FUNC_PI]->addHotKey(KEY_p);
   funcBtns[FUNC_PI]->addHotKey(KEY_P);
-  funcBtns[FUNC_PI]->setTextColor(OPERATOR);
   clearBtns[CLEAR_BACKSPACE]->addHotKey(KEY_BackSpace);
-  clearBtns[CLEAR_BACKSPACE]->setTextColor(OPERATOR);
   clearBtns[CLEAR_ENTRY]->addHotKey(KEY_Delete);
   clearBtns[CLEAR_ENTRY]->addHotKey(KEY_KP_Delete);
-  clearBtns[CLEAR_ENTRY]->setTextColor(OPERATOR);
   clearBtns[CLEAR_ALL]->addHotKey(KEY_Escape);
-  clearBtns[CLEAR_ALL]->setTextColor(OPERATOR);
   digitBtns[DIGIT_7]->addHotKey(KEY_7);
   digitBtns[DIGIT_7]->addHotKey(KEY_KP_7);
-  digitBtns[DIGIT_7]->setTextColor(VALUE);
   digitBtns[DIGIT_4]->addHotKey(KEY_4);
   digitBtns[DIGIT_4]->addHotKey(KEY_KP_4);
-  digitBtns[DIGIT_4]->setTextColor(VALUE);
   digitBtns[DIGIT_1]->addHotKey(KEY_1);
   digitBtns[DIGIT_1]->addHotKey(KEY_KP_1);
-  digitBtns[DIGIT_1]->setTextColor(VALUE);
   digitBtns[DIGIT_0]->addHotKey(KEY_0);
   digitBtns[DIGIT_0]->addHotKey(KEY_KP_0);
-  digitBtns[DIGIT_0]->setTextColor(VALUE);
   digitBtns[DIGIT_8]->addHotKey(KEY_8);
   digitBtns[DIGIT_8]->addHotKey(KEY_KP_8);
-  digitBtns[DIGIT_8]->setTextColor(VALUE);
   digitBtns[DIGIT_5]->addHotKey(KEY_5);
   digitBtns[DIGIT_5]->addHotKey(KEY_KP_5);
-  digitBtns[DIGIT_5]->setTextColor(VALUE);
   digitBtns[DIGIT_2]->addHotKey(KEY_2);
   digitBtns[DIGIT_2]->addHotKey(KEY_KP_2);
-  digitBtns[DIGIT_2]->setTextColor(VALUE);
   operatorBtns[OPERATOR_UMINUS]->addHotKey(KEY_F9);
-  operatorBtns[OPERATOR_UMINUS]->setTextColor(OPERATOR);
   digitBtns[DIGIT_9]->addHotKey(KEY_9);
   digitBtns[DIGIT_9]->addHotKey(KEY_KP_9);
-  digitBtns[DIGIT_9]->setTextColor(VALUE);
   digitBtns[DIGIT_6]->addHotKey(KEY_6);
   digitBtns[DIGIT_6]->addHotKey(KEY_KP_6);
-  digitBtns[DIGIT_6]->setTextColor(VALUE);
   digitBtns[DIGIT_3]->addHotKey(KEY_3);
   digitBtns[DIGIT_3]->addHotKey(KEY_KP_3);
-  digitBtns[DIGIT_3]->setTextColor(VALUE);
   operatorBtns[OPERATOR_DECPOINT]->addHotKey(KEY_period);
   operatorBtns[OPERATOR_DECPOINT]->addHotKey(KEY_KP_Decimal);
   operatorBtns[OPERATOR_DECPOINT]->addHotKey(KEY_comma);
   operatorBtns[OPERATOR_DIVIDE]->addHotKey(KEY_slash);
   operatorBtns[OPERATOR_DIVIDE]->addHotKey(KEY_KP_Divide);
-  operatorBtns[OPERATOR_DIVIDE]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_MULTIPLY]->addHotKey(MKUINT(KEY_asterisk,SHIFTMASK));
   operatorBtns[OPERATOR_MULTIPLY]->addHotKey(KEY_KP_Multiply);
-  operatorBtns[OPERATOR_MULTIPLY]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_MINUS]->addHotKey(KEY_minus);
   operatorBtns[OPERATOR_MINUS]->addHotKey(KEY_KP_Subtract);
-  operatorBtns[OPERATOR_MINUS]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_PLUS]->addHotKey(MKUINT(KEY_plus,SHIFTMASK));
   operatorBtns[OPERATOR_PLUS]->addHotKey(KEY_KP_Add);
-  operatorBtns[OPERATOR_PLUS]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_MODULUS]->addHotKey(MKUINT(KEY_percent,SHIFTMASK));
-  operatorBtns[OPERATOR_MODULUS]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_OR]->addHotKey(MKUINT(KEY_bar,SHIFTMASK));
-  operatorBtns[OPERATOR_OR]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_LEFTSHIFT]->addHotKey(MKUINT(KEY_less,SHIFTMASK));
-  operatorBtns[OPERATOR_LEFTSHIFT]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_EQUAL]->addHotKey(KEY_equal);
   operatorBtns[OPERATOR_EQUAL]->addHotKey(KEY_Return);
   operatorBtns[OPERATOR_EQUAL]->addHotKey(KEY_KP_Enter);
-  operatorBtns[OPERATOR_EQUAL]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_AND]->addHotKey(MKUINT(KEY_ampersand,SHIFTMASK));
-  operatorBtns[OPERATOR_AND]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_XOR]->addHotKey(MKUINT(KEY_asciicircum,SHIFTMASK));
-  operatorBtns[OPERATOR_XOR]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_NOT]->addHotKey(MKUINT(KEY_asciitilde,SHIFTMASK));
-  operatorBtns[OPERATOR_NOT]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_TRUNC]->addHotKey(KEY_semicolon);
-  operatorBtns[OPERATOR_TRUNC]->setTextColor(OPERATOR);
   operatorBtns[OPERATOR_SIMPLE_SQRT]->addHotKey(MKUINT(KEY_at,SHIFTMASK));
-  operatorBtns[OPERATOR_SIMPLE_SQRT]->setTextColor(FUNCTION);
   operatorBtns[OPERATOR_SIMPLE_PERCENT]->addHotKey(MKUINT(KEY_percent,SHIFTMASK));
-  operatorBtns[OPERATOR_SIMPLE_PERCENT]->setTextColor(FUNCTION);
   operatorBtns[OPERATOR_SIMPLE_INVERT]->addHotKey(KEY_r);
   operatorBtns[OPERATOR_SIMPLE_INVERT]->addHotKey(KEY_R);
-  operatorBtns[OPERATOR_SIMPLE_INVERT]->setTextColor(FUNCTION);
   operatorBtns[OPERATOR_SIMPLE_EQUAL]->addHotKey(KEY_equal);
   operatorBtns[OPERATOR_SIMPLE_EQUAL]->addHotKey(KEY_Return);
   operatorBtns[OPERATOR_SIMPLE_EQUAL]->addHotKey(KEY_KP_Enter);
-  operatorBtns[OPERATOR_SIMPLE_EQUAL]->setTextColor(OPERATOR);
   hexdigitBtns[HEXDIGIT_A]->addHotKey(KEY_a);
   hexdigitBtns[HEXDIGIT_A]->addHotKey(KEY_A);
-  hexdigitBtns[HEXDIGIT_A]->setTextColor(FUNCTION);
   hexdigitBtns[HEXDIGIT_B]->addHotKey(KEY_b);
   hexdigitBtns[HEXDIGIT_B]->addHotKey(KEY_B);
-  hexdigitBtns[HEXDIGIT_B]->setTextColor(FUNCTION);
   hexdigitBtns[HEXDIGIT_C]->addHotKey(KEY_c);
   hexdigitBtns[HEXDIGIT_C]->addHotKey(KEY_C);
-  hexdigitBtns[HEXDIGIT_C]->setTextColor(FUNCTION);
   hexdigitBtns[HEXDIGIT_D]->addHotKey(KEY_d);
   hexdigitBtns[HEXDIGIT_D]->addHotKey(KEY_D);
-  hexdigitBtns[HEXDIGIT_D]->setTextColor(FUNCTION);
   hexdigitBtns[HEXDIGIT_E]->addHotKey(KEY_e);
   hexdigitBtns[HEXDIGIT_E]->addHotKey(KEY_E);
-  hexdigitBtns[HEXDIGIT_E]->setTextColor(FUNCTION);
   hexdigitBtns[HEXDIGIT_F]->addHotKey(KEY_f);
   hexdigitBtns[HEXDIGIT_F]->addHotKey(KEY_F);
-  hexdigitBtns[HEXDIGIT_F]->setTextColor(FUNCTION);
 
   baseBtns[BASE_LAST]=NULL;
   repBtns[REP_LAST]=NULL;
@@ -721,16 +660,67 @@ CALCWindow::~CALCWindow()
   delete bigcalc;
   delete smallcalc;
   delete statBox;
-  delete lcdfont;
-  delete btnfont;
+  if(lcdfont) delete lcdfont;
+  if(btnfont) delete btnfont;
 }
 
 void CALCWindow::create()
 {
+  FXFontDesc fontdesc;
+  const FXchar* fontspec;
+
+  //Dimensions
   FXint x=getApp()->reg().readIntEntry("SETTINGS","x",10);
   FXint y=getApp()->reg().readIntEntry("SETTINGS","y",10);
   FXint w=getApp()->reg().readIntEntry("SETTINGS","width",0);
   FXint h=getApp()->reg().readIntEntry("SETTINGS","height",0);
+
+  //Fonts and colors
+  fontspec=getApp()->reg().readStringEntry("SETTINGS","displayfont",NULL);
+  if(fontspec&&fxparsefontdesc(fontdesc,fontspec))
+  {
+    lcdfont=new FXFont(getApp(),fontdesc);
+    setDisplayFont(lcdfont);
+  }
+
+  fontspec=getApp()->reg().readStringEntry("SETTINGS","buttonfont",NULL);
+  if(fontspec&&fxparsefontdesc(fontdesc,fontspec))
+  {
+    btnfont=new FXFont(getApp(),fontdesc);
+    setDisplayFont(btnfont);
+  }
+
+  FXColor displayclr=getApp()->reg().readColorEntry("SETTINGS","displaycolor",getApp()->getBackColor());
+  FXColor digitclr=getApp()->reg().readColorEntry("SETTINGS","digitcolor",getApp()->getBaseColor());
+  FXColor hexdigitclr=getApp()->reg().readColorEntry("SETTINGS","hexdigitcolor",getApp()->getBaseColor());
+  FXColor operatorclr=getApp()->reg().readColorEntry("SETTINGS","operatorcolor",getApp()->getBaseColor());
+  FXColor functionclr=getApp()->reg().readColorEntry("SETTINGS","functioncolor",getApp()->getBaseColor());
+  FXColor memoryclr=getApp()->reg().readColorEntry("SETTINGS","memorycolor",getApp()->getBaseColor());
+  FXColor statclr=getApp()->reg().readColorEntry("SETTINGS","statcolor",getApp()->getBaseColor());
+  FXColor baseclr=getApp()->reg().readColorEntry("SETTINGS","numbasecolor",getApp()->getBackColor());
+  FXColor repclr=getApp()->reg().readColorEntry("SETTINGS","repcolor",getApp()->getBackColor());
+  FXColor invclr=getApp()->reg().readColorEntry("SETTINGS","invcolor",getApp()->getBackColor());
+  FXColor hypclr=getApp()->reg().readColorEntry("SETTINGS","hypcolor",getApp()->getBackColor());
+  FXColor backspaceclr=getApp()->reg().readColorEntry("SETTINGS","backspacecolor",getApp()->getBaseColor());
+  FXColor clearentryclr=getApp()->reg().readColorEntry("SETTINGS","clearentrycolor",getApp()->getBaseColor());
+  FXColor clearallclr=getApp()->reg().readColorEntry("SETTINGS","clearallcolor",getApp()->getBaseColor());
+
+  FXColor displaytxtclr=getApp()->reg().readColorEntry("SETTINGS","displaytextcolor",FXRGB(0,0,0));
+  FXColor digittxtclr=getApp()->reg().readColorEntry("SETTINGS","digittextcolor",VALUE);
+  FXColor hexdigittxtclr=getApp()->reg().readColorEntry("SETTINGS","hexdigittextcolor",FUNCTION);
+  FXColor operatortxtclr=getApp()->reg().readColorEntry("SETTINGS","operatortextcolor",OPERATOR);
+  FXColor functiontxtclr=getApp()->reg().readColorEntry("SETTINGS","functiontextcolor",FUNCTION);
+  FXColor memorytxtclr=getApp()->reg().readColorEntry("SETTINGS","memorytextcolor",OPERATOR);
+  FXColor stattxtclr=getApp()->reg().readColorEntry("SETTINGS","stattextcolor",FUNCTION);
+  FXColor basetxtclr=getApp()->reg().readColorEntry("SETTINGS","numbasetextcolor",FXRGB(0,0,0));
+  FXColor reptxtclr=getApp()->reg().readColorEntry("SETTINGS","reptextcolor",FXRGB(0,0,0));
+  FXColor invtxtclr=getApp()->reg().readColorEntry("SETTINGS","invtextcolor",FXRGB(0,0,0));
+  FXColor hyptxtclr=getApp()->reg().readColorEntry("SETTINGS","hyptextcolor",FXRGB(0,0,0));
+  FXColor backspacetxtclr=getApp()->reg().readColorEntry("SETTINGS","backspacetextcolor",OPERATOR);
+  FXColor clearentrytxtclr=getApp()->reg().readColorEntry("SETTINGS","clearentrytextcolor",OPERATOR);
+  FXColor clearalltxtclr=getApp()->reg().readColorEntry("SETTINGS","clearalltextcolor",OPERATOR);
+
+  //Settings
   FXuint m=getApp()->reg().readUnsignedEntry("SETTINGS","mode",CALC_SCIENTIFIC);
   ndigits=getApp()->reg().readUnsignedEntry("SETTINGS","digits",ndigits);  //Use default initialized value if it's not present
   digitgrouping=getApp()->reg().readIntEntry("SETTINGS","grouping",FALSE);
@@ -745,6 +735,36 @@ void CALCWindow::create()
 
   setMode(m);
   position(x,y,w,h);
+
+  setDisplayColor(displayclr);
+  setDigitColor(digitclr);
+  setHexDigitColor(hexdigitclr);
+  setOperatorColor(operatorclr);
+  setFunctionColor(functionclr);
+  setMemoryColor(memoryclr);
+  setStatColor(statclr);
+  setBaseColor(baseclr);
+  setRepColor(repclr);
+  setInvColor(invclr);
+  setHypColor(hypclr);
+  setBackspaceColor(backspaceclr);
+  setClearEntryColor(clearentryclr);
+  setClearAllColor(clearallclr);
+
+  setDisplayTextColor(displaytxtclr);
+  setDigitTextColor(digittxtclr);
+  setHexDigitTextColor(hexdigittxtclr);
+  setOperatorTextColor(operatortxtclr);
+  setFunctionTextColor(functiontxtclr);
+  setMemoryTextColor(memorytxtclr);
+  setStatTextColor(stattxtclr);
+  setBaseTextColor(basetxtclr);
+  setRepTextColor(reptxtclr);
+  setInvTextColor(invtxtclr);
+  setHypTextColor(hyptxtclr);
+  setBackspaceTextColor(backspacetxtclr);
+  setClearEntryTextColor(clearentrytxtclr);
+  setClearAllTextColor(clearalltxtclr);
 
   FXMainWindow::create();
 }
@@ -792,7 +812,7 @@ void CALCWindow::setBaseColor(FXColor color)
 
 void CALCWindow::setDisplayColor(FXColor color)
 {
-  setBackColor(lcd,color);
+  lcd->setBackColor(color);
 }
 
 void CALCWindow::setRepColor(FXColor color)
@@ -1117,14 +1137,60 @@ void CALCWindow::setLabelText(CALCdouble val)
 
 long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
 {
+  FXFontDesc fontdesc;
+  FXchar fontspec[200];
+
+  //Dimensions
   getApp()->reg().writeIntEntry("SETTINGS","x",getX());
   getApp()->reg().writeIntEntry("SETTINGS","y",getY());
   getApp()->reg().writeIntEntry("SETTINGS","width",getWidth());
   getApp()->reg().writeIntEntry("SETTINGS","height",getHeight());
+
+  //Fonts and colors
+  getDisplayFont()->getFontDesc(fontdesc);
+  fxunparsefontdesc(fontspec,fontdesc);
+  getApp()->reg().writeStringEntry("SETTINGS","displayfont",fontspec);
+
+  getButtonFont()->getFontDesc(fontdesc);
+  fxunparsefontdesc(fontspec,fontdesc);
+  getApp()->reg().writeStringEntry("SETTINGS","buttonfont",fontspec);
+
+  getApp()->reg().writeColorEntry("SETTINGS","displaycolor",getDisplayColor());
+  getApp()->reg().writeColorEntry("SETTINGS","digitcolor",getDigitColor());
+  getApp()->reg().writeColorEntry("SETTINGS","hexdigitcolor",getHexDigitColor());
+  getApp()->reg().writeColorEntry("SETTINGS","operatorcolor",getOperatorColor());
+  getApp()->reg().writeColorEntry("SETTINGS","functioncolor",getFunctionColor());
+  getApp()->reg().writeColorEntry("SETTINGS","memorycolor",getMemoryColor());
+  getApp()->reg().writeColorEntry("SETTINGS","statcolor",getStatColor());
+  getApp()->reg().writeColorEntry("SETTINGS","numbasecolor",getBaseColor());
+  getApp()->reg().writeColorEntry("SETTINGS","repcolor",getRepColor());
+  getApp()->reg().writeColorEntry("SETTINGS","invcolor",getInvColor());
+  getApp()->reg().writeColorEntry("SETTINGS","hypcolor",getHypColor());
+  getApp()->reg().writeColorEntry("SETTINGS","backspacecolor",getBackspaceColor());
+  getApp()->reg().writeColorEntry("SETTINGS","clearentrycolor",getClearEntryColor());
+  getApp()->reg().writeColorEntry("SETTINGS","clearallcolor",getClearAllColor());
+
+  getApp()->reg().writeColorEntry("SETTINGS","displaytextcolor",getDisplayTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","digittextcolor",getDigitTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","hexdigittextcolor",getHexDigitTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","operatortextcolor",getOperatorTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","functiontextcolor",getFunctionTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","memorytextcolor",getMemoryTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","stattextcolor",getStatTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","numbasetextcolor",getBaseTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","reptextcolor",getRepTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","invtextcolor",getInvTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","hyptextcolor",getHypTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","backspacetextcolor",getBackspaceTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","clearentrytextcolor",getClearEntryTextColor());
+  getApp()->reg().writeColorEntry("SETTINGS","clearalltextcolor",getClearAllTextColor());
+
+  //Settings
   getApp()->reg().writeUnsignedEntry("SETTINGS","mode",getMode());
   getApp()->reg().writeUnsignedEntry("SETTINGS","digits",ndigits);
   getApp()->reg().writeIntEntry("SETTINGS","grouping",digitgrouping);
   getApp()->reg().writeIntEntry("SETTINGS","tooltips",(tooltip==NULL)?FALSE:TRUE);
+
   getApp()->reg().write();
   getApp()->stop();
   return 1;

@@ -27,7 +27,7 @@
 FXIMPLEMENT(CALCPrefsBox,FXDialogBox,NULL,0)
 
 CALCPrefsBox::CALCPrefsBox(CALCWindow* owner)
-: FXDialogBox(owner,"Preferences Box",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU|DECOR_RESIZE,0,0,400,0, 0,0,0,0)
+: FXDialogBox(owner,"Calculator Preferences",DECOR_TITLE|DECOR_BORDER|DECOR_CLOSE|DECOR_MENU|DECOR_RESIZE,0,0,400,0, 0,0,0,0)
 {
   FXVerticalFrame* contents=new FXVerticalFrame(this,LAYOUT_FILL_X|LAYOUT_FILL_Y);
   FXHorizontalFrame* buttons=new FXHorizontalFrame(contents,LAYOUT_BOTTOM|LAYOUT_FILL_X);
