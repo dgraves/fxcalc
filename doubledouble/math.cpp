@@ -26,10 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <math.h>  // defines NAN, at least in gcc
 #include <assert.h>
 
-#ifdef SGI_CC
-#define __isinf(x) (!finite(x))
-#endif
-
 doubledouble exp(const doubledouble& x) { 
 /* Uses some ideas by Alan Miller
    Method:
@@ -320,19 +316,19 @@ doubledouble atan2(const doubledouble& qy, const doubledouble& qx) { // Based on
 #endif
   if (y==zero) return signx==one ? qy : Qcopysign(doubledouble::Pi,signy);
   if (x==zero) return Qcopysign(doubledouble::Pion2,signy);
-#ifndef WIN32
-  if (__isinf(x)) {
-    if (__isinf(y)) return Qcopysign(signx==one ? doubledouble::Pion4 : 3.0*doubledouble::Pion4,signy);
+// Dustin Graves 2002Apr06 #ifndef WIN32
+  if (DD_ISINF(x)) {
+    if (DD_ISINF(y)) return Qcopysign(signx==one ? doubledouble::Pion4 : 3.0*doubledouble::Pion4,signy);
     else            return Qcopysign(signx==one ? doubledouble(0.0) : doubledouble::Pi,signy);
   }
-  if (__isinf(y)) return Qcopysign(doubledouble::Pion2,signy);
-#else
-  if (_isnan(x)) {
-    if (_isnan(y)) return Qcopysign(signx==one ? doubledouble::Pion4 : 3.0*doubledouble::Pion4,signy);
-    else            return Qcopysign(signx==one ? doubledouble(0.0) : doubledouble::Pi,signy);
-  }
-  if (_isnan(y)) return Qcopysign(doubledouble::Pion2,signy);
-#endif
+  if (DD_ISINF(y)) return Qcopysign(doubledouble::Pion2,signy);
+//#else
+//  if (_isnan(x)) {
+//    if (_isnan(y)) return Qcopysign(signx==one ? doubledouble::Pion4 : 3.0*doubledouble::Pion4,signy);
+//    else            return Qcopysign(signx==one ? doubledouble(0.0) : doubledouble::Pi,signy);
+//  }
+//  if (_isnan(y)) return Qcopysign(doubledouble::Pion2,signy);
+//#endif
   doubledouble aqy=fabs(qy);
   if (x<0.0) // X is negative.
     return Qcopysign(doubledouble::Pi-atan(aqy/(-qx)),signy);

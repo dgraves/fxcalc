@@ -71,6 +71,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define END_x86_FIX
 #endif
 
+//Added 2002Apr06 - Dustin Graves
+#ifdef WIN32
+#define DD_ISINF(x) (!_finite(x))
+#elif defined(HAVE_ISINF)
+#define DD_ISINF(x) isinf(x)
+#elif defined(HAVE_FINITE)
+#define DD_ISINF(x) (!finite(x))
+#elif defined(__isinf) || defined(HAVE___ISINF)
+#define DD_ISINF(x) __isinf(x)
+#endif
+
 /*
 C++ functions for doubledouble (i.e. double+double) precision.
 
