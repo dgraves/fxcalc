@@ -9,7 +9,6 @@ ICONS  = \
         $(top_srcdir)/icons/big_calc.bmp
 
 fxcalc_SOURCES = \
-                $(top_srcdir)/include/icons.h \
 		icons.cpp        \
 		CALCDigitBox.cpp \
                 CALCPrefsBox.cpp \
@@ -31,4 +30,5 @@ icons.cpp: $(ICONS)
 
 CLEANFILES = $(top_srcdir)/include/icons.h icons.cpp
 
-EXTRA_DIST = $(ICONS)
+EXTRA_DIST = $(ICONS) \
+             $(top_srcdir)/include/icons.h
