@@ -247,7 +247,7 @@ protected:
   FXMenuCommand* decCommand;
   FXMenuCommand* octCommand;
   FXMenuCommand* binCommand;
-  FXToolTip* tooltip;
+  FXTooltip* tooltip;
   CALCStatBox* statBox;
 
   FXLabel* baseBtns[5];
