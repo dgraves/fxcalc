@@ -2,31 +2,26 @@ fxcalc version 1.0.1, Copyright (C) 2000,2001 Dustin Graves <dgraves@computer.or
 fxcalc comes with ABSOLUTELY NO WARRANTY.  This is free software, and you are 
 welcome to redistribute it under certain conditions; see COPYING for details.
 
-
 fxcalc is a platform independent scientific calculator, capable of 
 128-bit floating point math, and distributed under the terms of the 
 GNU General Public License.  
 
-
-The version of the doubledouble library, which this program uses for 128-bit
-floating point math, that is being distributed with this program is
-slightly different from the official doubledouble distribution.  I 
-have made som modifications to the source in order to make it compile 
-with current versions of gcc, MIPSpro CC, and Visual C++ 6.0.  
-
-fxcalc is distributed under the terms of the GNU General Public License
-
 This software uses the FOX Platform Independent GUI Toolkit Library.
 The FOX Library is Copyright (C) 1997,2000,2001 Jeroen van der Zijp and is
 available freely under the GNU Lesser Public License at the following site:
-http://www.cfdrc.com/FOX/fox.html
+http://www.fox-toolkit.org
 
-This software uses version 2.2 of the`doubledouble' software package which
-implements doubled-double (approximately 30 decimal place) floating point
-arithmetic on IEEE 754 floating-point hardware.
+This software contains code from version 2.2 of the`doubledouble' software 
+package which implements doubled-double (approximately 30 decimal place) floating 
+point arithmetic on IEEE 754 floating-point hardware.
 The doubledouble library is Copyright (C) 1997 Keith Martin Briggs and is
 available freely under the GNU General Public License at the following site
 http://www.btexact.com/people/briggsk2/doubledouble.html
 
-See INSTALL for installation instructions
+The version of the doubledouble library (which this program uses for 128-bit
+floating point math) distributed with this program differs from the 
+official doubledouble distribution.  Some modifications to the source have been 
+made in order to compile with current versions of gcc, MIPSpro CC, and Visual C++.  
+A bug with the 'pow' function has also been fixed.  See ChangeLog for details.  
 
+See INSTALL for installation instructions
