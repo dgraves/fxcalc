@@ -134,12 +134,25 @@ FXDEFMAP(CALCWindow) CALCWindowMap[]={
 
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DISPLAYFONT,CALCWindow::onCmdDisplayFont),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_BUTTONFONT,CALCWindow::onCmdButtonFont),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_CALCWIDTH,CALCWindow::onCmdCalcWidth),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_CALCHEIGHT,CALCWindow::onCmdCalcHeight),
   FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_NUMDIGITS,CALCWindow::onCmdNumDigits),
   FXMAPFUNCS(SEL_COMMAND,CALCWindow::ID_COLOR_DISPLAY,CALCWindow::ID_COLOR_CLEARALL,CALCWindow::onCmdBackColor),
   FXMAPFUNCS(SEL_COMMAND,CALCWindow::ID_TEXTCOLOR_DISPLAY,CALCWindow::ID_TEXTCOLOR_CLEARALL,CALCWindow::onCmdTextColor),
   FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_NUMDIGITS,CALCWindow::onUpdNumDigits),
+  FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_CALCWIDTH,CALCWindow::onUpdCalcWidth),
+  FXMAPFUNC(SEL_UPDATE,CALCWindow::ID_CALCHEIGHT,CALCWindow::onUpdCalcHeight),
   FXMAPFUNCS(SEL_UPDATE,CALCWindow::ID_COLOR_DISPLAY,CALCWindow::ID_COLOR_CLEARALL,CALCWindow::onUpdBackColor),
   FXMAPFUNCS(SEL_UPDATE,CALCWindow::ID_TEXTCOLOR_DISPLAY,CALCWindow::ID_TEXTCOLOR_CLEARALL,CALCWindow::onUpdTextColor),
+
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTDISPLAYFONT,CALCWindow::onCmdDefaultDisplayFont),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTBUTTONFONT,CALCWindow::onCmdDefaultButtonFont),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTMODE,CALCWindow::onCmdDefaultMode),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTWIDTH,CALCWindow::onCmdDefaultWidth),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTHEIGHT,CALCWindow::onCmdDefaultHeight),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTNUMDIGITS,CALCWindow::onCmdDefaultNumDigits),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTCOLORS,CALCWindow::onCmdDefaultColors),
+  FXMAPFUNC(SEL_COMMAND,CALCWindow::ID_DEFAULTTEXTCOLORS,CALCWindow::onCmdDefaultTextColors),
 
   //The popup dialog
   FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,CALCWindow::ID_LCD,CALCWindow::onPopupMenu),
@@ -190,7 +203,7 @@ CALCWindow::CALCWindow(FXApp* app)
   new FXMenuCommand(editmenu,"&Copy\tCtrl+C",NULL,this,ID_COPY);
   new FXMenuCommand(editmenu,"&Paste\tCtrl+V",NULL,this,ID_PASTE);
   new FXMenuSeparator(editmenu);
-  new FXMenuCommand(editmenu,"P&references...\tCtrl+P",NULL,this,ID_PREFERENCES);
+  new FXMenuCommand(editmenu,"Pr&eferences...\tCtrl+E",NULL,this,ID_PREFERENCES);
   viewmenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&View",NULL,viewmenu);
   new FXMenuCommand(viewmenu,"&Standard",NULL,this,ID_STANDARD);
@@ -672,8 +685,10 @@ void CALCWindow::create()
   //Dimensions
   FXint x=getApp()->reg().readIntEntry("SETTINGS","x",10);
   FXint y=getApp()->reg().readIntEntry("SETTINGS","y",10);
-  FXint w=getApp()->reg().readIntEntry("SETTINGS","width",0);
-  FXint h=getApp()->reg().readIntEntry("SETTINGS","height",0);
+  width[CALC_STANDARD-1]=getApp()->reg().readIntEntry("SETTINGS","standardwidth",0);
+  height[CALC_STANDARD-1]=getApp()->reg().readIntEntry("SETTINGS","standardheight",0);
+  width[CALC_SCIENTIFIC-1]=getApp()->reg().readIntEntry("SETTINGS","scientificwidth",0);
+  height[CALC_SCIENTIFIC-1]=getApp()->reg().readIntEntry("SETTINGS","scientificheight",0);
 
   //Fonts and colors
   fontspec=getApp()->reg().readStringEntry("SETTINGS","displayfont",NULL);
@@ -734,7 +749,7 @@ void CALCWindow::create()
     ndigits=CALCDBL_DIG;
 
   setMode(m);
-  position(x,y,w,h);
+  position(x,y,width[m-1],height[m-1]);
 
   setDisplayColor(displayclr);
   setDigitColor(digitclr);
@@ -863,6 +878,10 @@ void CALCWindow::setButtonFont(FXFont* font)
 
 void CALCWindow::setMode(FXuint m)
 {
+  //Store current width and height
+  width[mode-1]=getWidth();
+  height[mode-1]=getHeight();
+
   if(m==CALC_STANDARD)
   {
     //Hide scientific menus
@@ -902,6 +921,7 @@ void CALCWindow::setMode(FXuint m)
   base=BASE_TEN;
   rep=DEGREES;
   mode=m;
+  resize(width[m-1]>0?width[m-1]:getDefaultWidth(),height[m-1]>0?height[m-1]:getDefaultHeight());
 }
 
 FXuint CALCWindow::getMode() const
@@ -965,7 +985,8 @@ void CALCWindow::setDigitGrouping(FXbool b)
   CALCdouble val=getLabelText();
   digitgrouping=b;
   setLabelText(val);
-  started=FALSE;
+//Maybe toggling digit grouping shouldn't be finishing the entry
+//  started=FALSE;
 }
 
 FXbool CALCWindow::getDigitGrouping() const
@@ -1140,11 +1161,17 @@ long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
   FXFontDesc fontdesc;
   FXchar fontspec[200];
 
+  //Make sure the width and height for this mode are current
+  width[mode-1]=getWidth();
+  height[mode-1]=getHeight();
+
   //Dimensions
   getApp()->reg().writeIntEntry("SETTINGS","x",getX());
   getApp()->reg().writeIntEntry("SETTINGS","y",getY());
-  getApp()->reg().writeIntEntry("SETTINGS","width",getWidth());
-  getApp()->reg().writeIntEntry("SETTINGS","height",getHeight());
+  getApp()->reg().writeIntEntry("SETTINGS","standardwidth",width[CALC_STANDARD-1]);
+  getApp()->reg().writeIntEntry("SETTINGS","standardheight",height[CALC_STANDARD-1]);
+  getApp()->reg().writeIntEntry("SETTINGS","scientificwidth",width[CALC_SCIENTIFIC-1]);
+  getApp()->reg().writeIntEntry("SETTINGS","scientificheight",height[CALC_SCIENTIFIC-1]);
 
   //Fonts and colors
   getDisplayFont()->getFontDesc(fontdesc);
@@ -1471,7 +1498,6 @@ long CALCWindow::onCmdSetLCDValue(FXObject* sender,FXSelector sel,void* ptr)
 long CALCWindow::onCmdMode(FXObject*,FXSelector sel,void*)
 {
   setMode(CALC_STANDARD+(SELID(sel)-ID_STANDARD));
-  resize(getDefaultWidth(),getDefaultHeight());
   return 1;
 }
 
@@ -1831,7 +1857,7 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
     FXuchar grp=(base==BASE_TEN)?',':' ';
 
     //For Octal there is an upper bound on the left most digit
-    if((((pos-val.count(grp))+1)<max)&&(octIsValid(val,max)||(base!=BASE_EIGHT)))
+    if((((pos-val.count(grp))+1)<max)&&((base!=BASE_EIGHT)||octIsValid(val,max)))
     {
       //A label with '0' is a special case
       if(((pos+1)==1)&&(val[pos]=='0'))
@@ -2150,7 +2176,7 @@ long CALCWindow::onCmdHexDigit(FXObject*,FXSelector sel,void*)
     return 1;
   }
 
-  if(pos<max)
+  if((pos-val.count(' '))<max)
   {
     //A label with '0' is a special case
     if((pos==1)&&(val[pos-1]=='0'))
@@ -2842,6 +2868,22 @@ long CALCWindow::onCmdButtonFont(FXObject*,FXSelector,void*)
   return 1;
 }
 
+long CALCWindow::onCmdCalcWidth(FXObject* sender,FXSelector,void*)
+{
+  FXint cw=getDefaultWidth();
+  sender->handle(this,MKUINT(ID_GETINTVALUE,SEL_COMMAND),(void*)&cw);
+  resize(cw>0?cw:getDefaultWidth(),getHeight());
+  return 1;
+}
+
+long CALCWindow::onCmdCalcHeight(FXObject* sender,FXSelector,void*)
+{
+  FXint ch=getDefaultWidth();
+  sender->handle(this,MKUINT(ID_GETINTVALUE,SEL_COMMAND),(void*)&ch);
+  resize(getWidth(),ch>0?ch:getDefaultHeight());
+  return 1;
+}
+
 long CALCWindow::onCmdNumDigits(FXObject* sender,FXSelector,void*)
 {
   FXint digits=CALCDBL_DIG;
@@ -2899,6 +2941,20 @@ long CALCWindow::onCmdTextColor(FXObject*,FXSelector sel,void* ptr)
   return 1;
 }
 
+long CALCWindow::onUpdCalcWidth(FXObject* sender,FXSelector,void*)
+{
+  FXint cw=getWidth();
+  sender->handle(this,MKUINT(ID_SETINTVALUE,SEL_COMMAND),(void*)&cw);
+  return 1;
+}
+
+long CALCWindow::onUpdCalcHeight(FXObject* sender,FXSelector,void*)
+{
+  FXint ch=getHeight();
+  sender->handle(this,MKUINT(ID_SETINTVALUE,SEL_COMMAND),(void*)&ch);
+  return 1;
+}
+
 long CALCWindow::onUpdNumDigits(FXObject* sender,FXSelector,void*)
 {
   sender->handle(this,MKUINT(ID_SETINTVALUE,SEL_COMMAND),(void*)&ndigits);
@@ -2952,3 +3008,80 @@ long CALCWindow::onUpdTextColor(FXObject* sender,FXSelector sel,void*)
   sender->handle(this,MKUINT(ID_SETINTVALUE,SEL_COMMAND),(void*)&color);
   return 1;
 }
+
+long CALCWindow::onCmdDefaultDisplayFont(FXObject*,FXSelector,void*)
+{
+  setDisplayFont(getApp()->getNormalFont());
+  return 1;
+}
+
+long CALCWindow::onCmdDefaultButtonFont(FXObject*,FXSelector,void*)
+{
+  setButtonFont(getApp()->getNormalFont());
+  return 1;
+}
+
+long CALCWindow::onCmdDefaultMode(FXObject*,FXSelector,void*)
+{
+  setMode(CALC_SCIENTIFIC);
+  return 1;
+}
+
+long CALCWindow::onCmdDefaultWidth(FXObject*,FXSelector,void*)
+{
+  resize(getDefaultWidth(),getHeight());
+  return 1;
+}
+
+long CALCWindow::onCmdDefaultHeight(FXObject*,FXSelector,void*)
+{
+  resize(getWidth(),getDefaultHeight());
+  return 1;
+}
+
+long CALCWindow::onCmdDefaultNumDigits(FXObject*,FXSelector,void*)
+{
+  ndigits=CALCDBL_DIG;
+  return 1;
+}
+
+long CALCWindow::onCmdDefaultColors(FXObject*,FXSelector,void*)
+{
+  setDisplayColor(getApp()->getBackColor());
+  setDigitColor(getApp()->getBaseColor());
+  setHexDigitColor(getApp()->getBaseColor());
+  setOperatorColor(getApp()->getBaseColor());
+  setFunctionColor(getApp()->getBaseColor());
+  setMemoryColor(getApp()->getBaseColor());
+  setStatColor(getApp()->getBaseColor());
+  setBaseColor(getApp()->getBackColor());
+  setRepColor(getApp()->getBackColor());
+  setInvColor(getApp()->getBackColor());
+  setHypColor(getApp()->getBackColor());
+  setBackspaceColor(getApp()->getBaseColor());
+  setClearEntryColor(getApp()->getBaseColor());
+  setClearAllColor(getApp()->getBaseColor());
+
+  return 1;
+}
+
+long CALCWindow::onCmdDefaultTextColors(FXObject*,FXSelector,void*)
+{
+  setDisplayTextColor(FXRGB(0,0,0));
+  setDigitTextColor(VALUE);
+  setHexDigitTextColor(FUNCTION);
+  setOperatorTextColor(OPERATOR);
+  setFunctionTextColor(FUNCTION);
+  setMemoryTextColor(OPERATOR);
+  setStatTextColor(FUNCTION);
+  setBaseTextColor(FXRGB(0,0,0));
+  setRepTextColor(FXRGB(0,0,0));
+  setInvTextColor(FXRGB(0,0,0));
+  setHypTextColor(FXRGB(0,0,0));
+  setBackspaceTextColor(OPERATOR);
+  setClearEntryTextColor(OPERATOR);
+  setClearAllTextColor(OPERATOR);
+
+  return 1;
+}
+

@@ -21,7 +21,7 @@
 
 enum
 {
-  CALC_STANDARD=0x01,
+  CALC_STANDARD  =0x01,
   CALC_SCIENTIFIC=0x02
 };
 
@@ -45,7 +45,7 @@ enum
   NUM_BYTE  =0x01,
   NUM_WORD  =0x02,
   NUM_LWORD =0x04,      //Long word
-  NUM_DLWORD=0x8        //Double long word
+  NUM_DLWORD=0x08       //Double long word
 };
 
 enum
@@ -54,7 +54,7 @@ enum
   NOTATION_SCI =0x02
 };
 
-//Numeric base
+//Numeric base array index values
 enum
 {
   BASE_HEX=0,
@@ -64,7 +64,7 @@ enum
   BASE_LAST=4
 };
 
-//Representation
+//Representation array index values
 enum
 {
   REP_DEGREES=0,
@@ -77,7 +77,7 @@ enum
   REP_LAST=7
 };
 
-//Mode
+//Mode array index values
 enum
 {
   MODE_INV=0,
@@ -85,7 +85,7 @@ enum
   MODE_LAST=2
 };
 
-//Digit buttons
+//Digit buttons array index values
 enum
 {
   DIGIT_0=0,
@@ -101,7 +101,7 @@ enum
   DIGIT_LAST=10
 };
 
-//Hex digit buttons
+//Hex digit buttons array index values
 enum
 {
   HEXDIGIT_A=0,
@@ -113,7 +113,7 @@ enum
   HEXDIGIT_LAST=6,
 };
 
-//Opertor buttons
+//Opertor buttons array index values
 enum
 {
   OPERATOR_UMINUS=0,
@@ -137,7 +137,7 @@ enum
   OPERATOR_LAST=18
 };
 
-//Function buttons
+//Function buttons array index values
 enum
 {
   FUNC_FIXED=0,
@@ -159,7 +159,7 @@ enum
   FUNC_LAST=16
 };
 
-//Memory buttons
+//Memory buttons array index values
 enum
 {
   MEMORY_CLEAR=0,
@@ -169,7 +169,7 @@ enum
   MEMORY_LAST=4
 };
 
-//Stat buttons
+//Stat buttons array index values
 enum
 {
   STAT_SHOW=0,
@@ -180,7 +180,7 @@ enum
   STAT_LAST=5
 };
 
-//Clear buttons
+//Clear buttons array index values
 enum
 {
   CLEAR_BACKSPACE=0,
@@ -207,6 +207,8 @@ protected:
   FXuint notation;
   FXuint op;
   FXuint ndigits;       //Number of digits to display
+  FXint width[2];       //Storage for standard and scientific window widths
+  FXint height[2];      //Storage for standard and scientific window heights
   FXbool inv;
   FXbool hyp;
   FXbool digitgrouping;
@@ -469,12 +471,25 @@ public:
 
   long onCmdDisplayFont(FXObject*,FXSelector,void*);
   long onCmdButtonFont(FXObject*,FXSelector,void*);
+  long onCmdCalcWidth(FXObject*,FXSelector,void*);
+  long onCmdCalcHeight(FXObject*,FXSelector,void*);
   long onCmdNumDigits(FXObject*,FXSelector,void*);
   long onCmdBackColor(FXObject*,FXSelector,void*);
   long onCmdTextColor(FXObject*,FXSelector,void*);
+  long onUpdCalcWidth(FXObject*,FXSelector,void*);
+  long onUpdCalcHeight(FXObject*,FXSelector,void*);
+  long onUpdNumDigits(FXObject*,FXSelector,void*);
   long onUpdBackColor(FXObject*,FXSelector,void*);
   long onUpdTextColor(FXObject*,FXSelector,void*);
-  long onUpdNumDigits(FXObject*,FXSelector,void*);
+
+  long onCmdDefaultDisplayFont(FXObject*,FXSelector,void*);
+  long onCmdDefaultButtonFont(FXObject*,FXSelector,void*);
+  long onCmdDefaultMode(FXObject*,FXSelector,void*);
+  long onCmdDefaultWidth(FXObject*,FXSelector,void*);
+  long onCmdDefaultHeight(FXObject*,FXSelector,void*);
+  long onCmdDefaultNumDigits(FXObject*,FXSelector,void*);
+  long onCmdDefaultColors(FXObject*,FXSelector,void*);
+  long onCmdDefaultTextColors(FXObject*,FXSelector,void*);
 
   long onPopupMenu(FXObject*,FXSelector,void*);
   long onCmdClarify(FXObject*,FXSelector,void*);
@@ -591,6 +606,8 @@ public:
 
     ID_DISPLAYFONT,
     ID_BUTTONFONT,
+    ID_CALCWIDTH,
+    ID_CALCHEIGHT,
     ID_NUMDIGITS,
     ID_COLOR_DISPLAY,
     ID_COLOR_DIGITS,
@@ -620,6 +637,15 @@ public:
     ID_TEXTCOLOR_BACKSPACE,
     ID_TEXTCOLOR_CLEARENTRY,
     ID_TEXTCOLOR_CLEARALL,
+
+    ID_DEFAULTDISPLAYFONT,
+    ID_DEFAULTBUTTONFONT,
+    ID_DEFAULTMODE,
+    ID_DEFAULTWIDTH,
+    ID_DEFAULTHEIGHT,
+    ID_DEFAULTNUMDIGITS,
+    ID_DEFAULTCOLORS,
+    ID_DEFAULTTEXTCOLORS,
 
     ID_CLARIFY,
     ID_LAST
