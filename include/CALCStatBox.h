@@ -20,6 +20,7 @@
 #define _CALCSTATBOX_H_
 
 class CALCList;
+class CALCWindow;
 
 class CALCStatBox : public FXDialogBox
 {
@@ -32,7 +33,7 @@ protected:
   FXint getSelectedItem() const;
 
 public:
-  CALCStatBox(FXApp* app);
+  CALCStatBox(CALCWindow* owner);
   ~CALCStatBox();
 
   virtual void create();
