@@ -1,4 +1,10 @@
-Wun Mar 31 2002 Dustin Graves <dgraves@computer.org>
+Sat Apr 6 2002 Dustin Graves <dgraves@computer.org>
+ * added macro DD_ISINF for "isinf" functionality needed by doubledouble.  
+ * replaced doubledouble WIN32 _isnan code with DD_ISINF.  
+ * added configure tests for finite and isinf to be used for DD_ISINF.  
+ * Added CALCdefs.h.in to generate CALCdefs.h with PROG_VERSION defined.  
+
+Wen Mar 31 2002 Dustin Graves <dgraves@computer.org>
  * Window is now resizeable.  
  * Fixed doubledouble pow related bugs in calc x^2 function.  
  * Fixed doubledouble pow related bugs in statistics box.  

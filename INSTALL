@@ -22,7 +22,6 @@ include files, lib files, and the FOX reswrap utility like so:
 
   RESWRAP=/home/username/software/bin/reswrap \
   CPPFLAGS=-I/home/username/software/include \
-  CXXFLAGS=-I/home/username/software/include \
   LIBS=-L/home/username/software/lib \
   ./configure
 

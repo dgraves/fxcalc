@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(include/CALCdefs.h)
+AC_INIT(include/CALCWindow.h)
 AM_INIT_AUTOMAKE(fxcalc,1.0.3)
 
 dnl Checks for programs.
@@ -17,12 +17,18 @@ if test -z "$RESWRAP"; then
 fi
 
 dnl Checks for libraries.
+dnl AC_CHECK_LIB(m,main)
+dnl AC_HAVE_LIBRARY(m)
+dnl Fix this one of these days
+LIBS="${LIBS} -lm"
+
 dnl Check for doubledouble
 AC_ARG_ENABLE(doubledouble,
 [  --disable-doubledouble  compile wothout doubledouble support],
 [AC_MSG_RESULT(disabeling doubledouble)],
 [AC_DEFINE(HAVE_DOUBLEDOUBLE)
  AC_DEFINE(DD_INLINE)
+ AC_CHECK_FUNCS(isinf finite)
  if (uname -m) 2>&1 | egrep 'i*86' > /dev/null ; then
     AC_DEFINE(x86)
  fi
@@ -32,11 +38,6 @@ AC_ARG_ENABLE(doubledouble,
 dnl Check for FOX
 dnl AC_CHECK_LIB(FOX,fxfindfox,,AC_MSG_ERROR("libFOX not found"))
 LIBS="${LIBS} -lFOX"
-
-dnl AC_CHECK_LIB(m,main)
-dnl AC_HAVE_LIBRARY(m)
-dnl Fix this one of these days
-LIBS="${LIBS} -lm"
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -135,4 +136,4 @@ else
   AC_MSG_RESULT(no)
 fi
 
-AC_OUTPUT(Makefile doubledouble/Makefile icons/Makefile include/Makefile src/Makefile)
+AC_OUTPUT(Makefile doubledouble/Makefile icons/Makefile include/Makefile src/Makefile include/CALCdefs.h)
