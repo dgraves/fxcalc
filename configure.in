@@ -33,67 +33,6 @@ dnl Export FOX libraries (-lFOX).
 AC_CHECK_LIB(FOX,fxfindfox,,AC_MSG_ERROR(libFOX not found))
 AC_CHECK_HEADERS(fox/fx.h,,AC_MSG_ERROR(FOX headers not found))
 
-dnl Check for doubledouble
-AC_ARG_ENABLE(doubledouble,
-[  --disable-doubledouble  compile without doubledouble support],
-[AC_MSG_RESULT(disabeling doubledouble)],
-[AC_DEFINE(HAVE_DOUBLEDOUBLE)
- AC_DEFINE(DD_INLINE)
- AC_CHECK_FUNCS(isinf finite)
- DOUBLEDOUBLE="HAVE_DOUBLEDOUBLE"
- if (uname -m) 2>&1 | egrep 'i*86' > /dev/null ; then
-    AC_DEFINE(x86)
- fi
- CPPFLAGS="${CPPFLAGS} -I../doubledouble"
- LIBS="-L../doubledouble ${LIBS} -ldoubledouble"])
-
-dnl Only check for hyperbolic trig functions when not using doubledouble
-if test "x$DOUBLEDOUBLE" != "xHAVE_DOUBLEDOUBLE" ; then
-
-dnl Check for the Math library
-AC_MSG_CHECKING([for math library])
-AC_CHECK_LIB(m,main)
-
-  AC_MSG_CHECKING(for asinh)
-  AC_CACHE_VAL(ac_cv_asinh,
-   [AC_TRY_COMPILE([#include<math.h>],
-                    [asinh(0.0);],
-                    [ac_cv_asinh=true],
-                    [ac_cv_asinh=false])])
-  if test "$ac_cv_asinh" = true ; then
-    AC_DEFINE(HAVE_ASINH)
-    AC_MSG_RESULT(yes)
-  else
-    AC_MSG_RESULT(no)
-  fi
-
-  AC_MSG_CHECKING(for acosh)
-  AC_CACHE_VAL(ac_cv_acosh,
-   [AC_TRY_COMPILE([#include<math.h>],
-                    [acosh(0.0);],
-                    [ac_cv_acosh=true],
-                    [ac_cv_acosh=false])])
-  if test "$ac_cv_acosh" = true ; then
-    AC_DEFINE(HAVE_ACOSH)
-    AC_MSG_RESULT(yes)
-  else
-    AC_MSG_RESULT(no)
-  fi
-
-  AC_MSG_CHECKING(for atanh)
-  AC_CACHE_VAL(ac_cv_atanh,
-   [AC_TRY_COMPILE([#include<math.h>],
-                    [atanh(0.0);],
-                    [ac_cv_atanh=true],
-                    [ac_cv_atanh=false])])
-  if test "$ac_cv_atanh" = true ; then
-    AC_DEFINE(HAVE_ATANH)
-    AC_MSG_RESULT(yes)
-  else
-    AC_MSG_RESULT(no)
-  fi
-fi
-
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
@@ -199,10 +138,61 @@ if test "${GXX}" = "yes" ; then
   CXXFLAGS="${CXXFLAGS} -Wall -W -Wmissing-prototypes -Woverloaded-virtual -Wformat"
 fi
 
+dnl Debugging turned on
+dnl If using gcc, turn on special debugging mode suitable for gdb
+AC_MSG_CHECKING(for debugging)
+AC_ARG_ENABLE(debug,[  --enable-debug          compile for debugging])
+if test "x$enable_debug" = "xyes" ; then
+  AC_MSG_RESULT(yes)
+  if test "$GCC" != "" ; then
+    CXXFLAGS="${CXXFLAGS} -ggdb3 -DDEBUG"
+  else
+    CXXFLAGS="${CXXFLAGS} -g -DDEBUG"
+  fi
+else
+  AC_MSG_RESULT(no)
+fi
+
+dnl Building for release
+AC_MSG_CHECKING(for release build)
+AC_ARG_ENABLE(release,[  --enable-release        compile for release])
+if test "x$enable_release" = "xyes" ; then
+  AC_MSG_RESULT(yes)
+  CXXFLAGS="${CXXFLAGS} -O2 -DNDEBUG"
+  if test "${GXX}" = "yes" ; then
+    CXXFLAGS="${CXXFLAGS} -Wuninitialized -ffast-math -finline-functions -fomit-frame-pointer -fexpensive-optimizations"
+  fi
+else
+  AC_MSG_RESULT(no)
+fi
+
 dnl See about RTTI
 AC_ARG_ENABLE(rtti,
 [  --disable-rtti          compile without rtti support],
 [AC_MSG_RESULT(disabeling rtti)],
-[AC_DEFINE(HAVE_RTTI)])
+[AC_MSG_RESULT(enabeling rtti)
+ AC_DEFINE(HAVE_RTTI)])
+
+dnl Check for doubledouble
+AC_ARG_ENABLE(doubledouble,
+[  --disable-doubledouble  compile without doubledouble support],
+[AC_MSG_RESULT(disabeling doubledouble)],
+[AC_MSG_RESULT(enabeling doubledouble)
+ AC_DEFINE(HAVE_DOUBLEDOUBLE)
+ AC_DEFINE(DD_INLINE)
+ AC_CHECK_FUNCS(isinf finite)
+ DOUBLEDOUBLE="HAVE_DOUBLEDOUBLE"
+ if (uname -m) 2>&1 | egrep 'i*86' > /dev/null ; then
+    AC_DEFINE(x86)
+ fi
+ CPPFLAGS="${CPPFLAGS} -I../doubledouble"
+ LIBS="-L../doubledouble ${LIBS} -ldoubledouble"])
+
+dnl Only check for hyperbolic trig functions when not using doubledouble
+if test "x$DOUBLEDOUBLE" != "xHAVE_DOUBLEDOUBLE" ; then
+  dnl Check for the Math library
+  AC_CHECK_LIB(m,main)
+  AC_CHECK_FUNCS(asinh acosh atanh)
+fi
 
 AC_OUTPUT(Makefile doubledouble/Makefile include/Makefile src/Makefile windows/Makefile include/CALCdefs.h)
