@@ -306,10 +306,10 @@ public:
   void setFunctionTextColor(FXColor color) {setTextColors(funcBtns,color);}
   void setMemoryTextColor(FXColor color) {setTextColors(memoryBtns,color);}
   void setStatTextColor(FXColor color) {setTextColors(statBtns,color);}
-  void setBaseTextColor(FXColor color) {setTextColors(baseBtns,color);}
-  void setRepTextColor(FXColor color) {setTextColors(repBtns,color);}
-  void setInvTextColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_INV])->setTextColor(color);}
-  void setHypTextColor(FXColor color) {((FXCheckButton*)modeBtns[MODE_HYP])->setTextColor(color);}
+  void setBaseTextColor(FXColor color);
+  void setRepTextColor(FXColor color);
+  void setInvTextColor(FXColor color);
+  void setHypTextColor(FXColor color);
   void setBackspaceTextColor(FXColor color) {clearBtns[CLEAR_BACKSPACE]->setTextColor(color);}
   void setClearEntryTextColor(FXColor color) {clearBtns[CLEAR_ENTRY]->setTextColor(color);}
   void setClearAllTextColor(FXColor color) {clearBtns[CLEAR_ALL]->setTextColor(color);}
@@ -321,8 +321,8 @@ public:
   FXColor getFunctionColor() const {return funcBtns[0]->getBackColor();}
   FXColor getMemoryColor() const {return memoryBtns[0]->getBackColor();}
   FXColor getStatColor() const {return statBtns[0]->getBackColor();}
-  FXColor getBaseColor() const {return ((FXRadioButton*)baseBtns[0])->getRadioColor();}
-  FXColor getRepColor() const {return ((FXRadioButton*)repBtns[0])->getRadioColor();}
+  FXColor getBaseColor() const {return ((FXRadioButton*)baseBtns[0])->getDiskColor();}
+  FXColor getRepColor() const {return ((FXRadioButton*)repBtns[0])->getDiskColor();}
   FXColor getInvColor() const {return ((FXCheckButton*)modeBtns[MODE_INV])->getBoxColor();}
   FXColor getHypColor() const {return ((FXCheckButton*)modeBtns[MODE_HYP])->getBoxColor();}
   FXColor getBackspaceColor() const {return clearBtns[CLEAR_BACKSPACE]->getBackColor();}
