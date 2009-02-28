@@ -29,8 +29,8 @@ dnl Checks for header files.
 AC_HEADER_STDC
 
 dnl Export FOX libraries (-lFOX).
-AC_CHECK_LIB(FOX-1.2,fxfindfox,,AC_MSG_ERROR(libFOX not found))
-AC_CHECK_HEADERS(fox/fx.h,,AC_MSG_ERROR(FOX headers not found))
+AC_CHECK_LIB(FOX-1.6,fxfindfox,,AC_MSG_ERROR(libFOX not found))
+AC_CHECK_HEADERS(fox-1.6/fx.h,,AC_MSG_ERROR(FOX headers not found))
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -134,7 +134,7 @@ fi
 
 dnl Add copious amounts of debugging with gcc, egcs, etc
 if test "${GXX}" = "yes" ; then
-  CXXFLAGS="${CXXFLAGS} -Wall -W -Wmissing-prototypes -Woverloaded-virtual -Wformat"
+  CXXFLAGS="${CXXFLAGS} -Wall -W -Woverloaded-virtual -Wformat"
 fi
 
 dnl Debugging turned on
