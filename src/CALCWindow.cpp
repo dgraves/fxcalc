@@ -21,10 +21,10 @@
 #include <windows.h>
 #include <winuser.h>
 #endif
-#include "fox/fx.h"
-#include "fox/fxkeys.h"
-#include "fox/FXElement.h"
-#include "fox/FXArray.h"
+#include "fox-1.6/fx.h"
+#include "fox-1.6/fxkeys.h"
+#include "fox-1.6/FXElement.h"
+#include "fox-1.6/FXArray.h"
 
 #include "icons.h"
 #include "CALCdefs.h"
@@ -228,7 +228,7 @@ CALCWindow::CALCWindow(FXApp* app)
   storePair.op=ID_ADD;
   storePair.value=0.0;
 
-  FXMenuBar* menu=new FXMenuBar(this);
+  FXMenuBar* menu=new FXMenuBar(this, LAYOUT_TOP|LAYOUT_LEFT|LAYOUT_FILL_X);
   filemenu=new FXMenuPane(this);
   new FXMenuTitle(menu,"&File",NULL,filemenu);
   new FXMenuCommand(filemenu,"&Quit\tCtl-Q",NULL,this,ID_QUIT);
@@ -265,20 +265,20 @@ CALCWindow::CALCWindow(FXApp* app)
 
   modesFrame=new FXHorizontalFrame(this,LAYOUT_FILL_X,0,0,0,0, 4,4,2,2, 2,2);
   FXHorizontalFrame* baseFrame=new FXHorizontalFrame(modesFrame,PACK_UNIFORM_WIDTH|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-  baseBtns[BASE_HEX]=new FXRadioButton(baseFrame,"Hex\t"HEXADECIMAL_HELP,this,ID_HEXADECIMAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  baseBtns[BASE_DEC]=new FXRadioButton(baseFrame,"Dec\t"DECIMAL_HELP,this,ID_DECIMAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  baseBtns[BASE_OCT]=new FXRadioButton(baseFrame,"Oct\t"OCTAL_HELP,this,ID_OCTAL,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  baseBtns[BASE_BIN]=new FXRadioButton(baseFrame,"Bin\t"BINARY_HELP,this,ID_BINARY,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_HEX]=new FXRadioButton(baseFrame,"Hex\t"HEXADECIMAL_HELP,this,ID_HEXADECIMAL,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_DEC]=new FXRadioButton(baseFrame,"Dec\t"DECIMAL_HELP,this,ID_DECIMAL,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_OCT]=new FXRadioButton(baseFrame,"Oct\t"OCTAL_HELP,this,ID_OCTAL,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  baseBtns[BASE_BIN]=new FXRadioButton(baseFrame,"Bin\t"BINARY_HELP,this,ID_BINARY,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   modeSwitch=new FXSwitcher(modesFrame,LAYOUT_FILL_X|LAYOUT_FILL_Y, 0,0,0,0, 0,0,0,0);
   FXHorizontalFrame* repFrame=new FXHorizontalFrame(modeSwitch,PACK_UNIFORM_WIDTH|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-  repBtns[REP_DEGREES]=new FXRadioButton(repFrame,"Degrees\t"DEGREES_HELP,this,ID_DEGREES,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  repBtns[REP_RADIANS]=new FXRadioButton(repFrame,"Radians\t"RADIANS_HELP,this,ID_RADIANS,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  repBtns[REP_GRADIENTS]=new FXRadioButton(repFrame,"Gradients\t"GRADIENTS_HELP,this,ID_GRADIENTS,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_DEGREES]=new FXRadioButton(repFrame,"Degrees\t"DEGREES_HELP,this,ID_DEGREES,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_RADIANS]=new FXRadioButton(repFrame,"Radians\t"RADIANS_HELP,this,ID_RADIANS,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_GRADIENTS]=new FXRadioButton(repFrame,"Gradients\t"GRADIENTS_HELP,this,ID_GRADIENTS,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
   FXHorizontalFrame* wordFrame=new FXHorizontalFrame(modeSwitch,PACK_UNIFORM_WIDTH|FRAME_GROOVE|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-  repBtns[REP_DLWORD]=new FXRadioButton(wordFrame,"dlword\t"DLWORD_HELP,this,ID_DLWORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  repBtns[REP_LWORD]=new FXRadioButton(wordFrame,"lword\t"LWORD_HELP,this,ID_LWORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  repBtns[REP_WORD]=new FXRadioButton(wordFrame,"word\t"WORD_HELP,this,ID_WORD,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  repBtns[REP_BYTE]=new FXRadioButton(wordFrame,"byte\t"BYTE_HELP,this,ID_BYTE,ICON_BEFORE_TEXT|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_DLWORD]=new FXRadioButton(wordFrame,"dlword\t"DLWORD_HELP,this,ID_DLWORD,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_LWORD]=new FXRadioButton(wordFrame,"lword\t"LWORD_HELP,this,ID_LWORD,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_WORD]=new FXRadioButton(wordFrame,"word\t"WORD_HELP,this,ID_WORD,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
+  repBtns[REP_BYTE]=new FXRadioButton(wordFrame,"byte\t"BYTE_HELP,this,ID_BYTE,RADIOBUTTON_NORMAL|LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
   FXHorizontalFrame* numpad=new FXHorizontalFrame(this,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 4,4,2,2, FRAMEGAP,0);
 
@@ -551,8 +551,7 @@ CALCWindow::~CALCWindow()
 
 void CALCWindow::create()
 {
-  FXFontDesc fontdesc;
-  const FXchar* fontspec;
+  FXString fontspec;
 
   //Dimensions
   FXint x=getApp()->reg().readIntEntry("SETTINGS","x",20);
@@ -564,16 +563,16 @@ void CALCWindow::create()
 
   //Fonts and colors
   fontspec=getApp()->reg().readStringEntry("SETTINGS","displayfont",NULL);
-  if(fontspec&&fxparsefontdesc(fontdesc,fontspec))
+  if(!fontspec.empty())
   {
-    lcdfont=new FXFont(getApp(),fontdesc);
+    lcdfont=new FXFont(getApp(),fontspec);
     setDisplayFont(lcdfont);
   }
 
   fontspec=getApp()->reg().readStringEntry("SETTINGS","buttonfont",NULL);
-  if(fontspec&&fxparsefontdesc(fontdesc,fontspec))
+  if(!fontspec.empty())
   {
-    btnfont=new FXFont(getApp(),fontdesc);
+    btnfont=new FXFont(getApp(),fontspec);
     setButtonFont(btnfont);
   }
 
@@ -706,7 +705,9 @@ void CALCWindow::setBaseColor(FXColor color)
 {
   FXint i=0;
   while(baseBtns[i]!=NULL)
-    ((FXRadioButton*)baseBtns[i++])->setRadioColor(color);
+  {
+    ((FXRadioButton*)baseBtns[i++])->setDiskColor(color);
+  }
 }
 
 void CALCWindow::setDisplayColor(FXColor color)
@@ -718,12 +719,48 @@ void CALCWindow::setRepColor(FXColor color)
 {
   FXint i=0;
   while(repBtns[i]!=NULL)
-    ((FXRadioButton*)repBtns[i++])->setRadioColor(color);
+  {
+    ((FXRadioButton*)repBtns[i++])->setDiskColor(color);
+  }
 }
 
 void CALCWindow::setDisplayTextColor(FXColor color)
 {
   lcd->setTextColor(color);
+}
+
+void CALCWindow::setBaseTextColor(FXColor color)
+{
+  FXint i=0;
+  while(baseBtns[i]!=NULL)
+  {
+    ((FXRadioButton*)baseBtns[i++])->setRadioColor(color);
+  }
+
+  setTextColors(baseBtns,color);
+}
+
+void CALCWindow::setRepTextColor(FXColor color)
+{
+  FXint i=0;
+  while(repBtns[i]!=NULL)
+  {
+    ((FXRadioButton*)repBtns[i++])->setRadioColor(color);
+  }
+
+  setTextColors(repBtns,color);
+}
+
+void CALCWindow::setInvTextColor(FXColor color)
+{
+  ((FXCheckButton*)modeBtns[MODE_INV])->setCheckColor(color);
+  ((FXCheckButton*)modeBtns[MODE_INV])->setTextColor(color);
+}
+
+void CALCWindow::setHypTextColor(FXColor color)
+{
+  ((FXCheckButton*)modeBtns[MODE_HYP])->setCheckColor(color);
+  ((FXCheckButton*)modeBtns[MODE_HYP])->setTextColor(color);
 }
 
 FXColor CALCWindow::getDisplayColor() const
@@ -1025,11 +1062,11 @@ void CALCWindow::setLabelText(CALCdouble val)
 
       pos=epos+2;
       while((pos<len-1)&&(str[pos]=='0'))
-        str.remove(pos++);
+        str.erase(pos++);
 
       pos=epos-1;
       while((pos>0)&&(str[pos]=='0'))
-        str.remove(pos--);
+        str.erase(pos--);
     }
 
     if(digitgrouping)
@@ -1049,9 +1086,6 @@ void CALCWindow::setLabelText(CALCdouble val)
 
 long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
 {
-  FXFontDesc fontdesc;
-  FXchar fontspec[200];
-
   //Make sure the width and height for this mode are current
   width[mode-1]=getWidth();
   height[mode-1]=getHeight();
@@ -1075,13 +1109,11 @@ long CALCWindow::onCmdQuit(FXObject*,FXSelector,void*)
     getApp()->reg().writeIntEntry("SETTINGS","scientificheight",height[CALC_SCIENTIFIC-1]);
 
   //Fonts and colors
-  getDisplayFont()->getFontDesc(fontdesc);
-  fxunparsefontdesc(fontspec,fontdesc);
-  getApp()->reg().writeStringEntry("SETTINGS","displayfont",fontspec);
+  FXString fontspec = getDisplayFont()->getFont();
+  getApp()->reg().writeStringEntry("SETTINGS","displayfont",fontspec.text());
 
-  getButtonFont()->getFontDesc(fontdesc);
-  fxunparsefontdesc(fontspec,fontdesc);
-  getApp()->reg().writeStringEntry("SETTINGS","buttonfont",fontspec);
+  fontspec = getButtonFont()->getFont();
+  getApp()->reg().writeStringEntry("SETTINGS","buttonfont",fontspec.text());
 
   getApp()->reg().writeColorEntry("SETTINGS","displaycolor",getDisplayColor());
   getApp()->reg().writeColorEntry("SETTINGS","digitcolor",getDigitColor());
@@ -1355,7 +1387,7 @@ long CALCWindow::onCmdAbout(FXObject*,FXSelector,void*)
   new FXLabel(aboutframe,"About "PROG_PACKAGE);
   new FXHorizontalSeparator(aboutframe,SEPARATOR_LINE|LAYOUT_FILL_X);
   FXHorizontalFrame* aboutlabels=new FXHorizontalFrame(aboutframe,LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  new FXLabel(aboutlabels,NULL,bigcalc,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 20,20,20,20);
+  new FXLabel(aboutlabels,FXString::null,bigcalc,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 20,20,20,20);
   new FXLabel(aboutlabels,msg,NULL,JUSTIFY_LEFT|LAYOUT_CENTER_Y,0,0,0,0, 0,20,20,20);
 
   about.execute(PLACEMENT_OWNER);
@@ -1512,13 +1544,13 @@ long CALCWindow::onCmdBackSpace(FXObject*,FXSelector,void*)
   {
     if(exponent)
     {
-      val.remove(pos);
+      val.erase(pos);
       if((val[pos-1]=='+')||(val[pos-1]=='-'))
       {
         //Do we remove the exp altogether or is it zero?
         if(last=='0')
         {
-          val.remove(pos-2,2);
+          val.erase(pos-2,2);
           exponent=FALSE;
         }
         else
@@ -1531,7 +1563,7 @@ long CALCWindow::onCmdBackSpace(FXObject*,FXSelector,void*)
       if(last=='.')
         mantissa=FALSE;
       else
-        val.remove(pos);
+        val.erase(pos);
     }
     else
     {
@@ -1543,7 +1575,7 @@ long CALCWindow::onCmdBackSpace(FXObject*,FXSelector,void*)
         val[pos]='0';
       else
       {
-        val.remove(pos);
+        val.erase(pos);
 
         //Remove digit grouping and then re add it
         if(digitgrouping)
@@ -1678,7 +1710,7 @@ long CALCWindow::onUpdStatButtons(FXObject* sender,FXSelector,void*)
 FXbool CALCWindow::octIsValid(FXString& str,FXint max)
 {
   FXbool success=TRUE;
-  FXint length=str.length()-str.count(' ');
+  FXint length=str.length()-str.contains(' ');
   if(length==max-1)
   {
     switch(word)
@@ -1764,7 +1796,7 @@ long CALCWindow::onCmdDigit(FXObject*,FXSelector sel,void*)
     FXuchar grp=(base==BASE_TEN)?',':' ';
 
     //For Octal there is an upper bound on the left most digit
-    if((((pos-val.count(grp))+1)<max)&&((base!=BASE_EIGHT)||octIsValid(val,max)))
+    if((((pos-val.contains(grp))+1)<max)&&((base!=BASE_EIGHT)||octIsValid(val,max)))
     {
       //A label with '0' is a special case
       if(((pos+1)==1)&&(val[pos]=='0'))
@@ -2086,7 +2118,7 @@ long CALCWindow::onCmdHexDigit(FXObject*,FXSelector sel,void*)
     return 1;
   }
 
-  if((pos-val.count(' '))<max)
+  if((pos-val.contains(' '))<max)
   {
     //A label with '0' is a special case
     if((pos==1)&&(val[pos-1]=='0'))
@@ -2541,7 +2573,7 @@ long CALCWindow::onCmdRParen(FXObject*,FXSelector,void*)
     if(str[0]=='(')
     {
       FXint len=str.length();
-      str.remove(0);
+      str.erase(0);
       if(len==1)
         str=(base==BASE_TEN)?"0.":"0";
       lcd->setText(str);
@@ -2555,7 +2587,7 @@ long CALCWindow::onCmdRParen(FXObject*,FXSelector,void*)
 
     //Remove from stack and reset
     stackPair sp=stack[pos];
-    stack.remove(pos);
+    stack.erase(pos);
 
     op=sp.op;
     value=sp.value;

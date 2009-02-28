@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "fox/fx.h"
+#include "fox-1.6/fx.h"
 #include "CALCList.h"
 
 enum
@@ -65,7 +65,7 @@ FXint CALCList::getInsertPosition(FXWindow* ow,FXint ox,FXint oy) const
 
   //Is there an item?
   if(item<0)
-    return nitems;
+    return items.no();
 
   //Does it go before or after the item
   for(i=0;i<item;i++)

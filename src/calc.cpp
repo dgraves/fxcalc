@@ -17,9 +17,9 @@
  */
 
 #include <signal.h>
-#include "fox/fx.h"
-#include "fox/FXElement.h"
-#include "fox/FXArray.h"
+#include "fox-1.6/fx.h"
+#include "fox-1.6/FXElement.h"
+#include "fox-1.6/FXArray.h"
 #include "CALCdefs.h"
 #include "CALCWindow.h"
 

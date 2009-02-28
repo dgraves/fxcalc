@@ -16,9 +16,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "fox/fx.h"
-#include "fox/FXElement.h"
-#include "fox/FXArray.h"
+#include "fox-1.6/fx.h"
+#include "fox-1.6/FXElement.h"
+#include "fox-1.6/FXArray.h"
 #include "CALCdefs.h"
 #include "CALCHelp.h"
 #include "CALCList.h"
