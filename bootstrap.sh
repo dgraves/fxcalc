@@ -15,7 +15,7 @@
 	exit;
 }
 
-echo "Generating configuration files for fxcd...."
+echo "Generating configuration files for fxcalc...."
 echo;
 
 exec_cmd()
