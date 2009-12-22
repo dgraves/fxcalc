@@ -199,7 +199,6 @@ AC_OUTPUT([
            doubledouble/Makefile
            include/Makefile
            src/Makefile
-           windows/Makefile
            include/CALCdefs.h
           ])
 
