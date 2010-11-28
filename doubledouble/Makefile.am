@@ -6,4 +6,4 @@ libdoubledouble_a_SOURCES = \
                             doubledouble.cpp \
                             math.cpp
 
-EXTRA_DIST = ANNOUNCE COPYLEFT INSTALL Makefile.kmb README doubledouble.dsp doubledouble.vcproj doubledouble.html trydd.cpp
+EXTRA_DIST = ANNOUNCE COPYLEFT INSTALL Makefile.kmb README doubledouble.vcproj doubledouble.html trydd.cpp
