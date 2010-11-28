@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(include/CALCWindow.h)
-AM_INIT_AUTOMAKE(fxcalc,1.0.12)
+AM_INIT_AUTOMAKE(fxcalc,1.0.13)
 
 dnl Perform tests with c++ compiler
 AC_LANG_CPLUSPLUS

@@ -1,4 +1,4 @@
-SUBDIRS = doubledouble include src windows
+SUBDIRS = doubledouble include src
 
 EXTRA_DIST = \
                 windows/fxcalc.dsp    \
